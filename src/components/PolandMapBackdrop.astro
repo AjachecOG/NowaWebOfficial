@@ -1,0 +1,79 @@
+---
+import { POLAND_MAP_VIEWBOX, polandMapCities, polandMapPaths } from "../data/poland-map";
+---
+
+<div class="manifesto-map-backdrop" aria-hidden="true">
+  <svg class="manifesto-map-svg" viewBox={POLAND_MAP_VIEWBOX} preserveAspectRatio="xMidYMid meet">
+    <g class="manifesto-map-silhouette">
+      {
+        polandMapPaths.map((path) => (
+          <path class="manifesto-map-fill" d={path} />
+        ))
+      }
+    </g>
+
+    <g class="manifesto-map-cities">
+      {
+        polandMapCities.map((city) => (
+          <g
+            class="manifesto-city"
+            data-city-id={city.id}
+            transform={`translate(${city.x} ${city.y})`}
+          >
+            <circle class="manifesto-city-pulse" r="9" />
+            <circle class="manifesto-city-core" r="3.75" />
+          </g>
+        ))
+      }
+    </g>
+
+    <line
+      id="manifesto-map-route"
+      class="manifesto-route"
+      x1="0"
+      y1="0"
+      x2="0"
+      y2="0"
+    />
+  </svg>
+</div>
+
+<script>
+  import { initPolandMapRoutes } from "../scripts/poland-map-routes";
+
+  function bootPolandMap() {
+    const section = document.querySelector<HTMLElement>("[data-map-reveal]");
+    if (!section) return;
+
+    const start = () => {
+      section.classList.add("is-map-visible");
+      initPolandMapRoutes();
+    };
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      section.classList.add("is-map-visible");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          observer.disconnect();
+          start();
+        }
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -4% 0px" },
+    );
+
+    observer.observe(section);
+
+    const rect = section.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+      observer.disconnect();
+      start();
+    }
+  }
+
+  bootPolandMap();
+</script>

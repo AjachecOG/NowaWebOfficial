@@ -1,0 +1,309 @@
+---
+import {
+  ArrowRight,
+  CheckCircle2,
+  Code2,
+  Gauge,
+  Globe2,
+  LifeBuoy,
+  Mail,
+  MapPin,
+  Palette,
+  PenLine,
+  RefreshCw,
+  ShieldCheck,
+  Sparkles,
+  Target,
+  UsersRound,
+  Zap,
+} from "lucide-react";
+import HeroSceneMotion from "../components/HeroSceneMotion";
+import PolandMapBackdrop from "../components/PolandMapBackdrop.astro";
+import PortfolioCarousel from "../components/PortfolioCarousel";
+import ProcessIsland from "../components/ProcessIsland";
+import SiteMotion from "../components/SiteMotion";
+import "../styles/global.css";
+
+const strengths = [
+  { title: "Szybka realizacja", text: "Bez wielomiesięcznej karuzeli poprawek.", Icon: Zap },
+  { title: "Kontakt 1:1", text: "Rozmawiasz z osobą, która zna projekt.", Icon: UsersRound },
+  { title: "Nowoczesny stack", text: "Astro, React islands i mało zbędnego JS.", Icon: Code2 },
+  { title: "Spójny design", text: "Strona wygląda jak marka, nie jak motyw.", Icon: Palette },
+];
+
+const services = [
+  { title: "Strony firmowe", text: "Elegancka, szybka strona, która tłumaczy ofertę i buduje zaufanie.", Icon: Globe2 },
+  { title: "Landing page", text: "Skoncentrowane strony kampanii z jasną ścieżką do kontaktu.", Icon: Target },
+  { title: "One page", text: "Krótka, dopracowana prezentacja dla firm usługowych i lokalnych.", Icon: Sparkles },
+  { title: "Odświeżenie strony", text: "Nowy rytm, lepsza struktura i wyraźniejsza komunikacja.", Icon: RefreshCw },
+  { title: "UX + copywriting", text: "Treść i układ prowadzą użytkownika od pierwszego ekranu do decyzji.", Icon: PenLine },
+  { title: "Opieka i rozwój", text: "Wsparcie techniczne, aktualizacje i kolejne iteracje po starcie.", Icon: LifeBuoy },
+];
+
+const comparisonRows = [
+  ["Szybkość", "Lekka strona bez nadmiaru wtyczek.", "Motyw i pluginy często dociążają stronę."],
+  ["Koszty", "Czytelny zakres i przewidywalne utrzymanie.", "Koszty rosną przez dodatki, hosting i poprawki."],
+  ["Bezpieczeństwo", "Mniejsza powierzchnia ataku i prostszy hosting.", "Popularny CMS jest częstym celem botów."],
+  ["Wygląd", "Projekt dopasowany do marki i celu.", "Szablon narzuca ograniczenia i podobieństwa."],
+  ["Wsparcie", "Opieka osoby, która zna całą decyzję projektową.", "Problem może leżeć w motywie, wtyczce albo hostingu."],
+];
+
+const support = [
+  ["Kontakt po starcie", "Masz jasną ścieżkę kontaktu i szybką reakcję na drobne sprawy."],
+  ["Aktualizacje", "Pilnujemy bezpieczeństwa, wydajności i stabilności strony."],
+  ["Dalszy rozwój", "Dodajemy sekcje, kampanie i usprawnienia wtedy, kiedy biznes tego potrzebuje."],
+];
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="NowaWeb projektuje szybkie, estetyczne i stabilne strony internetowe dla firm z całej Polski."
+    />
+    <title>NowaWeb - profesjonalne strony internetowe</title>
+  </head>
+  <body>
+    <SiteMotion client:load />
+    <HeroSceneMotion client:load />
+    <div class="paper-grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="NowaWeb">NowaWeb<span>.</span></a>
+      <nav aria-label="Główna nawigacja">
+        <a href="#projekty">Projekty</a>
+        <a href="#uslugi">Usługi</a>
+        <a href="#onas">O nas</a>
+        <a href="#proces">Proces</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+      <a class="header-cta" href="#kontakt">Umów rozmowę</a>
+    </header>
+
+    <main id="top">
+      <section class="hero studio-section" aria-labelledby="hero-title">
+        <div class="hero-copy" data-reveal>
+          <p class="eyebrow">NowaWeb - strony internetowe</p>
+          <h1 id="hero-title">Profesjonalny design <em>nie jest</em> luksusem</h1>
+          <p class="lead">
+            Projektujemy szybkie strony dla firm, które chcą wyglądać profesjonalnie i
+            działać bez technologicznego chaosu. Zdalnie, precyzyjnie i z myślą o wyniku.
+          </p>
+          <div class="action-row">
+            <a class="button primary" href="#kontakt">Umów konsultację <ArrowRight aria-hidden="true" size={20} /></a>
+            <a class="button secondary" href="#projekty">Zobacz realizacje <ArrowRight aria-hidden="true" size={20} /></a>
+          </div>
+        </div>
+
+        <div class="hero-studio product-showcase" data-reveal aria-label="Podgląd projektu strony NowaWeb">
+          <div class="product-stage" aria-hidden="true">
+            <span class="perspective-wall"></span>
+            <span class="perspective-floor"></span>
+            <span class="product-halo"></span>
+            <figure class="paper-piece paper-logo">
+              <img src="/assets/nowaweb/hero/logo-card-cutout.png" alt="" loading="eager" />
+            </figure>
+            <figure class="paper-piece paper-poster">
+              <img src="/assets/nowaweb/hero/poster-cutout.png" alt="" loading="eager" />
+            </figure>
+            <figure class="paper-piece paper-poland">
+              <span class="poland-tape"></span>
+              <span class="poland-copy">Pracujemy<br />zdalnie na<br />całą <strong>Polskę</strong></span>
+              <span class="poland-mark"></span>
+              <span class="poland-stand"></span>
+            </figure>
+            <figure class="paper-piece tool-rail-piece">
+              <img src="/assets/nowaweb/hero/tool-rail-cutout.png" alt="" loading="eager" />
+            </figure>
+            <div class="monitor-rig" data-monitor-billboard>
+              <div class="monitor-glitch-layer">
+                <img
+                  class="product-monitor monitor-state is-active"
+                  src="/assets/nowaweb/hero/monitor-screen-1.png"
+                  alt=""
+                  loading="eager"
+                  fetchpriority="high"
+                />
+                <img
+                  class="product-monitor monitor-state"
+                  src="/assets/nowaweb/hero/monitor-screen-2.png"
+                  alt=""
+                  loading="eager"
+                />
+                <img
+                  class="product-monitor monitor-state"
+                  src="/assets/nowaweb/hero/monitor-screen-3.png"
+                  alt=""
+                  loading="eager"
+                />
+              </div>
+            </div>
+            <img
+              class="product-notebook"
+              src="/assets/nowaweb/hero/notebook-cutout.png"
+              alt=""
+              loading="eager"
+            />
+            <img
+              class="product-cup"
+              src="/assets/nowaweb/hero/cup-cutout.png"
+              alt=""
+              loading="eager"
+            />
+            <span class="desk-paper desk-paper-a"></span>
+            <span class="desk-paper desk-paper-b"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="signal-strip" data-signal-sequence aria-label="Najważniejsze wyróżniki">
+        {strengths.map(({ title, text, Icon }) => (
+          <article>
+            <span class="signal-icon">
+              <Icon aria-hidden="true" size={24} strokeWidth={1.8} />
+            </span>
+            <strong>{title}</strong>
+            <span>{text}</span>
+          </article>
+        ))}
+      </section>
+
+      <section class="studio-section manifesto" id="onas" data-map-reveal aria-labelledby="why-title">
+        <PolandMapBackdrop />
+        <div class="section-kicker" data-reveal>
+          <p class="eyebrow">Dlaczego NowaWeb</p>
+          <h2 id="why-title" data-title-sequence>
+            <span class="title-word title-word-stability">Stabilność</span>
+            <span class="title-word title-word-meet">spotyka</span>
+            <em class="title-word title-word-creative">kreatywność</em>
+          </h2>
+        </div>
+        <div class="manifesto-copy" data-reveal>
+          <span class="manifesto-copy-shape" aria-hidden="true"></span>
+          <p>
+            Nie sprzedajemy gotowego motywu. Budujemy stronę jak system komunikacji:
+            najpierw cel i struktura, potem wygląd, wdrożenie i wsparcie. Dzięki temu
+            całość jest szybka, spójna i łatwa do rozwijania.
+          </p>
+          <div class="map-card">
+            <MapPin aria-hidden="true" size={22} />
+            <span>Pracujemy zdalnie z firmami z całej Polski</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="studio-section services" id="uslugi" aria-labelledby="services-title">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">Oferta</p>
+          <h2 id="services-title">Strony, które <em>pracują</em> na decyzję klienta</h2>
+          <p>
+            Każda sekcja ma swoje zadanie: wyjaśnić, uspokoić, pokazać wartość i
+            poprowadzić do kontaktu.
+          </p>
+        </div>
+        <div class="service-board">
+          {services.map(({ title, text, Icon }) => (
+            <article class="service-card" data-reveal>
+              <Icon aria-hidden="true" size={28} strokeWidth={1.7} />
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="studio-section comparison" aria-labelledby="comparison-title">
+        <div class="comparison-intro" data-reveal>
+          <p class="eyebrow orange">Porównanie</p>
+          <h2 id="comparison-title">NowaWeb <em>vs</em> WordPress</h2>
+          <p>
+            WordPress bywa dobry. My wybieramy lżejszą ścieżkę dla firm, które chcą
+            strony szybkiej, prostej w utrzymaniu i projektowanej pod markę.
+          </p>
+        </div>
+        <div class="comparison-table" data-reveal>
+          <div class="table-head">
+            <span>Kryterium</span>
+            <strong>NowaWeb</strong>
+            <strong>Typowy WordPress</strong>
+          </div>
+          {comparisonRows.map(([label, nowa, wordpress]) => (
+            <div class="table-row">
+              <span>{label}</span>
+              <p><CheckCircle2 aria-hidden="true" size={18} />{nowa}</p>
+              <p>{wordpress}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="studio-section process" id="proces" aria-labelledby="process-title">
+        <div class="section-heading center" data-reveal>
+          <p class="eyebrow">Proces</p>
+          <h2 id="process-title">Jak wygląda <em>współpraca</em></h2>
+          <p>Prosty rytm, jasne decyzje i etapowe dowożenie zamiast chaosu.</p>
+        </div>
+        <ProcessIsland client:visible />
+      </section>
+
+      <section class="studio-section portfolio" id="projekty" aria-labelledby="portfolio-title">
+        <div class="portfolio-intro" data-reveal>
+          <p class="eyebrow">Realizacje</p>
+          <h2 id="portfolio-title">Wybrane kierunki <em>realizacji</em></h2>
+          <p>
+            Portfolio traktujemy jak proof of direction: każda strona ma inny ton,
+            ale ten sam standard jakości, rytmu i czytelności.
+          </p>
+        </div>
+        <PortfolioCarousel client:visible />
+      </section>
+
+      <section class="studio-section support" aria-labelledby="support-title">
+        <div class="support-copy" data-reveal>
+          <p class="eyebrow">Wsparcie</p>
+          <h2 id="support-title">Po wdrożeniu <em>nie znikamy</em></h2>
+          <p>
+            Strona żyje razem z firmą. Pomagamy ją utrzymać, rozwijać i poprawiać,
+            kiedy zmieniają się cele albo oferta.
+          </p>
+        </div>
+        <div class="support-grid">
+          {support.map(([title, text]) => (
+            <article data-reveal>
+              <ShieldCheck aria-hidden="true" size={28} strokeWidth={1.7} />
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="final-cta" id="kontakt" aria-labelledby="cta-title">
+        <div class="cta-panel" data-reveal>
+          <p class="eyebrow">Kontakt</p>
+          <h2 id="cta-title">Stwórzmy stronę, która zrobi świetne pierwsze <em>wrażenie</em></h2>
+          <p>
+            Opowiedz nam, gdzie dziś jest Twoja marka i co strona ma realnie dowieźć.
+            Zaproponujemy kierunek, strukturę i sensowny plan działania.
+          </p>
+          <div class="action-row">
+            <a class="button primary" href="mailto:kontakt@nowaweb.pl"><Mail aria-hidden="true" size={20} />Napisz do nas</a>
+            <a class="button secondary" href="tel:+48000000000">Umów rozmowę <ArrowRight aria-hidden="true" size={20} /></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>NowaWeb<span>.</span></span>
+      <a href="#top">Wróć na górę</a>
+    </footer>
+
+    <script>
+      import "../scripts/monitor-billboard.ts";
+    </script>
+  </body>
+</html>
