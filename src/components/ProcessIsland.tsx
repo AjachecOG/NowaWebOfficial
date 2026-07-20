@@ -144,10 +144,7 @@ function toCardVars(pose: ProcessPose) {
 
 function getInitialCardStyle(index: number): ProcessStyle {
   const pose = getScrollPose(index, 0, false);
-  return {
-    ...toCardVars(pose),
-    zIndex: index === 0 ? 20 : 8 - index,
-  };
+  return toCardVars(pose);
 }
 
 export default function ProcessIsland() {

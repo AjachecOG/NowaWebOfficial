@@ -175,14 +175,20 @@ try {
       const sample = async (progress) => {
         window.scrollTo({ top: top + range * progress, behavior: 'instant' });
         await new Promise((resolve) => setTimeout(resolve, 900));
+        const activeCard = document.querySelector('.process-story__card.is-active');
         return {
           active: story.dataset.active,
           transform: getComputedStyle(card).transform,
           scale: Number.parseFloat(getComputedStyle(card).getPropertyValue('--card-scale')),
           opacity: Number.parseFloat(getComputedStyle(card).getPropertyValue('--card-opacity')),
+          activeOpacity: Number(getComputedStyle(activeCard).opacity),
         };
       };
-      return { first: await sample(0.08), second: await sample(0.14) };
+      return {
+        first: await sample(0.08),
+        second: await sample(0.14),
+        midpoint: await sample(0.5),
+      };
     })()`,
   );
 
@@ -198,11 +204,17 @@ try {
       const before = window.scrollY;
       nav[2].click();
       await new Promise((resolve) => setTimeout(resolve, 1300));
+      const cards = Array.from(document.querySelectorAll('.process-story__card'));
+      const zIndexes = cards.map((card) => Number(getComputedStyle(card).zIndex));
+      const activeIndex = Number(story.dataset.active);
       return {
-        active: Number(story.dataset.active),
+        active: activeIndex,
         before,
         after: window.scrollY,
         target: top + range * (2 / 3),
+        zIndexes,
+        activeZ: zIndexes[activeIndex],
+        maxInactiveZ: Math.max(...zIndexes.filter((_, index) => index !== activeIndex)),
       };
     })()`,
   );
@@ -332,11 +344,17 @@ try {
   ) {
     failures.push("scrub interpolates card variables from zero instead of the previous pose");
   }
+  if (continuousMotion.midpoint.activeOpacity < 0.98) {
+    failures.push("active card remains translucent and reveals stacked copy underneath");
+  }
   if (
     Math.abs(clickNavigation.after - clickNavigation.before) < 200 ||
     Math.abs(clickNavigation.after - clickNavigation.target) > 140
   ) {
     failures.push("click does not navigate to its ScrollTrigger segment");
+  }
+  if (clickNavigation.activeZ <= clickNavigation.maxInactiveZ) {
+    failures.push("active card is not the top layer of the stack");
   }
   if (manual.clickActive !== 2 || manual.focusActive !== 1 || manual.pressedCount !== 1) {
     failures.push("click or keyboard focus does not activate exactly one step");
