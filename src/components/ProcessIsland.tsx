@@ -175,9 +175,14 @@ export default function ProcessIsland() {
 
       for (let stage = 1; stage < steps.length; stage += 1) {
         cards.forEach((card, index) => {
-          timeline.to(
+          timeline.fromTo(
             card,
-            { ...toCardVars(getScrollPose(index, stage, reduced)), duration: 1 },
+            toCardVars(getScrollPose(index, stage - 1, reduced)),
+            {
+              ...toCardVars(getScrollPose(index, stage, reduced)),
+              duration: 1,
+              immediateRender: false,
+            },
             stage - 1,
           );
         });
@@ -238,8 +243,16 @@ export default function ProcessIsland() {
   }, { scope: storyRef });
 
   const activateStep = (index: number) => {
-    activeRef.current = index;
-    setActive(index);
+    const trigger = scrollTriggerRef.current;
+    if (!trigger || window.innerWidth <= 760) {
+      activeRef.current = index;
+      setActive(index);
+      return;
+    }
+
+    const progress = index / (steps.length - 1);
+    const top = gsap.utils.interpolate(trigger.start, trigger.end, progress);
+    window.scrollTo({ top, behavior: "smooth" });
   };
 
   const handlePointerMove = (event: PointerEvent<HTMLButtonElement>) => {

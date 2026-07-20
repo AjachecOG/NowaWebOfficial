@@ -139,11 +139,11 @@ try {
         stickyPosition: getComputedStyle(sticky).position,
         overflows: story.scrollWidth > story.clientWidth,
         numberLabels: numberNodes.map((node) => node.textContent.trim()),
+        motionEngine: story?.dataset.motion ?? null,
         axisDeviation: Math.max(...numberNodes.map((node) => {
           const rect = node.getBoundingClientRect();
           return Math.abs((rect.left + (rect.width / 2)) - railCenter);
         })),
-        briefAnimation: getComputedStyle(document.querySelector('.brief-bubble--primary')).animationName,
       };
     })()`,
   );
@@ -153,23 +153,57 @@ try {
     const state = await evaluate(
       client,
       `(async () => {
-        const marker = document.querySelector('[data-process-marker="${index}"]');
-        const targetY = marker.getBoundingClientRect().top + window.scrollY - (window.innerHeight / 2);
+        const story = document.querySelector('.process-story');
+        const top = story.getBoundingClientRect().top + window.scrollY - 80;
+        const range = story.offsetHeight - window.innerHeight + 80;
+        const targetY = top + range * (${index} / 3);
         window.scrollTo({ top: targetY, behavior: 'instant' });
-        await new Promise((resolve) => setTimeout(resolve, 260));
+        await new Promise((resolve) => setTimeout(resolve, 900));
         return Number(document.querySelector('.process-story').dataset.active);
       })()`,
     );
     markerStates.push(state);
   }
 
-  const clickActive = await evaluate(
+  const continuousMotion = await evaluate(
     client,
     `(async () => {
+      const story = document.querySelector('.process-story');
+      const card = document.querySelector('.process-story__card');
+      const top = story.getBoundingClientRect().top + window.scrollY - 80;
+      const range = story.offsetHeight - window.innerHeight + 80;
+      const sample = async (progress) => {
+        window.scrollTo({ top: top + range * progress, behavior: 'instant' });
+        await new Promise((resolve) => setTimeout(resolve, 900));
+        return {
+          active: story.dataset.active,
+          transform: getComputedStyle(card).transform,
+          scale: Number.parseFloat(getComputedStyle(card).getPropertyValue('--card-scale')),
+          opacity: Number.parseFloat(getComputedStyle(card).getPropertyValue('--card-opacity')),
+        };
+      };
+      return { first: await sample(0.08), second: await sample(0.14) };
+    })()`,
+  );
+
+  const clickNavigation = await evaluate(
+    client,
+    `(async () => {
+      const story = document.querySelector('.process-story');
       const nav = document.querySelectorAll('.process-story__nav-item');
+      const top = story.getBoundingClientRect().top + window.scrollY - 80;
+      const range = story.offsetHeight - window.innerHeight + 80;
+      window.scrollTo({ top, behavior: 'instant' });
+      await new Promise((resolve) => setTimeout(resolve, 900));
+      const before = window.scrollY;
       nav[2].click();
-      await new Promise((resolve) => setTimeout(resolve, 80));
-      return Number(document.querySelector('.process-story').dataset.active);
+      await new Promise((resolve) => setTimeout(resolve, 1300));
+      return {
+        active: Number(story.dataset.active),
+        before,
+        after: window.scrollY,
+        target: top + range * (2 / 3),
+      };
     })()`,
   );
 
@@ -189,7 +223,7 @@ try {
     code: "Tab",
     windowsVirtualKeyCode: 9,
   });
-  await delay(100);
+  await delay(1300);
 
   const focusState = await evaluate(
     client,
@@ -203,7 +237,7 @@ try {
       };
     })()`,
   );
-  const manual = { clickActive, ...focusState };
+  const manual = { clickActive: clickNavigation.active, clickNavigation, ...focusState };
 
   await client.send("Emulation.setDeviceMetricsOverride", {
     width: 390,
@@ -243,6 +277,17 @@ try {
   await client.send("Page.reload", { ignoreCache: true });
   await delay(900);
 
+  await evaluate(
+    client,
+    `(async () => {
+      const story = document.querySelector('.process-story');
+      const top = story.getBoundingClientRect().top + window.scrollY - 80;
+      const range = story.offsetHeight - window.innerHeight + 80;
+      window.scrollTo({ top: top + range * 0.5, behavior: 'instant' });
+      await new Promise((resolve) => setTimeout(resolve, 900));
+    })()`,
+  );
+
   const reduced = await evaluate(
     client,
     `(() => {
@@ -253,12 +298,14 @@ try {
       const markers = document.querySelector('.process-story__markers');
       return {
         matches: matchMedia('(prefers-reduced-motion: reduce)').matches,
+        motionEngine: document.querySelector('.process-story')?.dataset.motion ?? null,
         stickyPosition: getComputedStyle(sticky).position,
         transitionDuration: getComputedStyle(card).transitionDuration,
         cardPositions: cards.map((item) => getComputedStyle(item).position),
+        cardRotations: cards.map((item) => getComputedStyle(item).getPropertyValue('--card-rotate').trim()),
+        cardY: cards.map((item) => Number.parseFloat(getComputedStyle(item).getPropertyValue('--card-y'))),
         timelineDisplay: getComputedStyle(timeline).display,
         markersDisplay: getComputedStyle(markers).display,
-        briefAnimation: getComputedStyle(document.querySelector('.brief-bubble--primary')).animationName,
       };
     })()`,
   );
@@ -267,10 +314,30 @@ try {
   if (desktopInitial.cardCount !== 4) failures.push("desktop does not render four cards");
   if (desktopInitial.stickyPosition !== "sticky") failures.push("desktop scene is not sticky");
   if (desktopInitial.overflows) failures.push("desktop page overflows horizontally");
+  if (desktopInitial.motionEngine !== "gsap") failures.push("desktop GSAP motion is not active");
   if (desktopInitial.numberLabels.join(",") !== "1,2,3,4") failures.push("timeline numbers have leading zeros");
   if (desktopInitial.axisDeviation > 0.5) failures.push(`timeline axis deviates by ${desktopInitial.axisDeviation}px`);
-  if (desktopInitial.briefAnimation === "none") failures.push("card micro visuals are not animated");
   if (markerStates.join(",") !== "0,1,2,3") failures.push(`marker sequence is ${markerStates.join(",")}`);
+  if (continuousMotion.first.active !== continuousMotion.second.active) {
+    failures.push("close scroll samples cross an active-stage boundary");
+  }
+  if (continuousMotion.first.transform === continuousMotion.second.transform) {
+    failures.push("card transform does not follow scroll continuously");
+  }
+  if (
+    continuousMotion.first.scale < 0.85 ||
+    continuousMotion.second.scale < 0.85 ||
+    continuousMotion.first.opacity < 0.4 ||
+    continuousMotion.second.opacity < 0.4
+  ) {
+    failures.push("scrub interpolates card variables from zero instead of the previous pose");
+  }
+  if (
+    Math.abs(clickNavigation.after - clickNavigation.before) < 200 ||
+    Math.abs(clickNavigation.after - clickNavigation.target) > 140
+  ) {
+    failures.push("click does not navigate to its ScrollTrigger segment");
+  }
   if (manual.clickActive !== 2 || manual.focusActive !== 1 || manual.pressedCount !== 1) {
     failures.push("click or keyboard focus does not activate exactly one step");
   }
@@ -280,12 +347,14 @@ try {
   if (mobile.overflows) failures.push("mobile page overflows horizontally");
   if (
     !reduced.matches ||
+    reduced.motionEngine !== "gsap" ||
     reduced.stickyPosition !== "sticky" ||
     reduced.transitionDuration === "0s" ||
     reduced.cardPositions.some((position) => position !== "absolute") ||
+    reduced.cardRotations.some((rotation) => rotation !== "0deg") ||
+    reduced.cardY.some((value) => Math.abs(value) > 50) ||
     reduced.timelineDisplay !== "grid" ||
-    reduced.markersDisplay === "none" ||
-    reduced.briefAnimation === "none"
+    reduced.markersDisplay === "none"
   ) {
     failures.push("explicit process motion is disabled by the system preference");
   }
@@ -294,7 +363,7 @@ try {
   if (failures.length) throw new Error(failures.join("; "));
 
   console.log("Process story browser verification passed.");
-  console.log(JSON.stringify({ markerStates, manual, mobile, reduced }, null, 2));
+  console.log(JSON.stringify({ markerStates, continuousMotion, manual, mobile, reduced }, null, 2));
   client.close();
 } finally {
   chrome.kill();
