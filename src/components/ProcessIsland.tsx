@@ -167,7 +167,10 @@ export default function ProcessIsland() {
   };
 
   const handlePointerMove = (event: PointerEvent<HTMLButtonElement>) => {
-    if (event.pointerType === "touch") return;
+    if (
+      event.pointerType === "touch" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) return;
     const bounds = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - bounds.left) / bounds.width - 0.5;
     const y = (event.clientY - bounds.top) / bounds.height - 0.5;

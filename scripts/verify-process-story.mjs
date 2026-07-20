@@ -239,10 +239,14 @@ try {
     `(() => {
       const sticky = document.querySelector('.process-story__sticky');
       const card = document.querySelector('.process-story__card');
+      const cards = Array.from(document.querySelectorAll('.process-story__card'));
+      const timeline = document.querySelector('.process-story__timeline');
       return {
         matches: matchMedia('(prefers-reduced-motion: reduce)').matches,
         stickyPosition: getComputedStyle(sticky).position,
         transitionDuration: getComputedStyle(card).transitionDuration,
+        cardPositions: cards.map((item) => getComputedStyle(item).position),
+        timelineDisplay: getComputedStyle(timeline).display,
       };
     })()`,
   );
@@ -259,7 +263,13 @@ try {
   if (mobile.cardPositions.some((position) => position !== "relative")) failures.push("mobile cards still overlap");
   if (mobile.cardOpacities.some((opacity) => opacity !== 1)) failures.push("mobile hides inactive cards");
   if (mobile.overflows) failures.push("mobile page overflows horizontally");
-  if (!reduced.matches || reduced.stickyPosition !== "static" || reduced.transitionDuration !== "0s") {
+  if (
+    !reduced.matches ||
+    reduced.stickyPosition !== "static" ||
+    reduced.transitionDuration !== "0s" ||
+    reduced.cardPositions.some((position) => position !== "absolute") ||
+    reduced.timelineDisplay !== "grid"
+  ) {
     failures.push("reduced-motion fallback is incomplete");
   }
   if (runtimeErrors.length) failures.push(`runtime errors: ${runtimeErrors.join("; ")}`);

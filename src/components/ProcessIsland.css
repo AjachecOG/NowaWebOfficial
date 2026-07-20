@@ -657,30 +657,16 @@
 
   .process-story__sticky {
     position: static;
-    display: block;
-    min-height: auto;
-    overflow: visible;
+    top: auto;
   }
 
-  .process-story__timeline,
   .process-story__markers {
     display: none;
   }
 
-  .process-story__card-stack {
-    position: static;
-    display: grid;
-    gap: 18px;
-    min-height: auto;
-    margin: 28px;
-  }
-
   .process-story__card {
-    position: relative;
-    inset: auto;
-    z-index: 1 !important;
-    opacity: 1;
-    transform: none;
+    --tilt-x: 0deg !important;
+    --tilt-y: 0deg !important;
     transition: none;
     will-change: auto;
   }
