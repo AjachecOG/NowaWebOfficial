@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@astrojs/react": "latest",
+    "@gsap/react": "^2.1.2",
     "astro": "latest",
+    "gsap": "^3.15.0",
     "lucide-react": "latest",
     "react": "latest",
     "react-dom": "latest"

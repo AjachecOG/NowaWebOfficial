@@ -187,6 +187,19 @@
   will-change: transform, opacity;
 }
 
+.process-story[data-motion="gsap"] .process-story__card {
+  transition: border-color 360ms ease, box-shadow 360ms ease;
+}
+
+.process-story[data-motion="gsap"] .process-story__rail span {
+  transition: none;
+}
+
+.process-story[data-motion="gsap"] .process-visual * {
+  animation: none;
+  transition: none;
+}
+
 .process-story__card::before {
   content: "";
   position: absolute;
