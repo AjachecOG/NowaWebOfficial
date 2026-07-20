@@ -129,12 +129,21 @@ try {
       const story = document.querySelector('.process-story');
       const cards = Array.from(document.querySelectorAll('.process-story__card'));
       const sticky = document.querySelector('.process-story__sticky');
+      const railRect = document.querySelector('.process-story__rail').getBoundingClientRect();
+      const numberNodes = Array.from(document.querySelectorAll('.process-story__nav-item > span'));
+      const railCenter = railRect.left + (railRect.width / 2);
       return {
         cardCount: cards.length,
         active: Number(story?.dataset.active),
         reduced: matchMedia('(prefers-reduced-motion: reduce)').matches,
         stickyPosition: getComputedStyle(sticky).position,
         overflows: story.scrollWidth > story.clientWidth,
+        numberLabels: numberNodes.map((node) => node.textContent.trim()),
+        axisDeviation: Math.max(...numberNodes.map((node) => {
+          const rect = node.getBoundingClientRect();
+          return Math.abs((rect.left + (rect.width / 2)) - railCenter);
+        })),
+        briefAnimation: getComputedStyle(document.querySelector('.brief-bubble--primary')).animationName,
       };
     })()`,
   );
@@ -241,12 +250,15 @@ try {
       const card = document.querySelector('.process-story__card');
       const cards = Array.from(document.querySelectorAll('.process-story__card'));
       const timeline = document.querySelector('.process-story__timeline');
+      const markers = document.querySelector('.process-story__markers');
       return {
         matches: matchMedia('(prefers-reduced-motion: reduce)').matches,
         stickyPosition: getComputedStyle(sticky).position,
         transitionDuration: getComputedStyle(card).transitionDuration,
         cardPositions: cards.map((item) => getComputedStyle(item).position),
         timelineDisplay: getComputedStyle(timeline).display,
+        markersDisplay: getComputedStyle(markers).display,
+        briefAnimation: getComputedStyle(document.querySelector('.brief-bubble--primary')).animationName,
       };
     })()`,
   );
@@ -255,6 +267,9 @@ try {
   if (desktopInitial.cardCount !== 4) failures.push("desktop does not render four cards");
   if (desktopInitial.stickyPosition !== "sticky") failures.push("desktop scene is not sticky");
   if (desktopInitial.overflows) failures.push("desktop page overflows horizontally");
+  if (desktopInitial.numberLabels.join(",") !== "1,2,3,4") failures.push("timeline numbers have leading zeros");
+  if (desktopInitial.axisDeviation > 0.5) failures.push(`timeline axis deviates by ${desktopInitial.axisDeviation}px`);
+  if (desktopInitial.briefAnimation === "none") failures.push("card micro visuals are not animated");
   if (markerStates.join(",") !== "0,1,2,3") failures.push(`marker sequence is ${markerStates.join(",")}`);
   if (manual.clickActive !== 2 || manual.focusActive !== 1 || manual.pressedCount !== 1) {
     failures.push("click or keyboard focus does not activate exactly one step");
@@ -265,12 +280,14 @@ try {
   if (mobile.overflows) failures.push("mobile page overflows horizontally");
   if (
     !reduced.matches ||
-    reduced.stickyPosition !== "static" ||
-    reduced.transitionDuration !== "0s" ||
+    reduced.stickyPosition !== "sticky" ||
+    reduced.transitionDuration === "0s" ||
     reduced.cardPositions.some((position) => position !== "absolute") ||
-    reduced.timelineDisplay !== "grid"
+    reduced.timelineDisplay !== "grid" ||
+    reduced.markersDisplay === "none" ||
+    reduced.briefAnimation === "none"
   ) {
-    failures.push("reduced-motion fallback is incomplete");
+    failures.push("explicit process motion is disabled by the system preference");
   }
   if (runtimeErrors.length) failures.push(`runtime errors: ${runtimeErrors.join("; ")}`);
 

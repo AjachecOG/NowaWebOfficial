@@ -4,25 +4,25 @@ import "./ProcessIsland.css";
 
 const steps = [
   {
-    id: "01",
+    id: "1",
     title: "Rozmowa i brief",
     text: "Poznajemy Twoją markę, cele i najważniejsze wymagania projektu.",
     icon: MessageCircle,
   },
   {
-    id: "02",
+    id: "2",
     title: "Strategia i makieta",
     text: "Układamy strukturę, architekturę treści i kierunek wizualny.",
     icon: LayoutTemplate,
   },
   {
-    id: "03",
+    id: "3",
     title: "Design i wdrożenie",
     text: "Tworzymy dopracowany wygląd oraz szybką, stabilną stronę.",
     icon: PenTool,
   },
   {
-    id: "04",
+    id: "4",
     title: "Start i wsparcie",
     text: "Publikujemy stronę, dbamy o opiekę i dalszy rozwój.",
     icon: Rocket,
@@ -111,7 +111,7 @@ function getCardStyle(index: number, active: number): ProcessStyle {
       "--card-y": `${distance * -24}px`,
       "--card-scale": Math.max(0.88, 1 - distance * 0.035),
       "--card-rotate": `${distance * -0.35}deg`,
-      "--card-opacity": Math.max(0.28, 0.62 - distance * 0.1),
+      "--card-opacity": Math.max(0.44, 0.72 - distance * 0.08),
       zIndex: 14 - distance,
     };
   }
@@ -120,7 +120,7 @@ function getCardStyle(index: number, active: number): ProcessStyle {
     "--card-y": `${depth * 62}px`,
     "--card-scale": Math.max(0.88, 0.97 - depth * 0.018),
     "--card-rotate": `${depth * 0.45}deg`,
-    "--card-opacity": Math.max(0.12, 0.38 - (depth - 1) * 0.1),
+    "--card-opacity": Math.max(0.26, 0.48 - (depth - 1) * 0.08),
     zIndex: 8 - depth,
   };
 }
