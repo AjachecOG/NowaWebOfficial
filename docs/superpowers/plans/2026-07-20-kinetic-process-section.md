@@ -4,7 +4,7 @@
 
 **Goal:** Replace the four-card process grid with an accessible scroll-driven story that layers four animated process cards on desktop and becomes a natural vertical timeline on mobile.
 
-**Architecture:** Keep the feature inside the existing React island. `ProcessIsland.tsx` owns active-step state and a requestAnimationFrame-throttled scroll calculation; a new co-located stylesheet owns the scene, card micro-visuals, responsive fallback, and reduced-motion behavior. A source validator guards the structural, accessibility, and motion contracts before the production build and browser QA.
+**Architecture:** Keep the feature inside the existing React island. `ProcessIsland.tsx` owns active-step state and uses `IntersectionObserver` with four local scroll markers; a new co-located stylesheet owns the scene, card micro-visuals, responsive fallback, and reduced-motion behavior. A source validator guards the structural, accessibility, and motion contracts before the production build and browser QA.
 
 **Tech Stack:** Astro, React, TypeScript, native browser scroll APIs, CSS sticky positioning, CSS transitions and keyframes, lucide-react, Node.js validation script.
 
@@ -41,8 +41,8 @@ const styles = fs.readFileSync("src/components/ProcessIsland.css", "utf8");
 
 const checks = [
   ["four process stages", (component.match(/id: "0[1-4]"/g) ?? []).length === 4],
-  ["scroll progress state", component.includes("setProgress")],
-  ["requestAnimationFrame throttling", component.includes("requestAnimationFrame")],
+  ["intersection observer activation", component.includes("IntersectionObserver")],
+  ["observer cleanup", component.includes("observer.disconnect()")],
   ["accessible pressed state", component.includes("aria-pressed={isActive}")],
   ["keyboard focus activation", component.includes("onFocus={() => setManualActive(index)}")],
   ["micro visual per stage", component.includes("ProcessVisual")],
@@ -92,40 +92,26 @@ git commit -m "test: define kinetic process story contract"
 - Consumes: the unchanged four-step content and lucide-react icons.
 - Produces: `ProcessIsland(): JSX.Element`, internal `ProcessVisual({ index }: { index: number }): JSX.Element`, CSS variables `--process-progress`, `--step-progress`, `--stack-index`, and `--pointer-x`.
 
-- [ ] **Step 1: Import the stylesheet and add scroll state**
+- [ ] **Step 1: Import the stylesheet and add observed scroll markers**
 
-Use `useEffect`, `useRef`, and `useState`. Add a root ref and compute normalized progress while the story crosses the viewport:
+Use `useEffect`, `useRef`, and `useState`. Add a root ref and observe four local markers without a global scroll listener:
 
 ```tsx
 const storyRef = useRef<HTMLDivElement>(null);
 const [active, setActive] = useState(0);
-const [manualActive, setManualActive] = useState<number | null>(null);
-const [progress, setProgress] = useState(0);
+const manualActivationRef = useRef(false);
 
 useEffect(() => {
-  const node = storyRef.current;
-  if (!node) return;
-  let frame = 0;
-  const update = () => {
-    frame = 0;
-    const rect = node.getBoundingClientRect();
-    const travel = Math.max(1, rect.height - window.innerHeight);
-    const next = Math.min(1, Math.max(0, -rect.top / travel));
-    setProgress(next);
-    if (manualActive === null) setActive(Math.min(3, Math.floor(next * 4)));
-  };
-  const onScroll = () => {
-    if (!frame) frame = requestAnimationFrame(update);
-  };
-  update();
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll);
-  return () => {
-    window.removeEventListener("scroll", onScroll);
-    window.removeEventListener("resize", onScroll);
-    if (frame) cancelAnimationFrame(frame);
-  };
-}, [manualActive]);
+  const story = storyRef.current;
+  if (!story) return;
+  const observer = new IntersectionObserver((entries) => {
+    if (manualActivationRef.current) return;
+    const current = entries.find((entry) => entry.isIntersecting);
+    if (current) setActive(Number((current.target as HTMLElement).dataset.processMarker));
+  }, { rootMargin: "-42% 0px -42% 0px" });
+  story.querySelectorAll("[data-process-marker]").forEach((marker) => observer.observe(marker));
+  return () => observer.disconnect();
+}, []);
 ```
 
 - [ ] **Step 2: Add the four isolated micro-visuals**
@@ -236,4 +222,3 @@ Expected: no horizontal scrollbar, no clipped text, desktop active cards layer c
 git add -- src/components/ProcessIsland.css scripts/validate-process-story.mjs
 git commit -m "feat: polish kinetic process motion"
 ```
-
