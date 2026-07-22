@@ -6,9 +6,9 @@ Replace the third process step's abstract Design Reactor with a tactile miniatur
 
 ## Creative Direction
 
-The chosen direction combines an abstract design atelier with a few literal cosmetic gestures. The pencil, brush, compact palette, powder puff, and fine detail brush are recognizable, but they behave as interface-design tools rather than decorative stickers. The visual language stays compatible with NowaWeb's cream paper, deep navy, electric blue, and orange accent palette.
+The chosen direction combines an abstract design atelier with a few literal cosmetic gestures. The pencil, classic paint brush, compact palette, powder puff, and fine detail brush are recognizable, but they behave as interface-design tools rather than decorative stickers. The visual language stays compatible with NowaWeb's cream paper, deep navy, electric blue, and orange accent palette.
 
-The memorable moment is the transition from imperfect graphite construction to a crisp, colored interface through two broad brush strokes.
+The memorable motion signature is a sequence of deliberate sketchbook jump-cuts. Each tool briefly disappears at a direction change and returns on the opposite side with its working tip leading the next stroke.
 
 ## Choreography
 
@@ -21,13 +21,17 @@ The complete sequence lasts approximately 4.5 seconds and restarts whenever the 
 2. **Page sketch — 350–1,850 ms**
    - The pencil draws the browser outline, navigation line, hero block, CTA, and three lower cards in a readable order.
    - Lines reveal through SVG stroke animation so the drawing tip remains connected to the currently appearing stroke.
+   - The pencil uses three distinct shots. Between shots it disappears for 60–80 ms inside a short graphite smudge, then reappears on the opposite side with its tip facing the next stroke.
+   - The first shot moves left-to-right, the second returns right-to-left with a mirrored orientation, and the third enters from the left for the lower grid.
    - Loose construction marks, a small arrow, and restrained graphite dust sell the hand-drawn quality without obscuring the mockup.
 
 3. **Palette and broad make-up pass — 1,700–3,150 ms**
    - A compact color palette briefly opens near the edge of the composition.
-   - A broad make-up brush performs two deliberate sweeps across the page.
+   - A classic flat paint brush replaces the make-up brush. It has an orange wooden handle, a metal ferrule, and squared bristles stained with blue and coral paint.
+   - The paint brush performs two deliberate sweeps across the page.
    - The first sweep applies the blue browser chrome and structural color.
-   - The second sweep reveals the pastel hero treatment, dark typography, orange accent, and card fills.
+   - At the direction change it disappears for 60–80 ms inside a compact paint daub, then returns from the right with a 180-degree mirrored orientation.
+   - The second right-to-left sweep reveals the pastel hero treatment, dark typography, orange accent, and card fills.
    - The finished interface is exposed with an irregular brush-shaped mask rather than a perfectly mechanical wipe.
 
 4. **Powder and precision pass — 2,900–3,900 ms**
@@ -44,9 +48,11 @@ The complete sequence lasts approximately 4.5 seconds and restarts whenever the 
 
 - `story-sketch-paper`: atmospheric paper and graphite texture.
 - `story-sketch-svg`: browser and interface construction strokes.
-- `story-sketch-pencil`: CSS-built pencil following the drawing path.
+- `story-sketch-pencil`: CSS-built pencil using three directional jump-cut shots.
+- `story-pencil-smudge`: short graphite transition mark covering each pencil orientation cut.
 - `story-makeup-palette`: compact palette with NowaWeb colors.
-- `story-makeup-brush`: broad brush responsible for the color reveal.
+- `story-paint-brush`: classic flat paint brush responsible for both color sweeps.
+- `story-paint-daub`: compact paint transition covering the brush direction cut.
 - `story-makeup-mask`: irregular reveal edge over the finished interface.
 - `story-powder-puff` and particles: one short finishing burst.
 - `story-detail-brush`: final CTA and accent pass.
@@ -78,6 +84,7 @@ As explicitly requested for this process step, the complete sketch-and-make-up s
 
 - Source validation must fail until the pencil, SVG drawing, make-up tools, brush reveal, and active-scene animation selectors replace the reactor contract.
 - Browser verification samples at least four meaningful states: initial paper, active drawing, color application, and completed design.
+- Runtime checks compare the pencil and paint-brush transforms on both sides of their cuts, confirming that their working ends reverse orientation rather than merely translating.
 - Runtime checks confirm the sketch strokes progress, the final design reveal changes over time, tools leave the scene, `wdrożone` appears last, and the animation replays after leaving and returning to step three.
 - The same runtime sequence is verified with reduced-motion emulation enabled.
 - Mobile checks confirm the final interface is readable and neither axis overflows.
