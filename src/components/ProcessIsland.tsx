@@ -2,7 +2,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LayoutTemplate, MessageCircle, PenTool, Rocket } from "lucide-react";
-import { useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import "./ProcessIsland.css";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -36,7 +36,117 @@ const steps = [
 
 type ProcessVisualProps = {
   index: number;
+  playConversation: boolean;
 };
+
+const CLIENT_MESSAGE = "Potrzebuję strony, która nie znudzi ciekawskich.";
+const STUDIO_QUESTION = "Nowa strona?";
+const STUDIO_ANSWER = "Już się robi!";
+const CLIENT_KEY_DELAYS = [34, 38, 32, 36, 42] as const;
+const STUDIO_KEY_DELAYS = [38, 34, 42, 36] as const;
+
+function ConversationVisual({ playing }: { playing: boolean }) {
+  const [clientText, setClientText] = useState("");
+  const [studioQuestion, setStudioQuestion] = useState("");
+  const [studioAnswer, setStudioAnswer] = useState("");
+  const [questionVisible, setQuestionVisible] = useState(false);
+  const [typingVisible, setTypingVisible] = useState(false);
+  const [answerVisible, setAnswerVisible] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const timers = new Set<number>();
+
+    const wait = (ms: number) => new Promise<void>((resolve) => {
+      const timer = window.setTimeout(() => {
+        timers.delete(timer);
+        resolve();
+      }, ms);
+      timers.add(timer);
+    });
+
+    const type = async (
+      message: string,
+      update: (value: string) => void,
+      delays: readonly number[],
+    ) => {
+      for (let index = 0; index < message.length && !cancelled; index += 1) {
+        update(message.slice(0, index + 1));
+        await wait(delays[index % delays.length]);
+      }
+    };
+
+    setClientText("");
+    setStudioQuestion("");
+    setStudioAnswer("");
+    setQuestionVisible(false);
+    setTypingVisible(false);
+    setAnswerVisible(false);
+
+    if (playing) {
+      const play = async () => {
+        await wait(340);
+        await type(CLIENT_MESSAGE, setClientText, CLIENT_KEY_DELAYS);
+        await wait(520);
+        if (cancelled) return;
+        setQuestionVisible(true);
+        await wait(180);
+        await type(STUDIO_QUESTION, setStudioQuestion, STUDIO_KEY_DELAYS);
+        await wait(260);
+        if (cancelled) return;
+        setTypingVisible(true);
+        await wait(960);
+        if (cancelled) return;
+        setTypingVisible(false);
+        await wait(120);
+        if (cancelled) return;
+        setAnswerVisible(true);
+        await type(STUDIO_ANSWER, setStudioAnswer, STUDIO_KEY_DELAYS);
+      };
+
+      void play();
+    }
+
+    return () => {
+      cancelled = true;
+      timers.forEach((timer) => window.clearTimeout(timer));
+      timers.clear();
+    };
+  }, [playing]);
+
+  return (
+    <div
+      className="process-visual story-scene story-scene--conversation"
+      data-conversation-playing={playing ? "true" : "false"}
+      data-process-scene="conversation"
+      aria-hidden="true"
+    >
+      <div className="story-chat">
+        <span className="story-message story-message--client" data-message-visible={playing ? "true" : "false"}>
+          <span data-conversation-client>{clientText}</span>
+        </span>
+        <span className="story-message story-message--studio" data-message-visible={questionVisible ? "true" : "false"}>
+          <span data-conversation-studio-question>{studioQuestion}</span>
+        </span>
+        <span className="story-reply-slot">
+          <span
+            className="story-typing-indicator"
+            data-conversation-typing
+            data-message-visible={typingVisible ? "true" : "false"}
+          >
+            <i /><i /><i />
+          </span>
+          <span
+            className="story-message story-message--studio story-message--answer"
+            data-message-visible={answerVisible ? "true" : "false"}
+          >
+            <span data-conversation-studio-answer>{studioAnswer}</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  );
+}
 
 type ProcessStyle = CSSProperties & {
   "--card-y"?: string;
@@ -52,53 +162,100 @@ type ProcessPose = {
   opacity: number;
 };
 
-function ProcessVisual({ index }: ProcessVisualProps) {
+function ProcessVisual({ index, playConversation }: ProcessVisualProps) {
   if (index === 0) {
-    return (
-      <div className="process-visual process-visual--brief" aria-hidden="true">
-        <span className="brief-bubble brief-bubble--primary">
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className="brief-bubble brief-bubble--reply">
-          <i />
-          <i />
-        </span>
-        <span className="brief-checks">
-          <b />
-          <b />
-          <b />
-        </span>
-      </div>
-    );
+    return <ConversationVisual playing={playConversation} />;
   }
 
   if (index === 1) {
+    const workshopGroups = [
+      { label: "Cele", notes: ["Zaciekawić", "Pokazać efekt"] },
+      { label: "Treści", notes: ["Prosta historia", "Mocny nagłówek"] },
+      { label: "Priorytety", notes: ["Jeden kierunek", "Jasne CTA"] },
+    ];
+
     return (
-      <div className="process-visual process-visual--wireframe" aria-hidden="true">
-        <span className="wireframe-toolbar"><i /><i /><i /></span>
-        <span className="wireframe-hero"><b /><i /></span>
-        <span className="wireframe-grid"><i /><i /><i /></span>
+      <div
+        className="process-visual story-scene story-scene--strategy"
+        data-process-scene="strategy"
+        aria-hidden="true"
+      >
+        <div className="story-workshop-board">
+          <strong className="story-workshop-title"><i />Warsztat strategii</strong>
+          <div className="story-workshop-groups">
+            {workshopGroups.map((group) => (
+              <section className="story-workshop-group" key={group.label}>
+                <b>{group.label}</b>
+                {group.notes.map((note) => (
+                  <span className="story-workshop-note" key={note}>{note}</span>
+                ))}
+              </section>
+            ))}
+          </div>
+          <span className="story-workshop-priority" />
+        </div>
       </div>
     );
   }
 
   if (index === 2) {
     return (
-      <div className="process-visual process-visual--design" aria-hidden="true">
-        <span className="design-canvas"><i /><b /></span>
-        <span className="design-swatches"><i /><i /><i /></span>
-        <span className="design-cursor" />
+      <div
+        className="process-visual story-scene story-scene--design"
+        data-process-scene="design"
+        aria-hidden="true"
+      >
+        <span className="story-sketch-paper" />
+        <svg className="story-sketch-svg" viewBox="0 0 320 210" aria-hidden="true">
+          <path pathLength="1" d="M28 24H292Q302 24 302 34V180Q302 190 292 190H28Q18 190 18 180V34Q18 24 28 24Z" />
+          <path pathLength="1" d="M18 50H302" />
+          <path pathLength="1" d="M34 38H58M66 38H90M98 38H122" />
+          <path pathLength="1" d="M34 66H286V132H34Z" />
+          <path pathLength="1" d="M92 88H228M112 104H208" />
+          <path pathLength="1" d="M34 144H108V176H34Z" />
+          <path pathLength="1" d="M123 144H197V176H123Z" />
+          <path pathLength="1" d="M212 144H286V176H212Z" />
+          <path className="story-sketch-accent-line" pathLength="1" d="M246 35H282" />
+          <path className="story-sketch-construction" pathLength="1" d="M12 58C42 44 68 42 96 48M226 198C250 188 274 176 304 158" />
+        </svg>
+        <span className="story-sketch-pencil"><i /><b /></span>
+        <span className="story-pencil-smudge"><i /><i /></span>
+        <span className="story-makeup-palette"><i /><i /><i /><i /></span>
+        <span className="story-paint-brush"><i /><b /></span>
+        <span className="story-paint-daub"><i /></span>
+        <div className="story-page-shell story-page-shell--designed story-scene__final">
+          <span className="story-page-nav"><i /><i /><i /></span>
+          <span className="story-page-hero"><b>To będzie Twoja strona.</b><i /></span>
+          <span className="story-page-grid"><i /><i /><i /></span>
+          <span className="story-page-cta" />
+        </div>
+        <span className="story-powder-puff"><i /><b /><b /><b /><b /></span>
+        <span className="story-detail-brush"><i /></span>
+        <span className="story-sketch-eraser" />
       </div>
     );
   }
 
   return (
-    <div className="process-visual process-visual--launch" aria-hidden="true">
-      <span className="launch-orbit"><i /><i /><i /></span>
-      <span className="launch-core"><Rocket size={30} strokeWidth={1.7} /></span>
-      <span className="launch-status"><i /> ONLINE</span>
+    <div
+      className="process-visual story-scene story-scene--launch"
+      data-process-scene="launch"
+      aria-hidden="true"
+    >
+      <div className="story-browser story-scene__final">
+        <span className="story-browser__bar">
+          <i /><i /><i /><b>nowa-strona.pl</b>
+        </span>
+        <div className="story-page-shell story-page-shell--live">
+          <span className="story-page-nav"><i /><i /><i /></span>
+          <span className="story-page-hero"><b>To jest Twoja strona.</b><i /></span>
+          <span className="story-page-grid"><i /><i /><i /></span>
+          <span className="story-page-cta" />
+        </div>
+      </div>
+      <div className="story-publish"><span /><b>100%</b></div>
+      <span className="story-online"><i /> ONLINE</span>
+      <span className="story-support">Jesteśmy obok.</span>
     </div>
   );
 }
@@ -149,6 +306,7 @@ function getInitialCardStyle(index: number): ProcessStyle {
 
 export default function ProcessIsland() {
   const [active, setActive] = useState(0);
+  const [storyVisible, setStoryVisible] = useState(false);
   const storyRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef(0);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
@@ -158,6 +316,27 @@ export default function ProcessIsland() {
     if (!story) return;
 
     const mm = gsap.matchMedia();
+
+    const showStory = () => {
+      story.dataset.storyVisible = "true";
+      setStoryVisible(true);
+    };
+    const hideStory = () => {
+      delete story.dataset.storyVisible;
+      setStoryVisible(false);
+    };
+    const storyEntryTrigger = ScrollTrigger.create({
+      trigger: story,
+      start: "top 82%",
+      end: "bottom 18%",
+      onEnter: showStory,
+      onEnterBack: showStory,
+      onLeave: hideStory,
+      onLeaveBack: hideStory,
+    });
+
+    if (storyEntryTrigger.isActive) showStory();
+
     mm.add("(min-width: 761px)", () => {
       story.dataset.motion = "gsap";
 
@@ -189,32 +368,6 @@ export default function ProcessIsland() {
         timeline.fromTo(railFill, { scaleY: 0 }, { scaleY: 1, duration: steps.length - 1 }, 0);
       }
 
-      const microSelectors = [
-        ".brief-bubble, .brief-checks b",
-        ".wireframe-hero, .wireframe-grid i",
-        ".design-canvas i, .design-canvas b, .design-swatches i, .design-cursor",
-        ".launch-orbit, .launch-core, .launch-status",
-      ];
-
-      const firstMicro = gsap.utils.toArray<HTMLElement>(microSelectors[0], cards[0]);
-      gsap.set(firstMicro, { autoAlpha: 1, y: 0 });
-
-      for (let stage = 1; stage < steps.length; stage += 1) {
-        const targets = gsap.utils.toArray<HTMLElement>(microSelectors[stage], cards[stage]);
-        timeline.fromTo(
-          targets,
-          { autoAlpha: 0.25, y: reduced ? 4 : 14 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.45,
-            stagger: 0.035,
-            ease: "power2.out",
-          },
-          stage - 0.28,
-        );
-      }
-
       scrollTriggerRef.current = ScrollTrigger.create({
         trigger: story,
         start: "top top+=80",
@@ -232,11 +385,16 @@ export default function ProcessIsland() {
 
       return () => {
         delete story.dataset.motion;
+        delete story.dataset.storyVisible;
         scrollTriggerRef.current = null;
       };
     });
 
-    return () => mm.revert();
+    return () => {
+      storyEntryTrigger?.kill();
+      hideStory();
+      mm.revert();
+    };
   }, { scope: storyRef });
 
   const activateStep = (index: number) => {
@@ -328,7 +486,10 @@ export default function ProcessIsland() {
                   <strong>{step.title}</strong>
                   <span>{step.text}</span>
                 </span>
-                <ProcessVisual index={index} />
+                <ProcessVisual
+                  index={index}
+                  playConversation={index === 0 && active === 0 && storyVisible}
+                />
               </button>
             );
           })}
