@@ -7,6 +7,7 @@
     "dev": "astro dev --host 127.0.0.1",
     "build": "astro build",
     "preview": "astro preview --host 127.0.0.1",
+    "validate:portfolio": "node scripts/validate-portfolio-carousel.mjs",
     "validate:process": "node scripts/validate-process-story.mjs",
     "verify:process": "node scripts/verify-process-story.mjs"
   },
