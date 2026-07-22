@@ -1911,4 +1911,50 @@
     animation: workshop-reduced-priority 700ms 4300ms ease both;
   }
 
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-sketch-paper {
+    animation-duration: 360ms !important;
+  }
+
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-sketch-svg {
+    animation-duration: 240ms, 500ms !important;
+  }
+
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-sketch-svg path {
+    animation-duration: 560ms !important;
+  }
+
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-sketch-pencil,
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-pencil-smudge {
+    animation-duration: 1700ms !important;
+  }
+
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-makeup-palette {
+    animation-duration: 1100ms !important;
+  }
+
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-paint-brush,
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-paint-daub {
+    animation-duration: 1500ms !important;
+  }
+
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-page-shell--designed {
+    animation-duration: 1500ms, 480ms !important;
+  }
+
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-powder-puff {
+    animation-duration: 800ms !important;
+  }
+
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-powder-puff b {
+    animation-duration: 620ms !important;
+  }
+
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-detail-brush {
+    animation-duration: 720ms !important;
+  }
+
+  .process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-sketch-eraser {
+    animation-duration: 700ms !important;
+  }
+
 }
