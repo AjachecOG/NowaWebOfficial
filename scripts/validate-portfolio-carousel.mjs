@@ -32,4 +32,25 @@ for (const obsolete of ["Atelier Mira", "Kancelaria Północ", "Nord Clinic"]) {
   assert.ok(!component.includes(obsolete), `obsolete fictional project remains: ${obsolete}`);
 }
 
+for (const pattern of [
+  /type CardPosition = "left" \| "center" \| "right"/,
+  /function getCardPosition/,
+  /data-position=\{position\}/,
+  /data-active=\{active\}/,
+  /onPointerDown=\{handlePointerDown\}/,
+  /onPointerUp=\{handlePointerUp\}/,
+  /onKeyDown=\{handleKeyDown\}/,
+  /Math\.abs\(deltaX\) < 48/,
+  /className="portfolio-carousel__side-control"/,
+  /className="portfolio-carousel__control portfolio-carousel__control--prev"/,
+  /className="portfolio-carousel__control portfolio-carousel__control--next"/,
+  /aria-live="polite"/,
+  /target="_blank"/,
+  /rel="noreferrer"/,
+]) {
+  assert.match(component, pattern, `missing carousel interaction contract: ${pattern}`);
+}
+
+assert.doesNotMatch(component, /setInterval|setTimeout\([^,]+,\s*[3-9]\d{3}/, "carousel must not autoplay");
+
 console.log("Portfolio real project assets and content are present.");
