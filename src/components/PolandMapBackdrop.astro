@@ -50,11 +50,6 @@ import { POLAND_MAP_VIEWBOX, polandMapCities, polandMapPaths } from "../data/pol
       initPolandMapRoutes();
     };
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      section.classList.add("is-map-visible");
-      return;
-    }
-
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {

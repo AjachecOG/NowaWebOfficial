@@ -1,0 +1,80 @@
+---
+import { site } from "../data/site";
+
+type Props = {
+  formName?: string;
+  heading?: string;
+  action?: string;
+};
+
+const {
+  formName = "kontakt",
+  heading,
+  action = "/kontakt?wyslano=1",
+} = Astro.props;
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+
+<form
+  class="contact-form"
+  name={formName}
+  method="POST"
+  data-netlify="true"
+  data-netlify-honeypot="bot-field"
+  action={action}
+>
+  <input type="hidden" name="form-name" value={formName} />
+  <p class="contact-form__honeypot">
+    <label>
+      Nie wypełniaj tego pola
+      <input name="bot-field" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+
+  {heading ? <h2 class="contact-form__heading">{heading}</h2> : null}
+
+  <label class="contact-form__field">
+    <span>Imię i nazwisko / firma</span>
+    <input type="text" name="name" required autocomplete="name" />
+  </label>
+
+  <label class="contact-form__field">
+    <span>Email</span>
+    <input type="email" name="email" required autocomplete="email" />
+  </label>
+
+  <label class="contact-form__field">
+    <span>Telefon <em>(opcjonalnie)</em></span>
+    <input type="tel" name="phone" autocomplete="tel" />
+  </label>
+
+  <label class="contact-form__field">
+    <span>O czym mamy porozmawiać</span>
+    <textarea name="message" rows="5" required></textarea>
+  </label>
+
+  <label class="contact-form__consent">
+    <input type="checkbox" name="privacy" value="yes" required />
+    <span>
+      Wyrażam zgodę na przetwarzanie danych w celu odpowiedzi na zapytanie.
+      Szczegóły w
+      <a href="/polityka-prywatnosci">polityce prywatności</a>.
+    </span>
+  </label>
+
+  {turnstileSiteKey ? (
+    <div class="contact-form__turnstile">
+      <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light"></div>
+    </div>
+  ) : null}
+
+  <div class="contact-form__actions">
+    <button class="button primary" type="submit">Wyślij zapytanie</button>
+    <a class="button secondary" href={`mailto:${site.email}`}>Lub napisz maila</a>
+  </div>
+</form>
+
+{turnstileSiteKey ? (
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+) : null}

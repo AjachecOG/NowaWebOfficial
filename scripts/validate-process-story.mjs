@@ -3,8 +3,12 @@ import fs from "node:fs";
 const read = (path) => (fs.existsSync(path) ? fs.readFileSync(path, "utf8") : "");
 const component = read("src/components/ProcessIsland.tsx");
 const styles = read("src/components/ProcessIsland.css");
+const astroConfig = read("astro.config.mjs");
 
 const checks = [
+  ["Vite pre-bundles @gsap/react", astroConfig.includes('"@gsap/react"')],
+  ["Vite pre-bundles gsap", astroConfig.includes('"gsap"')],
+  ["Vite pre-bundles gsap/ScrollTrigger", astroConfig.includes('"gsap/ScrollTrigger"')],
   ["four process stages", (component.match(/id: "[1-4]"/g) ?? []).length === 4],
   ["plain numeric labels", !component.includes('id: "01"')],
   ["GSAP React integration", component.includes('from "@gsap/react"')],
@@ -71,15 +75,52 @@ const checks = [
     "scaleX(-1)",
   ].every((token) => styles.includes(token))],
   ["classic paint brush styling", styles.includes("linear-gradient(90deg, #d9e0e8") && styles.includes("#d97832")],
-  ["personal process copy", [
-    "To będzie Twoja strona.",
-    "To jest Twoja strona.",
-  ].every((text) => component.includes(text)) && !component.includes("Strona, która ciekawi.")],
+  ["personal process copy", component.includes("To będzie Twoja strona ;)") && component.includes("Twoja strona pracuje.") && !component.includes("Strona, która ciekawi.")],
+  ["stage three personal message styling", [
+    ".story-page-shell--designed .story-page-hero b",
+    "font-style: italic",
+    "font-size: clamp(0.72rem, 0.9vw, 0.84rem)",
+    "padding-bottom: 1px",
+  ].every((token) => styles.includes(token))],
   ["design deployment badge removed", [
     "story-code-check",
     "story-makeup-status",
   ].every((token) => !component.includes(token) && !styles.includes(token)) && !component.includes("wdrożone")],
   ["launch scene", component.includes('data-process-scene="launch"')],
+  ["launch upload and configuration phases", [
+    "story-upload-phase",
+    "story-upload-spinner",
+    "story-uploading-label",
+    "story-uploaded-label",
+    "story-config-phase",
+    "story-config-progress__fill",
+    "story-launch-complete",
+  ].every((token) => component.includes(token))],
+  ["launch configuration stops", [
+    'data-progress="24"',
+    'data-progress="67"',
+    'data-progress="88"',
+    "Filtrujemy zbędny szum",
+    "Ustawiamy ścieżkę do kontaktu",
+    "Sprawdzamy ostatnie elementy",
+  ].every((token) => component.includes(token))],
+  ["localized launch upload copy", component.includes("Publikowanie") && component.includes("Opublikowano") && !component.includes("Uploading…") && !component.includes("Uploaded")],
+  ["simplified configuration chrome", !component.includes("<b>Konfiguracja</b>") && !component.includes('"--stop"') && !styles.includes(".story-config-progress > i")],
+  ["readable configuration status", /\.story-config-status\s*\{[^}]*font-size:\s*clamp\(0\.76rem[^}]*text-align:\s*center/s.test(styles)],
+  ["launch completion copy", component.includes("Gotowe.") && component.includes("Twoja strona pracuje.")],
+  ["launch sequence motion", [
+    "story-upload-spin",
+    "story-upload-phase-out",
+    "story-config-phase-in",
+    "story-config-fill",
+    "story-launch-complete-in",
+  ].every((token) => styles.includes(token))],
+  ["legacy launch UI removed", [
+    "story-publish",
+    "story-online",
+    "story-support",
+    "story-page-shell--live",
+  ].every((token) => !component.includes(token))],
   ["exact client message", component.includes("Potrzebuję strony, która nie znudzi ciekawskich.")],
   ["exact first studio reply", component.includes('const STUDIO_QUESTION = "Nowa strona?"')],
   ["exact final studio reply", component.includes('const STUDIO_ANSWER = "Już się robi!"')],
@@ -90,7 +131,7 @@ const checks = [
   ["legacy typing layers and brief chips removed", !component.includes("story-typed-char") && !component.includes("story-brief-points")],
   ["large client bubble", styles.includes("width: 92%")],
   ["content-sized studio bubbles", styles.includes("width: fit-content") && styles.includes("max-width: 76%")],
-  ["page continuity", (component.match(/className="story-page-shell/g) ?? []).length === 2 && component.includes("story-workshop-board") && component.includes("story-sketch-svg")],
+  ["page continuity", (component.match(/className="story-page-shell/g) ?? []).length === 1 && component.includes("story-launch-page") && component.includes("story-workshop-board") && component.includes("story-sketch-svg")],
   ["design starts from pencil sketch", component.includes("story-sketch-svg")],
   ["scene motion avoids filters", !styles.includes("filter: saturate")],
   ["old placeholder visuals removed", !/brief-bubble|wireframe-toolbar|design-canvas|launch-orbit/.test(component)],
@@ -110,6 +151,7 @@ const checks = [
   ["visible keyboard focus", styles.includes(":focus-visible")],
   ["comfortable touch target", styles.includes("min-height: 44px")],
   ["reduced motion fallback", styles.includes("prefers-reduced-motion: reduce")],
+  ["launch remains animated with reduced motion", styles.includes(':not([data-process-scene="launch"])') && !styles.includes(".story-scene--launch .story-upload-phase,\n  .story-scene--launch .story-config-phase")],
 ];
 
 const failures = checks.filter(([, passed]) => !passed);

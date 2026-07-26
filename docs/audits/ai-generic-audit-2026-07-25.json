@@ -1,0 +1,787 @@
+{
+  "meta": {
+    "title": "NowaWeb — audyt AI-generic copy i typografii",
+    "createdAt": "2026-07-25",
+    "scope": [
+      "src/pages/index.astro",
+      "src/pages/kontakt.astro",
+      "src/pages/polityka-prywatnosci.astro",
+      "src/pages/polityka-cookies.astro",
+      "src/pages/regulamin.astro",
+      "src/layouts/BaseLayout.astro",
+      "src/components/ComparisonReveal.tsx",
+      "src/components/ProcessIsland.tsx",
+      "src/components/ContactForm.astro",
+      "src/components/CookieConsent.tsx",
+      "src/components/HeroEyebrowTypewriter.tsx",
+      "src/components/TypewriterStatement.tsx",
+      "src/components/PortfolioCarousel.tsx",
+      "src/data/site.ts"
+    ],
+    "excluded": [
+      "Komentarze w kodzie (np. poland-map-routes.ts)",
+      "Cudzysłowy polskie „…” w tekstach prawnych (norma PL)",
+      "Znak · w stopce (separator typograficzny, nie AI-cliché)"
+    ],
+    "legend": {
+      "severity": {
+        "high": "Wyraźny AI/agency cliché — warto zmienić w pierwszej kolejności",
+        "medium": "Powtarzalny wzorzec marketingowy — brzmi generycznie w kontekście strony",
+        "low": "Drobiazg typograficzny lub akceptowalny w kontekście prawnym"
+      },
+      "status": {
+        "flagged": "Wykryte, nie zmienione",
+        "ok_in_context": "Technicznie pasuje do wzorca, ale kontekst (prawo/UI) może uzasadniać zostawienie"
+      }
+    },
+    "summary": {
+      "totalFindings": 52,
+      "bySeverity": {
+        "high": 14,
+        "medium": 23,
+        "low": 15
+      },
+      "byCategory": {
+        "em_dash": 18,
+        "ellipsis": 4,
+        "triad_stack": 8,
+        "contrast_opener": 3,
+        "punchline_pair": 9,
+        "agency_filler": 7,
+        "soft_cta_cliche": 3
+      },
+      "notes": [
+        "Użytkownik wspomniał „n-dashes”, ale w treści dominują em-dashes (— U+2014), nie en-dashes (– U+2013).",
+        "Na stronach prawnych (RODO/cookies/regulamin) myślnik em jest częstą konwencją PL — niższy priorytet niż copy marketingowe.",
+        "Najsilniejszy klaster AI-voice: hero lead, manifesto, comparison verdicts, CTA."
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "EM-001",
+      "category": "em_dash",
+      "severity": "high",
+      "status": "flagged",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/index.astro",
+      "approxLine": 408,
+      "text": "Umów rozmowę — krótkie zapytanie",
+      "why": "Klasyczny AI em-dash w nagłówku formularza; naturalniej: dwukropek, nawias lub osobne zdanie.",
+      "suggestion": "Umów rozmowę: krótkie zapytanie"
+    },
+    {
+      "id": "EM-002",
+      "category": "em_dash",
+      "severity": "high",
+      "status": "flagged",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/kontakt.astro",
+      "approxLine": 11,
+      "text": "Napisz do NowaWeb — opowiedz o marce i co strona ma dowieźć.",
+      "why": "Meta description z em-dashem i miękkim AI-voice („dowieźć”).",
+      "suggestion": "Napisz do NowaWeb. Opisz markę i cel strony."
+    },
+    {
+      "id": "EM-003",
+      "category": "em_dash",
+      "severity": "medium",
+      "status": "flagged",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/kontakt.astro",
+      "approxLine": 23,
+      "text": "Dziękujemy — wiadomość poszła. Odpiszemy na podany email.",
+      "why": "Em-dash w komunikacie sukcesu; brzmi jak wygenerowany toast.",
+      "suggestion": "Dziękujemy. Wiadomość poszła — zmienić na: Dziękujemy! Wiadomość poszła."
+    },
+    {
+      "id": "EM-004",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/regulamin.astro",
+      "approxLine": 8,
+      "text": "Regulamin świadczenia usług drogą elektroniczną — NowaWeb / Revela Sp. z o.o.",
+      "why": "Typowy separator w tytule prawnym; mniej „AI” niż w marketingu.",
+      "suggestion": "Regulamin… | NowaWeb / Revela Sp. z o.o. (opcjonalnie)"
+    },
+    {
+      "id": "EM-005",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/regulamin.astro",
+      "approxLine": 57,
+      "text": "aktywne konto email — w przypadku kontaktu formularzem.",
+      "why": "Listy prawne często używają myślnika jako separatora wyjaśnienia.",
+      "suggestion": "aktywne konto email (przy kontakcie formularzem)."
+    },
+    {
+      "id": "EM-006",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/regulamin.astro",
+      "approxLine": 94,
+      "text": "Zasady cookies —",
+      "why": "Fragment prawny; niski priorytet.",
+      "suggestion": "Zasady cookies:"
+    },
+    {
+      "id": "EM-007",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-cookies.astro",
+      "approxLine": 22,
+      "text": "…zapamiętywać wybory i — po zgodzie — prowadzić analitykę.",
+      "why": "Parenthetical em-dashes; w PL dopuszczalne, ale wyglądają „editorsko”.",
+      "suggestion": "…zapamiętywać wybory i (po zgodzie) prowadzić analitykę."
+    },
+    {
+      "id": "EM-008",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-cookies.astro",
+      "approxLine": 48,
+      "text": "link „Ustawienia cookies” w stopce — ponowne otwarcie wyboru,",
+      "why": "Lista prawna.",
+      "suggestion": "link „Ustawienia cookies” w stopce: ponowne otwarcie wyboru,"
+    },
+    {
+      "id": "EM-009",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-cookies.astro",
+      "approxLine": 49,
+      "text": "ustawienia przeglądarki — usuwanie lub blokowanie cookies.",
+      "why": "Lista prawna.",
+      "suggestion": "ustawienia przeglądarki: usuwanie lub blokowanie cookies."
+    },
+    {
+      "id": "EM-010",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-prywatnosci.astro",
+      "approxLine": 16,
+      "text": "Nie stanowi porady prawnej — w razie potrzeby skonsultuj treść z prawnikiem.",
+      "why": "Standardowy disclaimer prawny.",
+      "suggestion": "Nie stanowi porady prawnej. W razie potrzeby skonsultuj treść z prawnikiem."
+    },
+    {
+      "id": "EM-011",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-prywatnosci.astro",
+      "approxLine": 35,
+      "text": "…adres IP — w zakresie zapewnianym przez hosting",
+      "why": "RODO list style.",
+      "suggestion": "…adres IP (w zakresie zapewnianym przez hosting)"
+    },
+    {
+      "id": "EM-012",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-prywatnosci.astro",
+      "approxLine": 42,
+      "text": "<strong>Odpowiedź na zapytanie</strong> — art. 6 ust. 1 lit. b RODO…",
+      "why": "Konwencja mapowania podstawy prawnej; zostawić lub zamienić na dwukropek.",
+      "suggestion": "Odpowiedź na zapytanie: art. 6 ust. 1 lit. b RODO…"
+    },
+    {
+      "id": "EM-013",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-prywatnosci.astro",
+      "approxLine": 44,
+      "text": "gdy wymagana jest zgoda — lit. a.",
+      "why": "RODO.",
+      "suggestion": "gdy wymagana jest zgoda: lit. a."
+    },
+    {
+      "id": "EM-014",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-prywatnosci.astro",
+      "approxLine": 47,
+      "text": "<strong>Prowadzenie korespondencji…</strong> — art. 6 ust. 1 lit. f RODO.",
+      "why": "RODO.",
+      "suggestion": "…: art. 6 ust. 1 lit. f RODO."
+    },
+    {
+      "id": "EM-015",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-prywatnosci.astro",
+      "approxLine": 51,
+      "text": "— art. 6 ust. 1 lit. c RODO.",
+      "why": "RODO.",
+      "suggestion": ": art. 6 ust. 1 lit. c RODO."
+    },
+    {
+      "id": "EM-016",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-prywatnosci.astro",
+      "approxLine": 54,
+      "text": "<strong>Cookies niezbędne</strong> — art. 6…; cookies opcjonalne — wyłącznie po zgodzie…",
+      "why": "RODO; podwójny em-dash w jednym akapicie.",
+      "suggestion": "Cookies niezbędne: art. 6…; cookies opcjonalne wyłącznie po zgodzie…"
+    },
+    {
+      "id": "EM-017",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-prywatnosci.astro",
+      "approxLine": 77,
+      "text": "zapytania z formularza — do 24 miesięcy…",
+      "why": "RODO retention list.",
+      "suggestion": "zapytania z formularza: do 24 miesięcy…"
+    },
+    {
+      "id": "EM-018",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-prywatnosci.astro",
+      "approxLine": 78,
+      "text": "preferencje cookies — do zmiany lub usunięcia w przeglądarce,",
+      "why": "RODO.",
+      "suggestion": "preferencje cookies: do zmiany…"
+    },
+    {
+      "id": "EM-019",
+      "category": "em_dash",
+      "severity": "low",
+      "status": "ok_in_context",
+      "char": "—",
+      "unicode": "U+2014",
+      "file": "src/pages/polityka-prywatnosci.astro",
+      "approxLine": 79,
+      "text": "logi techniczne — zgodnie z polityką hostingu…",
+      "why": "RODO.",
+      "suggestion": "logi techniczne: zgodnie z polityką hostingu…"
+    },
+    {
+      "id": "EL-001",
+      "category": "ellipsis",
+      "severity": "medium",
+      "status": "flagged",
+      "char": "…",
+      "unicode": "U+2026",
+      "file": "src/components/ProcessIsland.tsx",
+      "approxLine": 256,
+      "text": "Publikowanie…",
+      "why": "Ellipsis w UI procesu; OK jako stan ładowania, ale w pakiecie z trzema statusami brzmi teatralnie.",
+      "suggestion": "Publikowanie / Publikowanie."
+    },
+    {
+      "id": "EL-002",
+      "category": "ellipsis",
+      "severity": "medium",
+      "status": "flagged",
+      "char": "…",
+      "unicode": "U+2026",
+      "file": "src/components/ProcessIsland.tsx",
+      "approxLine": 265,
+      "text": "Odpędzamy negatywne opinie…",
+      "why": "AI-cute status line z ellipsis.",
+      "suggestion": "Usuwamy zbędny szum / Filtrujemy negatywne sygnały (albo konkretniejszy copy)."
+    },
+    {
+      "id": "EL-003",
+      "category": "ellipsis",
+      "severity": "medium",
+      "status": "flagged",
+      "char": "…",
+      "unicode": "U+2026",
+      "file": "src/components/ProcessIsland.tsx",
+      "approxLine": 268,
+      "text": "Przyciągamy właściwych klientów…",
+      "why": "Generic growth speak + ellipsis.",
+      "suggestion": "Ustawiamy ścieżkę do kontaktu."
+    },
+    {
+      "id": "EL-004",
+      "category": "ellipsis",
+      "severity": "medium",
+      "status": "flagged",
+      "char": "…",
+      "unicode": "U+2026",
+      "file": "src/components/ProcessIsland.tsx",
+      "approxLine": 271,
+      "text": "Dopinamy ostatnie szczegóły…",
+      "why": "Filler status; typowy AI polish.",
+      "suggestion": "Sprawdzamy ostatnie elementy."
+    },
+    {
+      "id": "TR-001",
+      "category": "triad_stack",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 131,
+      "text": "Zdanie. Zdalnie, precyzyjnie i z myślą o wyniku.",
+      "why": "Trójka przysłówków/fraz na końcu leadu — bardzo typowy AI rhythm.",
+      "suggestion": "Jedno konkretne zdanie o trybie pracy, bez rytmu A, B i C."
+    },
+    {
+      "id": "TR-002",
+      "category": "triad_stack",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 234,
+      "text": "całość jest szybka, spójna i łatwa do rozwijania.",
+      "why": "Triada przymiotników po „Dzięki temu”.",
+      "suggestion": "Konkret: co użytkownik zyskuje (np. krótki czas ładowania, prosty CMS)."
+    },
+    {
+      "id": "TR-003",
+      "category": "triad_stack",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 88,
+      "text": "szybkie, estetyczne i stabilne strony internetowe",
+      "why": "Meta description triad; powtórzona też w BaseLayout.",
+      "suggestion": "Jedna cecha wyróżniająca + odbiorca."
+    },
+    {
+      "id": "TR-004",
+      "category": "triad_stack",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/layouts/BaseLayout.astro",
+      "approxLine": 14,
+      "text": "szybkie, estetyczne i stabilne strony internetowe dla firm z całej Polski.",
+      "why": "Duplikat TR-003.",
+      "suggestion": "Jak TR-003."
+    },
+    {
+      "id": "TR-005",
+      "category": "triad_stack",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 245,
+      "text": "wyjaśnić, uspokoić, pokazać wartość i poprowadzić do kontaktu.",
+      "why": "Czterostopniowa lista celów sekcji — brzmi jak brief AI.",
+      "suggestion": "Jedno zdanie o decyzji klienta / CTA."
+    },
+    {
+      "id": "TR-006",
+      "category": "triad_stack",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 332,
+      "text": "Prosty rytm, jasne decyzje i etapowe dowożenie zamiast chaosu.",
+      "why": "Triada + kontrast „zamiast chaosu”.",
+      "suggestion": "Krótko: 4 etapy, ustalony zakres, stały kontakt."
+    },
+    {
+      "id": "TR-007",
+      "category": "triad_stack",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 366,
+      "text": "Pomagamy ją utrzymać, rozwijać i poprawiać…",
+      "why": "Triada czasowników wsparcia.",
+      "suggestion": "Konkretny zakres opieki (treści / performance / nowe sekcje)."
+    },
+    {
+      "id": "TR-008",
+      "category": "triad_stack",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 392,
+      "text": "Zaproponujemy kierunek, strukturę i sensowny plan działania.",
+      "why": "Triada ofertowa w CTA.",
+      "suggestion": "Napiszemy, co zbudować w pierwszej kolejności i ile to zajmie."
+    },
+    {
+      "id": "CO-001",
+      "category": "contrast_opener",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 232,
+      "text": "Nie sprzedajemy gotowego motywu. Budujemy stronę jak system komunikacji…",
+      "why": "Wzór „Nie X. Budujemy Y” — sztandarowy AI/agency opener.",
+      "suggestion": "Od razu powiedzieć, jak pracujecie, bez negacji otwierającej."
+    },
+    {
+      "id": "CO-002",
+      "category": "contrast_opener",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 321,
+      "text": "WordPress bywa dobry. My wybieramy lżejszą ścieżkę…",
+      "why": "Soft-concession + pivot; częsty AI comparison tone.",
+      "suggestion": "Konkretna różnica bez dyplomatycznego wstępu."
+    },
+    {
+      "id": "CO-003",
+      "category": "contrast_opener",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 57,
+      "text": "Nowa jakość bez burzenia wszystkiego od zera.",
+      "why": "Negacja + obietnica; lekko generyczna.",
+      "suggestion": "Odświeżamy wygląd i strukturę na bazie obecnej strony."
+    },
+    {
+      "id": "PP-001",
+      "category": "punchline_pair",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/components/ComparisonReveal.tsx",
+      "approxLine": 23,
+      "text": "Więcej warstw. Mniej tempa.",
+      "why": "Dwuzdaniowy antithesis punchline — mocno AI/editorial.",
+      "suggestion": "Jeden konkretny problem WP (np. wtyczki dokładają skrypty)."
+    },
+    {
+      "id": "PP-002",
+      "category": "punchline_pair",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/components/ComparisonReveal.tsx",
+      "approxLine": 21,
+      "text": "Szybkość, która sprzedaje.",
+      "why": "Slogan-verdict; puste bez dowodu.",
+      "suggestion": "Szybka strona = więcej zapytań (albo metryka)."
+    },
+    {
+      "id": "PP-003",
+      "category": "punchline_pair",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/components/ComparisonReveal.tsx",
+      "approxLine": 33,
+      "text": "Płacisz za efekt, nie poprawki.",
+      "why": "Antithesis slogan.",
+      "suggestion": "Stały zakres i wycena przed startem."
+    },
+    {
+      "id": "PP-004",
+      "category": "punchline_pair",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/components/ComparisonReveal.tsx",
+      "approxLine": 37,
+      "text": "Tani start. Drogie utrzymanie.",
+      "why": "Klasyczna para „A. B.”.",
+      "suggestion": "Tani motyw, potem licencje i poprawki."
+    },
+    {
+      "id": "PP-005",
+      "category": "punchline_pair",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/components/ComparisonReveal.tsx",
+      "approxLine": 43,
+      "text": "Mniej luk. Więcej spokoju.",
+      "why": "Mniej/więcej antithesis — AI fingerprint.",
+      "suggestion": "Prostsza architektura = mniej aktualizacji awaryjnych."
+    },
+    {
+      "id": "PP-006",
+      "category": "punchline_pair",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/components/ComparisonReveal.tsx",
+      "approxLine": 65,
+      "text": "Jedna odpowiedzialność. Szybka decyzja.",
+      "why": "Para sloganów.",
+      "suggestion": "Jeden kontakt prowadzi projekt od briefu do wdrożenia."
+    },
+    {
+      "id": "PP-007",
+      "category": "punchline_pair",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/components/ComparisonReveal.tsx",
+      "approxLine": 70,
+      "text": "Problem krąży. Rachunek zostaje.",
+      "why": "Dramatyczna para; styl LinkedIn/AI.",
+      "suggestion": "Hosting zrzuca na motyw, motyw na wtyczkę."
+    },
+    {
+      "id": "PP-008",
+      "category": "punchline_pair",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/components/ComparisonReveal.tsx",
+      "approxLine": 19,
+      "text": "Lekka od pierwszej linii.",
+      "why": "Poetycki slogan bez konkrety.",
+      "suggestion": "Budujemy tylko to, czego strona naprawdę potrzebuje."
+    },
+    {
+      "id": "PP-009",
+      "category": "punchline_pair",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 340,
+      "text": "Trzy marki. Każda z własnym charakterem.",
+      "why": "Krótka para + „charakterem” — lekko generyczna.",
+      "suggestion": "Trzy projekty. Trzy różne branże i decyzje."
+    },
+    {
+      "id": "AF-001",
+      "category": "agency_filler",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 130,
+      "text": "Projektujemy szybkie strony dla firm, które chcą wyglądać profesjonalnie i działać bez technologicznego chaosu.",
+      "why": "„profesjonalnie” + „technologicznego chaosu” = bezpieczny AI lead.",
+      "suggestion": "Konkret: dla kogo, jaki efekt, w jakim czasie."
+    },
+    {
+      "id": "AF-002",
+      "category": "agency_filler",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 131,
+      "text": "z myślą o wyniku",
+      "why": "Pusty filler; nic nie mówi.",
+      "suggestion": "Usunąć albo zamienić na mierzalny wynik (zapytania / sprzedaż)."
+    },
+    {
+      "id": "AF-003",
+      "category": "agency_filler",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 233,
+      "text": "Dzięki temu",
+      "why": "Klej przyczynowy typowy dla AI paragraphs.",
+      "suggestion": "Przepisać na jedno zdanie bez łącznika."
+    },
+    {
+      "id": "AF-004",
+      "category": "agency_filler",
+      "severity": "high",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 391,
+      "text": "co strona ma realnie dowieźć",
+      "why": "„realnie” + „dowieźć” — korporacyjny AI-polish.",
+      "suggestion": "czego oczekujesz od strony / jaki ma być efekt."
+    },
+    {
+      "id": "AF-005",
+      "category": "agency_filler",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 45,
+      "text": "jasna ścieżka do działania",
+      "why": "Powtórzone „jasna ścieżka” też w support.",
+      "suggestion": "Jedno CTA i jeden następny krok."
+    },
+    {
+      "id": "AF-006",
+      "category": "agency_filler",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 75,
+      "text": "Masz jasną ścieżkę kontaktu i szybką reakcję na drobne sprawy.",
+      "why": "Powtórzenie „jasna ścieżka”; miękkie obietnice bez SLA.",
+      "suggestion": "Odpowiedź w X godzin / jeden numer / email."
+    },
+    {
+      "id": "AF-007",
+      "category": "agency_filler",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 39,
+      "text": "porządkuje ofertę i buduje wiarygodność",
+      "why": "Abstrakcyjne benefity agencyjne.",
+      "suggestion": "Pokazuje ofertę, referencje i sposób kontaktu."
+    },
+    {
+      "id": "SC-001",
+      "category": "soft_cta_cliche",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 298,
+      "text": "Porozmawiajmy",
+      "why": "Miękkie CTA bez zobowiązania; częste w AI landingach.",
+      "suggestion": "Umów rozmowę / Napisz o projekcie"
+    },
+    {
+      "id": "SC-002",
+      "category": "soft_cta_cliche",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 389,
+      "text": "Stwórzmy stronę, która zrobi świetne pierwsze wrażenie",
+      "why": "Wspólne „Stwórzmy” + „pierwsze wrażenie” — generyczny CTA headline.",
+      "suggestion": "Zróbmy stronę, która zbiera zapytania / …dla Twojej branży."
+    },
+    {
+      "id": "SC-003",
+      "category": "soft_cta_cliche",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/kontakt.astro",
+      "approxLine": 16,
+      "text": "Stwórzmy stronę, która zrobi dobre pierwsze wrażenie",
+      "why": "Prawie duplikat SC-002 (świetne→dobre).",
+      "suggestion": "Ujednolicić z CTA i uczynić konkretniejszym."
+    },
+    {
+      "id": "AF-008",
+      "category": "agency_filler",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 90,
+      "text": "NowaWeb - profesjonalne strony internetowe",
+      "why": "„profesjonalne strony” w title — maksymalnie generyczne SEO.",
+      "suggestion": "NowaWeb | Strony firmowe bez WordPressa (lub podobnie konkretne)."
+    },
+    {
+      "id": "AF-009",
+      "category": "agency_filler",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/components/ProcessIsland.tsx",
+      "approxLine": 26,
+      "text": "Tworzymy dopracowany wygląd oraz szybką, stabilną stronę.",
+      "why": "„dopracowany / szybką / stabilną” — bezpieczny stack przymiotników.",
+      "suggestion": "Projekt + kod pod Twoją ofertę, bez zbędnych wtyczek."
+    },
+    {
+      "id": "AF-010",
+      "category": "agency_filler",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/pages/index.astro",
+      "approxLine": 223,
+      "text": "Stabilność spotyka kreatywność",
+      "why": "Abstrakcyjny manifesto title; dwa rzeczowniki „spotykają się”.",
+      "suggestion": "Konkretniejszy claim o sposobie pracy."
+    },
+    {
+      "id": "PP-010",
+      "category": "punchline_pair",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/components/ComparisonReveal.tsx",
+      "approxLine": 41,
+      "text": "Mniej punktów wejścia.",
+      "why": "Security jargon + „mniej” slogan.",
+      "suggestion": "Bez stosu wtyczek, które trzeba łatać co tydzień."
+    },
+    {
+      "id": "PP-011",
+      "category": "punchline_pair",
+      "severity": "medium",
+      "status": "flagged",
+      "file": "src/components/ComparisonReveal.tsx",
+      "approxLine": 55,
+      "text": "Marka, której nie da się pomylić.",
+      "why": "Absolutystyczny slogan bez dowodu.",
+      "suggestion": "Projekt pod Twoją firmę, nie pod gotowy motyw."
+    }
+  ],
+  "patternsNotFound": [
+    {
+      "pattern": "en_dash (– U+2013)",
+      "note": "Brak w user-facing copy. Obecne są em-dashes (—)."
+    },
+    {
+      "pattern": "English filler in PL UI (leverage, unlock, seamless, empower)",
+      "note": "Nie wykryto."
+    },
+    {
+      "pattern": "Inter / Roboto / Arial as display intent",
+      "note": "Stack to Helvetica Neue — świadomy wybór, nie klasyczny AI Inter."
+    }
+  ],
+  "priorityFixOrder": [
+    {
+      "rank": 1,
+      "focus": "Marketing em-dashes + CTA voice",
+      "ids": ["EM-001", "EM-002", "EM-003", "AF-004", "SC-002", "SC-003"]
+    },
+    {
+      "rank": 2,
+      "focus": "Hero + manifesto rewrite",
+      "ids": ["AF-001", "AF-002", "TR-001", "CO-001", "AF-003", "TR-002", "AF-010"]
+    },
+    {
+      "rank": 3,
+      "focus": "ComparisonReveal punchlines",
+      "ids": ["PP-001", "PP-002", "PP-003", "PP-004", "PP-005", "PP-006", "PP-007", "PP-008", "PP-010", "PP-011"]
+    },
+    {
+      "rank": 4,
+      "focus": "Services / process / support triads",
+      "ids": ["TR-005", "TR-006", "TR-007", "TR-008", "AF-005", "AF-006", "AF-007", "AF-009", "SC-001", "EL-002", "EL-003", "EL-004"]
+    },
+    {
+      "rank": 5,
+      "focus": "Legal em-dashes (optional polish)",
+      "ids": ["EM-004", "EM-005", "EM-006", "EM-007", "EM-008", "EM-009", "EM-010", "EM-011", "EM-012", "EM-013", "EM-014", "EM-015", "EM-016", "EM-017", "EM-018", "EM-019"]
+    }
+  ]
+}

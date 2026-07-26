@@ -1,0 +1,60 @@
+---
+import { site, legalLinks } from "../data/site";
+import CookieConsent from "../components/CookieConsent";
+import SiteHead from "../components/SiteHead.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import "../styles/global.css";
+
+type Props = {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+};
+
+const {
+  title,
+  description = "NowaWeb projektuje lekkie strony firmowe dla marek z całej Polski, bez WordPressa i zbędnych wtyczek.",
+  bodyClass = "",
+} = Astro.props;
+
+const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <SiteHead title={fullTitle} description={description} />
+  </head>
+  <body class={bodyClass}>
+    <div class="paper-grain" aria-hidden="true"></div>
+
+    <SiteHeader />
+
+    <slot />
+
+    <footer class="site-footer site-footer--legal">
+      <div class="site-footer__brand">
+        <span>NowaWeb<span>.</span></span>
+        <p>
+          {site.company.legalName}<br />
+          {site.company.addressLine}, {site.company.postalCode} {site.company.city}<br />
+          NIP {site.company.nip} · KRS {site.company.krs}
+        </p>
+      </div>
+      <nav class="site-footer__links" aria-label="Stopka">
+        {legalLinks.map((link) => (
+          <a href={link.href}>{link.label}</a>
+        ))}
+        <button type="button" class="site-footer__cookies" data-open-cookie-settings>
+          Ustawienia cookies
+        </button>
+      </nav>
+      <div class="site-footer__contact">
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={site.phoneHref}>{site.phoneDisplay}</a>
+      </div>
+    </footer>
+
+    <CookieConsent client:load />
+  </body>
+</html>

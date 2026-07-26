@@ -1,0 +1,92 @@
+NowaWeb — TODO (pozostałe przed / po launchu)
+Ostatnia aktualizacja: 2026-07-26
+
+================================================================================
+A. OPS / PRODUKCJA (wymaga ręcznej konfiguracji — nie da się domknąć samym kodem)
+================================================================================
+
+[ ] 1. Cloudflare Turnstile
+    - Utwórz widget (Managed) dla domen: nowaweb.pl, www.nowaweb.pl, localhost
+    - Site Key → Netlify env: PUBLIC_TURNSTILE_SITE_KEY
+    - Secret Key → Netlify env: TURNSTILE_SECRET_KEY
+    - Po deployu sprawdź, że widget widać w obu formularzach (home + /kontakt)
+    - Włącz weryfikację Turnstile w Netlify Forms (integracja / spam filtering)
+
+[ ] 2. Netlify Forms — powiadomienia
+    - Po pierwszym deployu upewnij się, że widać formularze: kontakt + kontakt-home
+    - Ustaw email notifications → kontakt@nowaweb.pl
+    - Sprawdź folder spam skrzynki kontakt@
+
+[ ] 3. Test live submit
+    - Wyślij test z /kontakt
+    - Wyślij test z formularza na homepage (CTA „Umów rozmowę”)
+    - Potwierdź: mail przychodzi, success UX działa, spam bot nie przechodzi
+
+[ ] 4. Domena + HTTPS
+    - Podłącz nowaweb.pl (+ www → apex lub odwrotnie)
+    - HTTPS aktywny, bez ostrzeżeń certyfikatu
+
+[ ] 5. Smoke checklist na produkcji
+    - Favicon w zakładce
+    - https://nowaweb.pl/robots.txt
+    - https://nowaweb.pl/sitemap-index.xml
+    - Mobile menu (telefon): otwórz / zamknij / Escape / linki sekcji
+    - Smooth scroll z nawigacji na homepage
+    - Karuzela portfolio + porównanie NowaWeb vs WP
+    - /404 (lub losowy URL) — branded page
+    - Cookie banner: tekst zgodny z rzeczywistością (brak analytics)
+
+================================================================================
+B. FOLLOW-UP TECH (opcjonalne, nie blokuje soft-launch)
+================================================================================
+
+[ ] 6. CSP: po ~1 tygodniu Report-Only bez naruszeń → przełącz na egzekwujące
+    - Plik: netlify.toml (Content-Security-Policy zamiast *-Report-Only)
+
+[ ] 7. Analytics (gdy będzie potrzeba)
+    - Dodać Plausible lub GA4 TYLKO za zgodą z CookieConsent
+    - Podpiąć event nowaweb:cookie-consent
+    - Zaktualizować politykę cookies / prywatności
+
+[ ] 8. Obrazy — wizualna kontrola WebP cutoutów
+    - Sprawdź krawędzie alpha (logo-card, poster, cup, notebook, tool-rail)
+    - Jeśli artefakty: podnieś quality w scripts/optimize-images.mjs i przebuduj
+
+[ ] 9. Homepage CTA w headerze
+    - Dziś wspólny SiteHeader prowadzi „Umów rozmowę” na /kontakt
+    - Opcja: na homepage wrócić do #kontakt + data-open-contact-form
+
+[ ] 10. Lighthouse mobile
+    - Cel: LCP < 2.5s, brak krytycznych a11y
+    - Porównać przed/po na produkcji
+
+[ ] 11. Skip link „Przejdź do treści”
+    - Dla klawiatury / screen readerów
+
+[ ] 12. Ujednolicić homepage w pełni pod BaseLayout (slot)
+    - Dziś współdzielone: SiteHead + SiteHeader; footer nadal zduplikowany na index
+
+================================================================================
+C. JUŻ ZROBIONE (dla kontekstu — nie odhaczać ponownie)
+================================================================================
+
+[x] Usunięcie nieużywanych assetów z public/ (~100 MB → dist ~1.5 MB)
+[x] Konwersja hero/services/portfolio → WebP + lazy non-LCP
+[x] Mobile navigation ≤1160px
+[x] Favicon, robots.txt, sitemap, OG, canonical, JSON-LD
+[x] Slot Cloudflare Turnstile w ContactForm (aktywny po env)
+[x] Success UX /kontakt?wyslano=1 (ukrywa formularz)
+[x] Cookie banner — uczciwy copy bez fake analytics
+[x] Security headers + branded 404
+[x] Pin dependency versions (bez "latest")
+[x] AI-generic copy cleanup (fazy 1–5)
+[x] Smooth scroll nawigacji + kolejność linków jak sekcje
+
+================================================================================
+D. PLIKI / DOCS
+================================================================================
+
+Plan production: docs/superpowers/plans/2026-07-25-production-readiness.md
+Audyt AI-copy:   docs/audits/ai-generic-audit-2026-07-25.json
+Plan copy:       docs/audits/ai-generic-change-plan-2026-07-25.md
+Env przykład:    .env.example

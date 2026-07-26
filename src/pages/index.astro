@@ -1,27 +1,30 @@
 ---
 import {
   ArrowRight,
-  CheckCircle2,
+  ChevronDown,
   Code2,
   Gauge,
-  Globe2,
-  LifeBuoy,
   Mail,
-  MapPin,
   Palette,
-  PenLine,
-  RefreshCw,
   ShieldCheck,
-  Sparkles,
-  Target,
   UsersRound,
   Zap,
 } from "lucide-react";
 import HeroSceneMotion from "../components/HeroSceneMotion";
+import HeroEyebrowTypewriter from "../components/HeroEyebrowTypewriter";
+import BrandFlipCard from "../components/BrandFlipCard";
+import ComparisonReveal from "../components/ComparisonReveal";
 import PolandMapBackdrop from "../components/PolandMapBackdrop.astro";
 import PortfolioCarousel from "../components/PortfolioCarousel";
 import ProcessIsland from "../components/ProcessIsland";
+import ServiceCardMotion from "../components/ServiceCardMotion";
+import SiteHead from "../components/SiteHead.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import SiteMotion from "../components/SiteMotion";
+import TypewriterStatement from "../components/TypewriterStatement";
+import ContactForm from "../components/ContactForm.astro";
+import CookieConsent from "../components/CookieConsent";
+import { site, legalLinks } from "../data/site";
 import "../styles/global.css";
 
 const strengths = [
@@ -32,25 +35,47 @@ const strengths = [
 ];
 
 const services = [
-  { title: "Strony firmowe", text: "Elegancka, szybka strona, która tłumaczy ofertę i buduje zaufanie.", Icon: Globe2 },
-  { title: "Landing page", text: "Skoncentrowane strony kampanii z jasną ścieżką do kontaktu.", Icon: Target },
-  { title: "One page", text: "Krótka, dopracowana prezentacja dla firm usługowych i lokalnych.", Icon: Sparkles },
-  { title: "Odświeżenie strony", text: "Nowy rytm, lepsza struktura i wyraźniejsza komunikacja.", Icon: RefreshCw },
-  { title: "UX + copywriting", text: "Treść i układ prowadzą użytkownika od pierwszego ekranu do decyzji.", Icon: PenLine },
-  { title: "Opieka i rozwój", text: "Wsparcie techniczne, aktualizacje i kolejne iteracje po starcie.", Icon: LifeBuoy },
-];
-
-const comparisonRows = [
-  ["Szybkość", "Lekka strona bez nadmiaru wtyczek.", "Motyw i pluginy często dociążają stronę."],
-  ["Koszty", "Czytelny zakres i przewidywalne utrzymanie.", "Koszty rosną przez dodatki, hosting i poprawki."],
-  ["Bezpieczeństwo", "Mniejsza powierzchnia ataku i prostszy hosting.", "Popularny CMS jest częstym celem botów."],
-  ["Wygląd", "Projekt dopasowany do marki i celu.", "Szablon narzuca ograniczenia i podobieństwa."],
-  ["Wsparcie", "Opieka osoby, która zna całą decyzję projektową.", "Problem może leżeć w motywie, wtyczce albo hostingu."],
+  {
+    title: "Strony firmowe",
+    image: "/assets/nowaweb/services/corporate-websites.webp",
+    benefit: "Strona firmowa: oferta, referencje i jasny kontakt.",
+    points: ["Architektura informacji", "Projekt dopasowany do marki", "Szybkie wdrożenie w Astro"],
+  },
+  {
+    title: "Landing page",
+    image: "/assets/nowaweb/services/landing-page.webp",
+    benefit: "Landing pod jedną kampanię i jedno CTA.",
+    points: ["Układ pod konwersję", "Copy prowadzące do kontaktu", "Pomiar kluczowych zdarzeń"],
+  },
+  {
+    title: "One page",
+    image: "/assets/nowaweb/services/one-page.webp",
+    benefit: "Jedna strona z najważniejszymi informacjami i kontaktem.",
+    points: ["Najważniejsze informacje", "Płynna narracja", "Kontakt zawsze pod ręką"],
+  },
+  {
+    title: "Odświeżenie strony",
+    image: "/assets/nowaweb/services/website-refresh.webp",
+    benefit: "Odświeżamy wygląd i strukturę na bazie obecnej strony.",
+    points: ["Audyt obecnej strony", "Nowy rytm i hierarchia", "Lepsza czytelność na mobile"],
+  },
+  {
+    title: "UX + copywriting",
+    image: "/assets/nowaweb/services/ux-copywriting.webp",
+    benefit: "Teksty i układ pod pytania, które klient i tak zada.",
+    points: ["Jasna propozycja wartości", "Mikrocopy i CTA", "Struktura wspierająca decyzję"],
+  },
+  {
+    title: "Opieka i rozwój",
+    image: "/assets/nowaweb/services/care-growth.webp",
+    benefit: "Opieka po starcie: treści, poprawki i kolejne sekcje.",
+    points: ["Aktualizacje treści", "Rozwój kolejnych sekcji", "Wsparcie techniczne"],
+  },
 ];
 
 const support = [
-  ["Kontakt po starcie", "Masz jasną ścieżkę kontaktu i szybką reakcję na drobne sprawy."],
-  ["Aktualizacje", "Pilnujemy bezpieczeństwa, wydajności i stabilności strony."],
+  ["Kontakt po starcie", "Masz bezpośredni kontakt i szybką reakcję na drobne sprawy."],
+  ["Aktualizacje", "Pilnujemy aktualizacji, wydajności i działania strony."],
   ["Dalszy rozwój", "Dodajemy sekcje, kampanie i usprawnienia wtedy, kiedy biznes tego potrzebuje."],
 ];
 ---
@@ -58,43 +83,52 @@ const support = [
 <!doctype html>
 <html lang="pl">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="NowaWeb projektuje szybkie, estetyczne i stabilne strony internetowe dla firm z całej Polski."
+    <SiteHead
+      title="NowaWeb | Strony firmowe bez WordPressa"
+      description="NowaWeb projektuje lekkie strony firmowe dla marek z całej Polski, bez WordPressa i zbędnych wtyczek."
+      canonicalPath="/"
     />
-    <title>NowaWeb - profesjonalne strony internetowe</title>
   </head>
   <body>
     <SiteMotion client:load />
     <HeroSceneMotion client:load />
+    <ServiceCardMotion client:load />
     <div class="paper-grain" aria-hidden="true"></div>
 
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="NowaWeb">NowaWeb<span>.</span></a>
-      <nav aria-label="Główna nawigacja">
-        <a href="#projekty">Projekty</a>
-        <a href="#uslugi">Usługi</a>
-        <a href="#onas">O nas</a>
-        <a href="#proces">Proces</a>
-        <a href="#kontakt">Kontakt</a>
-      </nav>
-      <a class="header-cta" href="#kontakt">Umów rozmowę</a>
-    </header>
+    <SiteHeader />
 
     <main id="top">
       <section class="hero studio-section" aria-labelledby="hero-title">
         <div class="hero-copy" data-reveal>
-          <p class="eyebrow">NowaWeb - strony internetowe</p>
-          <h1 id="hero-title">Profesjonalny design <em>nie jest</em> luksusem</h1>
+          <HeroEyebrowTypewriter client:load />
+          <h1
+            id="hero-title"
+            class="hero-title"
+            aria-label="Profesjonalny design nie jest luksusem"
+          >
+            <span class="hero-title-line">
+              <span class="hero-title-line-inner">Profesjonalny</span>
+            </span>
+            <span class="hero-title-line">
+              <span class="hero-title-line-inner">design <em>nie jest</em></span>
+            </span>
+            <span class="hero-title-line">
+              <span class="hero-title-line-inner">luksusem</span>
+            </span>
+          </h1>
           <p class="lead">
-            Projektujemy szybkie strony dla firm, które chcą wyglądać profesjonalnie i
-            działać bez technologicznego chaosu. Zdalnie, precyzyjnie i z myślą o wyniku.
+            Projektujemy lekkie strony firmowe: czytelna oferta, szybkie ładowanie,
+            stały kontakt po starcie. Pracujemy zdalnie z firmami z całej Polski.
           </p>
           <div class="action-row">
-            <a class="button primary" href="#kontakt">Umów konsultację <ArrowRight aria-hidden="true" size={20} /></a>
-            <a class="button secondary" href="#projekty">Zobacz realizacje <ArrowRight aria-hidden="true" size={20} /></a>
+            <a class="button primary" href="#kontakt">
+              <span>Umów konsultację</span>
+              <ArrowRight aria-hidden="true" size={20} />
+            </a>
+            <a class="button secondary" href="#projekty">
+              <span>Zobacz realizacje</span>
+              <ArrowRight aria-hidden="true" size={20} />
+            </a>
           </div>
         </div>
 
@@ -104,10 +138,10 @@ const support = [
             <span class="perspective-floor"></span>
             <span class="product-halo"></span>
             <figure class="paper-piece paper-logo">
-              <img src="/assets/nowaweb/hero/logo-card-cutout.png" alt="" loading="eager" />
+              <img src="/assets/nowaweb/hero/logo-card-cutout.webp" alt="" width="700" height="700" loading="eager" decoding="async" />
             </figure>
             <figure class="paper-piece paper-poster">
-              <img src="/assets/nowaweb/hero/poster-cutout.png" alt="" loading="eager" />
+              <img src="/assets/nowaweb/hero/poster-cutout.webp" alt="" width="700" height="700" loading="lazy" decoding="async" />
             </figure>
             <figure class="paper-piece paper-poland">
               <span class="poland-tape"></span>
@@ -116,42 +150,57 @@ const support = [
               <span class="poland-stand"></span>
             </figure>
             <figure class="paper-piece tool-rail-piece">
-              <img src="/assets/nowaweb/hero/tool-rail-cutout.png" alt="" loading="eager" />
+              <img src="/assets/nowaweb/hero/tool-rail-cutout.webp" alt="" width="500" height="500" loading="lazy" decoding="async" />
             </figure>
             <div class="monitor-rig" data-monitor-billboard>
               <div class="monitor-glitch-layer">
                 <img
                   class="product-monitor monitor-state is-active"
-                  src="/assets/nowaweb/hero/monitor-screen-1.png"
+                  src="/assets/nowaweb/hero/monitor-screen-1.webp"
                   alt=""
+                  width="1200"
+                  height="780"
                   loading="eager"
                   fetchpriority="high"
+                  decoding="async"
                 />
                 <img
                   class="product-monitor monitor-state"
-                  src="/assets/nowaweb/hero/monitor-screen-2.png"
+                  src="/assets/nowaweb/hero/monitor-screen-2.webp"
                   alt=""
-                  loading="eager"
+                  width="1200"
+                  height="780"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <img
                   class="product-monitor monitor-state"
-                  src="/assets/nowaweb/hero/monitor-screen-3.png"
+                  src="/assets/nowaweb/hero/monitor-screen-3.webp"
                   alt=""
-                  loading="eager"
+                  width="1200"
+                  height="780"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
             <img
               class="product-notebook"
-              src="/assets/nowaweb/hero/notebook-cutout.png"
+              src="/assets/nowaweb/hero/notebook-cutout.webp"
               alt=""
-              loading="eager"
+              width="900"
+              height="700"
+              loading="lazy"
+              decoding="async"
             />
             <img
               class="product-cup"
-              src="/assets/nowaweb/hero/cup-cutout.png"
+              src="/assets/nowaweb/hero/cup-cutout.webp"
               alt=""
-              loading="eager"
+              width="500"
+              height="500"
+              loading="lazy"
+              decoding="async"
             />
             <span class="desk-paper desk-paper-a"></span>
             <span class="desk-paper desk-paper-b"></span>
@@ -180,18 +229,15 @@ const support = [
             <span class="title-word title-word-meet">spotyka</span>
             <em class="title-word title-word-creative">kreatywność</em>
           </h2>
+          <BrandFlipCard client:visible />
         </div>
         <div class="manifesto-copy" data-reveal>
           <span class="manifesto-copy-shape" aria-hidden="true"></span>
           <p>
-            Nie sprzedajemy gotowego motywu. Budujemy stronę jak system komunikacji:
-            najpierw cel i struktura, potem wygląd, wdrożenie i wsparcie. Dzięki temu
-            całość jest szybka, spójna i łatwa do rozwijania.
+            Zaczynamy od celu i struktury, potem projekt i wdrożenie. Bez gotowego
+            motywu WordPress: strona ma być szybka i prosta do rozwijania.
           </p>
-          <div class="map-card">
-            <MapPin aria-hidden="true" size={22} />
-            <span>Pracujemy zdalnie z firmami z całej Polski</span>
-          </div>
+          <TypewriterStatement client:visible />
         </div>
       </section>
 
@@ -200,107 +246,200 @@ const support = [
           <p class="eyebrow">Oferta</p>
           <h2 id="services-title">Strony, które <em>pracują</em> na decyzję klienta</h2>
           <p>
-            Każda sekcja ma swoje zadanie: wyjaśnić, uspokoić, pokazać wartość i
-            poprowadzić do kontaktu.
+            Układ prowadzący od oferty do kontaktu, bez zbędnych zakładek.
           </p>
         </div>
-        <div class="service-board">
-          {services.map(({ title, text, Icon }) => (
-            <article class="service-card" data-reveal>
-              <Icon aria-hidden="true" size={28} strokeWidth={1.7} />
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </article>
-          ))}
+          <div class="service-board">
+          {services.map(({ title, image, benefit, points }, index) => {
+            const backId = `service-card-back-${index}`;
+            const serviceNumber = String(index + 1).padStart(2, "0");
+
+            return (
+              <article class="service-card service-card--image" data-service-card data-reveal>
+                <div class="service-card-stage">
+                  <div class="service-card-flipper">
+                    <div class="service-card-face service-card-front" aria-hidden="false">
+                      <button
+                        class="service-card-trigger"
+                        type="button"
+                        data-service-card-trigger
+                        aria-expanded="false"
+                        aria-controls={backId}
+                        aria-label={`Pokaż szczegóły usługi: ${title}`}
+                      >
+                        <img
+                          class="service-card-image"
+                          src={image}
+                          alt=""
+                          width="1448"
+                          height="1086"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </button>
+                    </div>
+
+                    <div
+                      class="service-card-face service-card-back"
+                      id={backId}
+                      data-service-card-back
+                      aria-hidden="true"
+                    >
+                      <div class="service-card-back-meta" aria-hidden="true">
+                        <span class="service-card-back-index">{serviceNumber}</span>
+                        <span class="service-card-back-label">Zakres usługi</span>
+                      </div>
+                      <div class="service-card-back-copy">
+                        <h3>{title}</h3>
+                        <p>{benefit}</p>
+                      </div>
+                      <ul>
+                        {points.map((point) => <li>{point}</li>)}
+                      </ul>
+                      <div class="service-card-back-actions">
+                        <a href="#kontakt">
+                          Napisz o projekcie <ArrowRight aria-hidden="true" size={16} />
+                        </a>
+                        <button type="button" data-service-card-close aria-label={`Pokaż przód karty: ${title}`}>
+                          Wróć
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
       <section class="studio-section comparison" aria-labelledby="comparison-title">
         <div class="comparison-intro" data-reveal>
           <p class="eyebrow orange">Porównanie</p>
-          <h2 id="comparison-title">NowaWeb <em>vs</em> WordPress</h2>
-          <p>
-            WordPress bywa dobry. My wybieramy lżejszą ścieżkę dla firm, które chcą
-            strony szybkiej, prostej w utrzymaniu i projektowanej pod markę.
+          <h2 id="comparison-title">
+            <span class="comparison-title-line comparison-title-line--primary">NowaWeb</span>
+            <span class="comparison-title-line comparison-title-line--secondary"><em>vs</em> WordPress</span>
+          </h2>
+          <p class="comparison-summary">
+            WordPress ciągnie za sobą motyw, wtyczki i utrzymanie. My budujemy lekką
+            stronę pod Twoją markę: szybszą i prostszą w opiece.
           </p>
         </div>
-        <div class="comparison-table" data-reveal>
-          <div class="table-head">
-            <span>Kryterium</span>
-            <strong>NowaWeb</strong>
-            <strong>Typowy WordPress</strong>
-          </div>
-          {comparisonRows.map(([label, nowa, wordpress]) => (
-            <div class="table-row">
-              <span>{label}</span>
-              <p><CheckCircle2 aria-hidden="true" size={18} />{nowa}</p>
-              <p>{wordpress}</p>
-            </div>
-          ))}
-        </div>
+        <ComparisonReveal client:visible />
       </section>
 
       <section class="studio-section process" id="proces" aria-labelledby="process-title">
         <div class="section-heading center" data-reveal>
           <p class="eyebrow">Proces</p>
           <h2 id="process-title">Jak wygląda <em>współpraca</em></h2>
-          <p>Prosty rytm, jasne decyzje i etapowe dowożenie zamiast chaosu.</p>
+          <p>Cztery etapy, ustalony zakres i stały kontakt.</p>
         </div>
         <ProcessIsland client:visible />
       </section>
 
       <section class="studio-section portfolio" id="projekty" aria-labelledby="portfolio-title">
         <div class="portfolio-intro" data-reveal>
-          <p class="eyebrow">Realizacje</p>
-          <h2 id="portfolio-title">Wybrane kierunki <em>realizacji</em></h2>
+          <p class="eyebrow">Wybrane realizacje</p>
+          <h2 id="portfolio-title">Trzy projekty. <em>Trzy różne branże i decyzje.</em></h2>
           <p>
-            Portfolio traktujemy jak proof of direction: każda strona ma inny ton,
-            ale ten sam standard jakości, rytmu i czytelności.
+            Przesuń kolekcję i zobacz trzy różne projekty
+            dla trzech różnych odbiorców.
           </p>
         </div>
         <PortfolioCarousel client:visible />
       </section>
 
-      <section class="studio-section support" aria-labelledby="support-title">
-        <div class="support-copy" data-reveal>
-          <p class="eyebrow">Wsparcie</p>
-          <h2 id="support-title">Po wdrożeniu <em>nie znikamy</em></h2>
-          <p>
-            Strona żyje razem z firmą. Pomagamy ją utrzymać, rozwijać i poprawiać,
-            kiedy zmieniają się cele albo oferta.
+      <section class="studio-section support" data-support-sequence aria-labelledby="support-title">
+        <div class="support-copy">
+          <p class="eyebrow" data-support-step>Wsparcie</p>
+          <h2 id="support-title" data-support-impact>
+            <span class="support-run">
+              <span class="support-run__puffs" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </span>
+              <span class="support-run__text">Po wdrożeniu</span>
+            </span>
+            <span class="support-impact">
+              <span class="support-impact__roman">nie znikamy</span>
+              <span class="support-impact__italic" aria-hidden="true">nie znikamy</span>
+            </span>
+          </h2>
+          <p data-support-step>
+            Strona żyje razem z firmą. Aktualizujemy treści, pilnujemy stabilności
+            i dodajemy sekcje, gdy oferta się zmienia.
           </p>
         </div>
         <div class="support-grid">
           {support.map(([title, text]) => (
-            <article data-reveal>
+            <article data-support-step>
               <ShieldCheck aria-hidden="true" size={28} strokeWidth={1.7} />
               <h3>{title}</h3>
               <p>{text}</p>
             </article>
           ))}
         </div>
+
+        <a class="scroll-cue" href="#kontakt" aria-label="Przejdź niżej do kontaktu">
+          <span class="scroll-cue__ring" aria-hidden="true">
+            <ChevronDown size={22} strokeWidth={2.15} />
+          </span>
+        </a>
       </section>
 
       <section class="final-cta" id="kontakt" aria-labelledby="cta-title">
-        <div class="cta-panel" data-reveal>
-          <p class="eyebrow">Kontakt</p>
-          <h2 id="cta-title">Stwórzmy stronę, która zrobi świetne pierwsze <em>wrażenie</em></h2>
-          <p>
-            Opowiedz nam, gdzie dziś jest Twoja marka i co strona ma realnie dowieźć.
-            Zaproponujemy kierunek, strukturę i sensowny plan działania.
+        <div class="cta-panel" data-kontakt-sequence>
+          <p class="eyebrow" data-kontakt-step>Kontakt</p>
+          <h2 id="cta-title" data-kontakt-step>Zróbmy stronę, która zbiera <em>zapytania</em></h2>
+          <p data-kontakt-step>
+            Opowiedz nam, gdzie dziś jest Twoja marka i czego oczekujesz od strony.
+            Powiemy, co zbudować najpierw i ile to zajmie.
           </p>
-          <div class="action-row">
-            <a class="button primary" href="mailto:kontakt@nowaweb.pl"><Mail aria-hidden="true" size={20} />Napisz do nas</a>
-            <a class="button secondary" href="tel:+48000000000">Umów rozmowę <ArrowRight aria-hidden="true" size={20} /></a>
+          <div class="action-row" data-kontakt-step>
+            <a class="button primary" href={`mailto:${site.email}`}><Mail aria-hidden="true" size={20} />Napisz do nas</a>
+            <button
+              type="button"
+              class="button secondary"
+              data-open-contact-form
+              aria-expanded="false"
+              aria-controls="cta-contact-form"
+            >
+              Umów rozmowę <ArrowRight aria-hidden="true" size={20} />
+            </button>
+          </div>
+          <div class="cta-form" id="cta-contact-form" data-contact-form-panel>
+            <div class="cta-form__inner">
+              <ContactForm formName="kontakt-home" heading="Umów rozmowę: krótkie zapytanie" />
+            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <span>NowaWeb<span>.</span></span>
-      <a href="#top">Wróć na górę</a>
+    <footer class="site-footer site-footer--legal">
+      <div class="site-footer__brand">
+        <span>NowaWeb<span>.</span></span>
+        <p>
+          {site.company.legalName}<br />
+          {site.company.addressLine}, {site.company.postalCode} {site.company.city}<br />
+          NIP {site.company.nip} · KRS {site.company.krs}
+        </p>
+      </div>
+      <nav class="site-footer__links" aria-label="Stopka">
+        {legalLinks.map((link) => (
+          <a href={link.href}>{link.label}</a>
+        ))}
+        <button type="button" class="site-footer__cookies" data-open-cookie-settings>
+          Ustawienia cookies
+        </button>
+      </nav>
+      <div class="site-footer__contact">
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={site.phoneHref}>{site.phoneDisplay}</a>
+        <a href="#top">Wróć na górę</a>
+      </div>
     </footer>
+
+    <CookieConsent client:load />
 
     <script>
       import "../scripts/monitor-billboard.ts";

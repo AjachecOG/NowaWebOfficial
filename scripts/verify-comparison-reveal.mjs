@@ -164,11 +164,11 @@ try {
       const buttons = Array.from(root.querySelectorAll('[data-comparison-criterion]'));
       const failures = [];
       const expectedVerdicts = [
-        ['Szybkość', 'Szybkość, która sprzedaje.', 'Klient nie będzie czekał.'],
-        ['Koszty', 'Płacisz za efekt, nie poprawki.', 'Tani start. Drogie utrzymanie.'],
-        ['Bezpieczeństwo', 'Mniej luk. Więcej spokoju.', 'Każdy dodatek to kolejne ryzyko.'],
-        ['Wygląd', 'Marka, której nie da się pomylić.', 'Szablon nie buduje przewagi.'],
-        ['Wsparcie', 'Jedna odpowiedzialność. Szybka decyzja.', 'Problem krąży. Rachunek zostaje.'],
+        ['Szybkość', 'Szybka strona trudniej traci uwagę.', 'Wolna strona gubi klienta.'],
+        ['Koszty', 'Płacisz za ustalony zakres.', 'Tani start, potem stałe koszty.'],
+        ['Bezpieczeństwo', 'Prostsza architektura, mniej awarii.', 'Każda wtyczka to kolejny punkt ryzyka.'],
+        ['Wygląd', 'Wygląda jak Twoja firma, nie jak szablon.', 'Szablon wygląda jak tysiąc innych stron.'],
+        ['Wsparcie', 'Jeden kontakt zna cały projekt.', 'Hosting zrzuca na motyw, motyw na wtyczkę.'],
       ];
       const renderedVerdicts = [];
 
@@ -177,11 +177,22 @@ try {
         slider.dispatchEvent(new Event('input', { bubbles: true }));
       };
 
-      const readVerdicts = () => ({
-        edge: root.getAttribute('data-comparison-edge'),
-        nowaOpacity: Number(getComputedStyle(root.querySelector('[data-comparison-verdict="nowaweb"]')).opacity),
-        wordpressOpacity: Number(getComputedStyle(root.querySelector('[data-comparison-verdict="wordpress"]')).opacity),
-      });
+      const readVerdicts = () => {
+        const nowaweb = root.querySelector('[data-comparison-verdict="nowaweb"]');
+        const wordpress = root.querySelector('[data-comparison-verdict="wordpress"]');
+        const nowaRect = nowaweb.getBoundingClientRect();
+        const wordpressRect = wordpress.getBoundingClientRect();
+        const handleRect = handle.getBoundingClientRect();
+        return {
+          edge: root.getAttribute('data-comparison-edge'),
+          nowaOpacity: Number(getComputedStyle(nowaweb).opacity),
+          wordpressOpacity: Number(getComputedStyle(wordpress).opacity),
+          nowaRight: nowaRect.right,
+          wordpressLeft: wordpressRect.left,
+          handleLeft: handleRect.left,
+          handleRight: handleRect.right,
+        };
+      };
 
       const edgeState = (value) => {
         setReveal(value);
@@ -231,6 +242,12 @@ try {
       if (buttons.length !== 5) failures.push('expected five criteria');
       if (left.reveal !== '0%' || right.reveal !== '100%') failures.push('slider does not reach both ends');
       if (!left.handleInside || !right.handleInside) failures.push('VS handle leaves the stage at an edge');
+      if (wordpressVerdict.wordpressLeft < wordpressVerdict.handleRight + 16) {
+        failures.push('WordPress verdict lacks safe space from the VS handle: ' + (wordpressVerdict.wordpressLeft - wordpressVerdict.handleRight));
+      }
+      if (nowawebVerdict.nowaRight > nowawebVerdict.handleLeft - 16) {
+        failures.push('NowaWeb verdict lacks safe space from the VS handle: ' + (nowawebVerdict.handleLeft - nowawebVerdict.nowaRight));
+      }
       for (const verdictState of [wordpressVerdict, nowawebVerdict, neutralVerdict]) {
         if (verdictState.edge !== null) failures.push('edge verdict visibility still uses a threshold state');
         if (verdictState.nowaOpacity < 0.95 || verdictState.wordpressOpacity < 0.95) {

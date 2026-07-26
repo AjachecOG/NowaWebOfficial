@@ -1,0 +1,94 @@
+{
+  "title": "Animacja publikacji i konfiguracji — etap 4 procesu",
+  "date": "2026-07-25",
+  "status": "approved",
+  "goal": "Zastąpić statyczną wizualizację etapu Start i wsparcie jednorazową sekwencją publikacji i konfiguracji strony, zakończoną trwałym komunikatem sukcesu.",
+  "scope": {
+    "included": [
+      "Scena launch w czwartym etapie komponentu ProcessIsland",
+      "Style i animacje sceny launch",
+      "Walidator strukturalny i test przeglądarkowy procesu"
+    ],
+    "unchanged": [
+      "Układ kart i nawigacja etapów",
+      "Przewijanie GSAP",
+      "Tekst karty Start i wsparcie",
+      "Pozostałe trzy sceny procesu"
+    ],
+    "excluded": [
+      "Nowe zależności",
+      "Timery React",
+      "Zapętlanie animacji",
+      "Zmiana czasu przewijania sekcji"
+    ]
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "state": "uploading",
+      "description": "W ramce przeglądarki widoczna jest pusta, jasna strona z centralnym napisem Publikowanie… i wyraźnie obracającym się pierścieniem kropek, który zwalnia dopiero przed zakończeniem."
+    },
+    {
+      "order": 2,
+      "state": "uploaded",
+      "description": "Pierścień zmienia się w znak potwierdzenia, a napis w Opublikowano."
+    },
+    {
+      "order": 3,
+      "state": "configuration",
+      "description": "Stan publikowania znika, a jego miejsce zajmuje poziomy pasek postępu. Nad paskiem, w miejscu usuniętego nagłówka Konfiguracja, widoczny jest jeden duży i wyśrodkowany komunikat bieżącego postoju.",
+      "status_placement": "above_progress_bar_replacing_heading",
+      "status_min_font_px": 12,
+      "visible_stop_markers": false,
+      "stops": [
+        {
+          "progress": 24,
+          "message": "Odpędzamy negatywne opinie…"
+        },
+        {
+          "progress": 67,
+          "message": "Przyciągamy właściwych klientów…"
+        },
+        {
+          "progress": 88,
+          "message": "Dopinamy ostatnie szczegóły…"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "state": "completed",
+      "progress": 100,
+      "message": "Gotowe. Twoja strona pracuje.",
+      "description": "Pasek krótko się rozświetla, pojawia się znak potwierdzenia, a stan końcowy pozostaje widoczny."
+    }
+  ],
+  "motion": {
+    "duration_seconds": 9,
+    "implementation": "CSS animations scoped to the active launch scene",
+    "loop": false,
+    "replay": "Ponowne wejście w etap 4 uruchamia sekwencję od początku przez istniejący kontrakt aktywnej karty i data-story-visible.",
+    "reduced_motion": "Sekwencja publikacji pozostaje w pełni animowana także przy systemowym ustawieniu ograniczenia ruchu; ustawienie nadal łagodzi ruch kart procesu."
+  },
+  "visual": {
+    "palette": "Obecna niebiesko-biała paleta procesu z zielonym akcentem sukcesu",
+    "browser_frame": true,
+    "empty_page_background": true,
+    "decorative_confetti": false,
+    "progress_stops": [24, 67, 88],
+    "progress_stop_markers_visible": false
+  },
+  "accessibility": {
+    "decorative_scene": true,
+    "aria_hidden": true,
+    "mobile_copy_must_fit": true,
+    "horizontal_overflow_allowed": false,
+    "layout_shift_allowed": false
+  },
+  "verification": [
+    "Walidator strukturalny sprawdza polskie etykiety, wartości 24/67/88, teksty statusów, brak nagłówka Konfiguracja i brak widocznych markerów postoju.",
+    "Test przeglądarkowy sprawdza zmianę obrotu wskaźnika w czasie, czytelność statusów nad paskiem, punkty zatrzymania, trwały finał, restart i reduced motion.",
+    "Build Astro kończy się kodem 0.",
+    "Kontrola wizualna desktop i mobile potwierdza czytelność, proporcje i brak overflow."
+  ]
+}

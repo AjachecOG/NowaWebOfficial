@@ -59,8 +59,6 @@ function initMonitorBillboard() {
 
   show(index);
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
   schedule(cycle, FIRST_GLITCH_MS);
 
   return () => {

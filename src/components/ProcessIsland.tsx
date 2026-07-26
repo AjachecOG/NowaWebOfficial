@@ -23,13 +23,13 @@ const steps = [
   {
     id: "3",
     title: "Design i wdrożenie",
-    text: "Tworzymy dopracowany wygląd oraz szybką, stabilną stronę.",
+    text: "Projekt i kod pod Twoją ofertę, bez zbędnych wtyczek.",
     icon: PenTool,
   },
   {
     id: "4",
     title: "Start i wsparcie",
-    text: "Publikujemy stronę, dbamy o opiekę i dalszy rozwój.",
+    text: "Publikujemy stronę i zostajemy przy opiece oraz rozwoju.",
     icon: Rocket,
   },
 ];
@@ -225,7 +225,7 @@ function ProcessVisual({ index, playConversation }: ProcessVisualProps) {
         <span className="story-paint-daub"><i /></span>
         <div className="story-page-shell story-page-shell--designed story-scene__final">
           <span className="story-page-nav"><i /><i /><i /></span>
-          <span className="story-page-hero"><b>To będzie Twoja strona.</b><i /></span>
+          <span className="story-page-hero"><b>To będzie Twoja strona ;)</b><i /></span>
           <span className="story-page-grid"><i /><i /><i /></span>
           <span className="story-page-cta" />
         </div>
@@ -242,20 +242,43 @@ function ProcessVisual({ index, playConversation }: ProcessVisualProps) {
       data-process-scene="launch"
       aria-hidden="true"
     >
-      <div className="story-browser story-scene__final">
+      <div className="story-browser story-launch-browser story-scene__final">
         <span className="story-browser__bar">
           <i /><i /><i /><b>nowa-strona.pl</b>
         </span>
-        <div className="story-page-shell story-page-shell--live">
-          <span className="story-page-nav"><i /><i /><i /></span>
-          <span className="story-page-hero"><b>To jest Twoja strona.</b><i /></span>
-          <span className="story-page-grid"><i /><i /><i /></span>
-          <span className="story-page-cta" />
+        <div className="story-launch-page">
+          <div className="story-upload-phase">
+            <span className="story-upload-spinner">
+              <span className="story-upload-spinner__dots">
+                <i /><i /><i /><i /><i /><i /><i /><i />
+              </span>
+            </span>
+            <b className="story-uploading-label">Publikowanie</b>
+            <b className="story-uploaded-label">Opublikowano</b>
+          </div>
+
+          <div className="story-config-phase">
+            <div className="story-config-progress">
+              <span className="story-config-progress__fill" />
+            </div>
+            <span className="story-config-status" data-progress="24">
+              Filtrujemy zbędny szum
+            </span>
+            <span className="story-config-status" data-progress="67">
+              Ustawiamy ścieżkę do kontaktu
+            </span>
+            <span className="story-config-status" data-progress="88">
+              Sprawdzamy ostatnie elementy
+            </span>
+          </div>
+
+          <div className="story-launch-complete">
+            <span><i /></span>
+            <b>Gotowe.</b>
+            <small>Twoja strona pracuje.</small>
+          </div>
         </div>
       </div>
-      <div className="story-publish"><span /><b>100%</b></div>
-      <span className="story-online"><i /> ONLINE</span>
-      <span className="story-support">Jesteśmy obok.</span>
     </div>
   );
 }

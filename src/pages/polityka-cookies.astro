@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout
+  title="Polityka cookies"
+  description="Informacje o plikach cookies używanych na stronie NowaWeb."
+>
+  <main class="legal-page">
+    <article class="legal-page__inner">
+      <p class="eyebrow">Dokumenty</p>
+      <h1>Polityka cookies</h1>
+      <p class="legal-lead">
+        Ostatnia aktualizacja: 25 lipca 2026 r. Dokument uzupełnia
+        <a href="/polityka-prywatnosci">politykę prywatności</a>.
+      </p>
+
+      <h2>1. Co to są cookies</h2>
+      <p>
+        Cookies to niewielkie pliki zapisywane na urządzeniu użytkownika. Pomagają
+        stronie działać, zapamiętywać wybory i (po zgodzie) prowadzić analitykę.
+      </p>
+
+      <h2>2. Administrator</h2>
+      <p>
+        {site.company.legalName}, {site.company.addressLine}, {site.company.postalCode}
+        {" "}{site.company.city}, NIP {site.company.nip}. Kontakt:
+        <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+
+      <h2>3. Rodzaje cookies na tej stronie</h2>
+      <h3>Niezbędne</h3>
+      <p>
+        Wymagane do podstawowego działania serwisu, w tym zapamiętania decyzji o cookies
+        (`nowaweb-cookie-consent` w localStorage). Działają bez dodatkowej zgody.
+      </p>
+      <h3>Analityczne (opcjonalne)</h3>
+      <p>
+        Mogą być włączone dopiero po kliknięciu „Akceptuję” w banerze. Obecnie strona
+        nie ładuje skryptów analitycznych; zapisujemy tylko Twój wybór w przeglądarce.
+        Jeśli analytics zostanie dodany później, uruchomi się wyłącznie przy zapisanej zgodzie.
+      </p>
+
+      <h2>4. Jak zarządzasz zgodą</h2>
+      <ul>
+        <li>baner przy pierwszym wejściu: „Akceptuję” lub „Tylko niezbędne”,</li>
+        <li>link „Ustawienia cookies” w stopce: ponowne otwarcie wyboru,</li>
+        <li>ustawienia przeglądarki: usuwanie lub blokowanie cookies.</li>
+      </ul>
+
+      <h2>5. Podstawa prawna</h2>
+      <p>
+        Cookies niezbędne: uzasadniony interes (art. 6 ust. 1 lit. f RODO) oraz przepisy
+        o komunikacji elektronicznej w zakresie niezbędnym do świadczenia usługi.
+        Cookies opcjonalne: zgoda (art. 6 ust. 1 lit. a RODO).
+      </p>
+
+      <h2>6. Więcej informacji</h2>
+      <p>
+        Szczegóły przetwarzania danych osobowych: <a href="/polityka-prywatnosci">polityka prywatności</a>.
+        Regulamin korzystania ze strony: <a href="/regulamin">regulamin</a>.
+      </p>
+    </article>
+  </main>
+</BaseLayout>

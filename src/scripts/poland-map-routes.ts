@@ -63,8 +63,10 @@ export function initPolandMapRoutes() {
     }
 
     const shotLength = Math.min(Math.max(length * 0.13, 38), 82);
-    routeLine.style.strokeDasharray = `${shotLength} ${length}`;
-    routeLine.style.strokeDashoffset = `${length}`;
+    // Keep the repeated dash outside the path so a single shot can cross the
+    // whole route without wrapping back to its origin mid-animation.
+    routeLine.style.strokeDasharray = `${shotLength} ${length + shotLength}`;
+    routeLine.style.strokeDashoffset = `${shotLength}`;
     routeLine.style.opacity = "0";
 
     setActiveCities(route.from, route.to);
@@ -84,15 +86,15 @@ export function initPolandMapRoutes() {
 
       if (shootProgress < 1) {
         const eased = easeOutQuart(shootProgress);
-        routeLine.style.strokeDashoffset = `${length * (1 - eased)}`;
+        routeLine.style.strokeDashoffset = `${shotLength - length * eased}`;
         const peak = shootProgress < 0.12 ? 0.45 + shootProgress * 4.5 : 1;
         routeLine.style.opacity = `${Math.min(peak, 1)}`;
         frameId = window.requestAnimationFrame(animate);
         return;
       }
 
-      // Shot reached destination — hold at offset 0, then fade; hideRoute keeps dash collapsed
-      routeLine.style.strokeDashoffset = "0";
+      // Shot reached destination — hold it there, then fade.
+      routeLine.style.strokeDashoffset = `${shotLength - length}`;
       const fadeStart = performance.now();
       const startOpacity = 0.9;
 

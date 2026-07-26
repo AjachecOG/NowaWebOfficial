@@ -1,0 +1,110 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout
+  title="Regulamin"
+  description="Regulamin świadczenia usług drogą elektroniczną | NowaWeb / Revela Sp. z o.o."
+>
+  <main class="legal-page">
+    <article class="legal-page__inner">
+      <p class="eyebrow">Dokumenty</p>
+      <h1>Regulamin świadczenia usług drogą elektroniczną</h1>
+      <p class="legal-lead">
+        Ostatnia aktualizacja: 25 lipca 2026 r. Regulamin udostępniany na podstawie art. 8
+        ustawy o świadczeniu usług drogą elektroniczną. Nie stanowi porady prawnej.
+      </p>
+
+      <h2>§1. Postanowienia ogólne</h2>
+      <p>
+        1. Usługodawcą jest <strong>{site.company.legalName}</strong> z siedzibą we Wrocławiu,
+        {site.company.addressLine}, {site.company.postalCode} {site.company.city},
+        NIP {site.company.nip}, KRS {site.company.krs}, REGON {site.company.regon},
+        zwany dalej „Usługodawcą”.
+      </p>
+      <p>
+        2. Marka NowaWeb jest używana przez Usługodawcę w komunikacji usług projektowania
+        i wdrażania stron internetowych.
+      </p>
+      <p>
+        3. Kontakt: <a href={`mailto:${site.email}`}>{site.email}</a>,
+        tel. <a href={site.phoneHref}>{site.phoneDisplay}</a>.
+      </p>
+      <p>
+        4. Niniejszy regulamin określa zasady korzystania ze strony internetowej nowaweb.pl
+        oraz usług świadczonych drogą elektroniczną za jej pośrednictwem (m.in. formularz kontaktowy).
+      </p>
+
+      <h2>§2. Rodzaje i zakres usług elektronicznych</h2>
+      <p>Usługodawca świadczy drogą elektroniczną w szczególności:</p>
+      <ul>
+        <li>udostępnianie treści informacyjnych i marketingowych o ofercie NowaWeb,</li>
+        <li>umożliwienie kontaktu poprzez formularz oraz podane dane teleadresowe,</li>
+        <li>zapamiętanie preferencji cookies w zakresie opisanym w polityce cookies.</li>
+      </ul>
+      <p>
+        Zawarcie umowy o zaprojektowanie lub wdrożenie strony internetowej następuje
+        indywidualnie (oferta / umowa) i nie jest finalizowane wyłącznie przez wypełnienie
+        formularza na stronie.
+      </p>
+
+      <h2>§3. Warunki techniczne</h2>
+      <p>Do korzystania z serwisu wymagane są:</p>
+      <ul>
+        <li>urządzenie z dostępem do Internetu,</li>
+        <li>aktualna przeglądarka wspierająca HTML5, CSS i JavaScript,</li>
+        <li>aktywne konto email (przy kontakcie formularzem).</li>
+      </ul>
+
+      <h2>§4. Zakaz treści bezprawnych</h2>
+      <p>
+        Usługobiorca zobowiązuje się nie dostarczać treści o charakterze bezprawnym,
+        w szczególności naruszających dobra osobiste, prawa autorskie, przepisy o ochronie
+        danych albo stanowiących spam.
+      </p>
+
+      <h2>§5. Zawarcie i rozwiązanie korzystania z usług elektronicznych</h2>
+      <p>
+        1. Umowa o świadczenie usług elektronicznych polegających na przeglądaniu strony
+        zawierana jest z chwilą wejścia na stronę i trwa do opuszczenia serwisu.
+      </p>
+      <p>
+        2. Wysłanie formularza stanowi zapytanie ofertowe / prośbę o kontakt, a nie
+        automatyczne zawarcie umowy o wykonanie strony.
+      </p>
+      <p>
+        3. Usługobiorca może w każdej chwili zaprzestać korzystania ze strony.
+        Preferencje cookies może zmienić przez „Ustawienia cookies” w stopce.
+      </p>
+
+      <h2>§6. Reklamacje</h2>
+      <p>
+        1. Reklamacje dotyczące działania serwisu należy składać na
+        <a href={`mailto:${site.email}`}>{site.email}</a>, wskazując opis problemu
+        i dane kontaktowe.
+      </p>
+      <p>
+        2. Usługodawca rozpatruje reklamacje w terminie 14 dni i odpowiada na wskazany email.
+      </p>
+
+      <h2>§7. Dane osobowe</h2>
+      <p>
+        Zasady przetwarzania danych osobowych określa
+        <a href="/polityka-prywatnosci">polityka prywatności</a>. Zasady cookies:
+        <a href="/polityka-cookies">polityka cookies</a>.
+      </p>
+
+      <h2>§8. Postanowienia końcowe</h2>
+      <p>
+        1. Prawem właściwym jest prawo polskie.
+      </p>
+      <p>
+        2. Usługodawca może zmieniać regulamin; aktualna wersja jest publikowana na tej stronie.
+      </p>
+      <p>
+        3. {site.company.court}.
+      </p>
+    </article>
+  </main>
+</BaseLayout>

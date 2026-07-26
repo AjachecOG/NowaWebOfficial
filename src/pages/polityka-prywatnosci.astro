@@ -1,0 +1,111 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout
+  title="Polityka prywatności"
+  description="Informacje o przetwarzaniu danych osobowych przez Revela Sp. z o.o. / NowaWeb."
+>
+  <main class="legal-page">
+    <article class="legal-page__inner">
+      <p class="eyebrow">Dokumenty</p>
+      <h1>Polityka prywatności</h1>
+      <p class="legal-lead">
+        Ostatnia aktualizacja: 25 lipca 2026 r. Dokument informacyjny zgodny z art. 13 RODO.
+        Nie stanowi porady prawnej. W razie potrzeby skonsultuj treść z prawnikiem.
+      </p>
+
+      <h2>1. Administrator danych</h2>
+      <p>
+        Administratorem danych osobowych jest <strong>{site.company.legalName}</strong>,
+        {site.company.addressLine}, {site.company.postalCode} {site.company.city},
+        NIP {site.company.nip}, KRS {site.company.krs}, REGON {site.company.regon}.
+        Kontakt: <a href={`mailto:${site.email}`}>{site.email}</a>,
+        tel. <a href={site.phoneHref}>{site.phoneDisplay}</a>.
+      </p>
+      <p>
+        Marka NowaWeb jest używana w komunikacji marketingowej usług tworzenia stron
+        internetowych świadczonych przez administratora.
+      </p>
+
+      <h2>2. Jakie dane przetwarzamy</h2>
+      <ul>
+        <li>dane podane w formularzu kontaktowym (imię/firma, email, telefon, treść wiadomości),</li>
+        <li>dane techniczne niezbędne do działania strony (np. logi serwera, adres IP w zakresie zapewnianym przez hosting),</li>
+        <li>preferencje cookies zapisane lokalnie w przeglądarce.</li>
+      </ul>
+
+      <h2>3. Cele i podstawy prawne</h2>
+      <ul>
+        <li>
+          <strong>Odpowiedź na zapytanie</strong>: art. 6 ust. 1 lit. b RODO (działania
+          przed zawarciem umowy) oraz lit. f (uzasadniony interes administratora w kontakcie
+          handlowym B2B); gdy wymagana jest zgoda: lit. a.
+        </li>
+        <li>
+          <strong>Prowadzenie korespondencji i archiwizacja zapytań</strong>: art. 6 ust. 1 lit. f RODO.
+        </li>
+        <li>
+          <strong>Wypełnienie obowiązków prawnych</strong> (np. rachunkowych, gdy dojdzie do współpracy):
+          art. 6 ust. 1 lit. c RODO.
+        </li>
+        <li>
+          <strong>Cookies niezbędne</strong>: art. 6 ust. 1 lit. f RODO; cookies opcjonalne
+          wyłącznie po zgodzie (art. 6 ust. 1 lit. a RODO). Szczegóły w
+          <a href="/polityka-cookies">polityce cookies</a>.
+        </li>
+        <li>
+          <strong>Ochrona formularza przed spamem</strong> (Cloudflare Turnstile, gdy włączony):
+          art. 6 ust. 1 lit. f RODO.
+        </li>
+      </ul>
+
+      <h2>4. Odbiorcy danych</h2>
+      <p>
+        Dane mogą być powierzane dostawcom usług IT niezbędnym do działania strony i formularza,
+        w szczególności hostingowi Netlify (przetwarzanie formularzy Netlify Forms) oraz
+        dostawcy poczty email. Odbiorcy działają na podstawie umów powierzenia lub jako
+        niezależni administratorzy w zakresie własnych usług.
+      </p>
+
+      <h2>5. Przekazywanie poza EOG</h2>
+      <p>
+        Część dostawców (np. Netlify) może przetwarzać dane poza Europejskim Obszarem
+        Gospodarczym. W takich przypadkach stosowane są odpowiednie zabezpieczenia
+        (m.in. standardowe klauzule umowne), zgodnie z informacjami tych dostawców.
+      </p>
+
+      <h2>6. Okres przechowywania</h2>
+      <ul>
+        <li>zapytania z formularza: do 24 miesięcy od ostatniego kontaktu lub dłużej, gdy wymagają tego przepisy / spór,</li>
+        <li>preferencje cookies: do zmiany lub usunięcia w przeglądarce,</li>
+        <li>logi techniczne: zgodnie z polityką hostingu, zwykle nie dłużej niż to konieczne do bezpieczeństwa.</li>
+      </ul>
+
+      <h2>7. Prawa osoby</h2>
+      <p>Przysługuje Ci prawo do:</p>
+      <ul>
+        <li>dostępu do danych, sprostowania, usunięcia, ograniczenia przetwarzania,</li>
+        <li>przenoszenia danych (gdy ma zastosowanie),</li>
+        <li>sprzeciwu wobec przetwarzania opartego na uzasadnionym interesie,</li>
+        <li>cofnięcia zgody w dowolnym momencie (bez wpływu na zgodność wcześniejszego przetwarzania),</li>
+        <li>skargi do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa).</li>
+      </ul>
+
+      <h2>8. Dobrowolność podania danych</h2>
+      <p>
+        Podanie danych w formularzu jest dobrowolne, ale niezbędne do odpowiedzi na zapytanie.
+        Bez adresu email nie będziemy mogli się skontaktować.
+      </p>
+
+      <h2>9. Profilowanie</h2>
+      <p>Nie stosujemy zautomatyzowanego podejmowania decyzji ani profilowania w rozumieniu art. 22 RODO.</p>
+
+      <h2>10. Zmiany</h2>
+      <p>
+        Polityka może być aktualizowana. Aktualna wersja jest zawsze dostępna pod tym adresem.
+      </p>
+    </article>
+  </main>
+</BaseLayout>

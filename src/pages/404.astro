@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Nie znaleziono strony"
+  description="Ta podstrona nie istnieje. Wróć na stronę główną NowaWeb lub napisz do nas."
+>
+  <main class="legal-page">
+    <div class="legal-page__inner">
+      <p class="eyebrow">404</p>
+      <h1>Nie ma takiej strony</h1>
+      <p class="legal-lead">
+        Link mógł się zdezaktualizować albo adres został wpisany z literówką.
+      </p>
+      <div class="action-row">
+        <a class="button primary" href="/">Wróć na stronę główną</a>
+        <a class="button secondary" href="/kontakt">Napisz do nas</a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

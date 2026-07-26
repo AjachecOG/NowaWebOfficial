@@ -1,0 +1,48 @@
+---
+import { site } from "../data/site";
+
+type Props = {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+};
+
+const { title, description, canonicalPath = Astro.url.pathname } = Astro.props;
+const canonical = new URL(canonicalPath, site.url).toString();
+const ogImage = new URL("/assets/nowaweb/og-default.jpg", site.url).toString();
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.brand,
+  url: site.url,
+  email: site.email,
+  telephone: site.phoneDisplay,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: site.company.addressLine,
+    postalCode: site.company.postalCode,
+    addressLocality: site.company.city,
+    addressCountry: "PL",
+  },
+  taxID: site.company.nip,
+};
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="pl_PL" />
+<meta property="og:site_name" content={site.brand} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

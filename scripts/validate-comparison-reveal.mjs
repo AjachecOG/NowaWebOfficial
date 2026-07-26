@@ -163,6 +163,11 @@ assert.match(
 );
 assert.match(
   styles,
+  /\[data-comparison-transitioning\]\s+\.comparison-panel-copy,\s*\.comparison-reveal\[data-comparison-transitioning\]\s+\.comparison-edge-verdict/,
+  "criterion transitions must update panel copy and edge verdicts together",
+);
+assert.match(
+  styles,
   /:has\(\.comparison-slider:active\) \.comparison-handle/,
   "active drag feedback is missing",
 );

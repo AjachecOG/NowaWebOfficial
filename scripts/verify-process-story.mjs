@@ -327,6 +327,89 @@ try {
     })()`,
   );
 
+  const launchPlayback = await evaluate(
+    client,
+    `(async () => {
+      const story = document.querySelector('.process-story');
+      const scene = document.querySelector('[data-process-scene="launch"]');
+      const top = story.getBoundingClientRect().top + window.scrollY - 80;
+      const range = story.offsetHeight - window.innerHeight + 80;
+      window.scrollTo({ top: top + range, behavior: 'instant' });
+      await new Promise((resolve) => setTimeout(resolve, 900));
+
+      const upload = scene.querySelector('.story-upload-phase');
+      const config = scene.querySelector('.story-config-phase');
+      const fill = scene.querySelector('.story-config-progress__fill');
+      const progress = scene.querySelector('.story-config-progress');
+      const spinner = scene.querySelector('.story-upload-spinner__dots');
+      const complete = scene.querySelector('.story-launch-complete');
+      const statuses = Array.from(scene.querySelectorAll('.story-config-status'));
+      if (!upload || !config || !fill || !progress || !spinner || !complete || statuses.length !== 3) {
+        return { missing: true };
+      }
+
+      const animations = scene.getAnimations({ subtree: true });
+      const sample = (time) => {
+        animations.forEach((animation) => {
+          animation.currentTime = time;
+          animation.pause();
+        });
+        const transform = getComputedStyle(fill).transform;
+        const spinnerTransform = getComputedStyle(spinner).transform;
+        const spinnerMatrix = spinnerTransform === 'none' ? new DOMMatrixReadOnly() : new DOMMatrixReadOnly(spinnerTransform);
+        const progressRect = progress.getBoundingClientRect();
+        return {
+          uploadOpacity: Number(getComputedStyle(upload).opacity),
+          configOpacity: Number(getComputedStyle(config).opacity),
+          completeOpacity: Number(getComputedStyle(complete).opacity),
+          spinnerTransform,
+          spinnerRotationSignal: Math.abs(spinnerMatrix.b) + Math.abs(spinnerMatrix.c),
+          progressScale: transform === 'none' ? 1 : new DOMMatrixReadOnly(transform).a,
+          statusOpacities: statuses.map((status) => Number(getComputedStyle(status).opacity)),
+          statusFontSizes: statuses.map((status) => Number.parseFloat(getComputedStyle(status).fontSize)),
+          statusBottoms: statuses.map((status) => status.getBoundingClientRect().bottom),
+          visibleStatusCount: statuses.filter((status) => Number(getComputedStyle(status).opacity) > 0.8).length,
+          progressTop: progressRect.top,
+          overflow: scene.scrollWidth > scene.clientWidth || scene.scrollHeight > scene.clientHeight,
+        };
+      };
+
+      const initial = sample(400);
+      const lateSpinStart = sample(2400);
+      const lateSpinEnd = sample(2600);
+      const firstStop = sample(4000);
+      const secondStop = sample(5500);
+      const thirdStop = sample(6900);
+      const completed = sample(9200);
+
+      window.scrollTo({ top: top + range * (2 / 3), behavior: 'instant' });
+      await new Promise((resolve) => setTimeout(resolve, 750));
+      window.scrollTo({ top: top + range, behavior: 'instant' });
+      await new Promise((resolve) => setTimeout(resolve, 350));
+      const replay = {
+        uploadOpacity: Number(getComputedStyle(upload).opacity),
+        completeOpacity: Number(getComputedStyle(complete).opacity),
+        running: scene.getAnimations({ subtree: true }).filter((animation) => animation.playState === 'running').length,
+      };
+
+      return {
+        missing: false,
+        uploadCopy: scene.querySelector('.story-uploading-label')?.textContent?.trim() ?? '',
+        uploadedCopy: scene.querySelector('.story-uploaded-label')?.textContent?.trim() ?? '',
+        hasConfigurationHeading: Boolean(scene.querySelector('.story-config-phase > b')),
+        markerCount: scene.querySelectorAll('.story-config-progress > i').length,
+        initial,
+        lateSpinStart,
+        lateSpinEnd,
+        firstStop,
+        secondStop,
+        thirdStop,
+        completed,
+        replay,
+      };
+    })()`,
+  );
+
   const markerStates = [];
   for (let index = 0; index < 4; index += 1) {
     const state = await evaluate(
@@ -585,6 +668,31 @@ try {
     })()`,
   );
 
+  const launchMobileFallback = await evaluate(
+    client,
+    `(() => {
+      const scene = document.querySelector('[data-process-scene="launch"]');
+      const upload = scene.querySelector('.story-upload-phase');
+      const config = scene.querySelector('.story-config-phase');
+      const complete = scene.querySelector('.story-launch-complete');
+      const progress = scene.querySelector('.story-config-progress');
+      const statuses = Array.from(scene.querySelectorAll('.story-config-status'));
+      return {
+        uploadOpacity: Number(getComputedStyle(upload).opacity),
+        configOpacity: Number(getComputedStyle(config).opacity),
+        completeOpacity: Number(getComputedStyle(complete).opacity),
+        completionTitle: complete.querySelector('b').textContent.trim(),
+        completionBody: complete.querySelector('small').textContent.trim(),
+        markerCount: scene.querySelectorAll('.story-config-progress > i').length,
+        statusFontSizes: statuses.map((status) => Number.parseFloat(getComputedStyle(status).fontSize)),
+        statusBottoms: statuses.map((status) => status.getBoundingClientRect().bottom),
+        progressTop: progress.getBoundingClientRect().top,
+        horizontalOverflow: scene.scrollWidth > scene.clientWidth,
+        verticalOverflow: scene.scrollHeight > scene.clientHeight,
+      };
+    })()`,
+  );
+
   await client.send("Emulation.setDeviceMetricsOverride", {
     width: 1440,
     height: 1000,
@@ -690,6 +798,31 @@ try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       const replay = frame();
       return { drawing, pencilReverse, makeup, paintReturn, powder, complete, replay };
+    })()`,
+  );
+
+  const reducedLaunch = await evaluate(
+    client,
+    `(async () => {
+      const story = document.querySelector('.process-story');
+      const scene = document.querySelector('[data-process-scene="launch"]');
+      const top = story.getBoundingClientRect().top + window.scrollY - 80;
+      const range = story.offsetHeight - window.innerHeight + 80;
+      window.scrollTo({ top: top + range, behavior: 'instant' });
+      await new Promise((resolve) => setTimeout(resolve, 900));
+      const upload = scene.querySelector('.story-upload-phase');
+      const config = scene.querySelector('.story-config-phase');
+      const complete = scene.querySelector('.story-launch-complete');
+      return {
+        active: Number(story.dataset.active),
+        uploadOpacity: Number(getComputedStyle(upload).opacity),
+        configOpacity: Number(getComputedStyle(config).opacity),
+        completeOpacity: Number(getComputedStyle(complete).opacity),
+        completionTitle: complete.querySelector('b').textContent.trim(),
+        completionBody: complete.querySelector('small').textContent.trim(),
+        animationCount: scene.getAnimations({ subtree: true }).length,
+        overflow: scene.scrollWidth > scene.clientWidth || scene.scrollHeight > scene.clientHeight,
+      };
     })()`,
   );
 
@@ -837,6 +970,58 @@ try {
   if (pencilMakeup.replay.pencilOpacity < 0.2) {
     failures.push("pencil makeup scene does not replay after reverse navigation");
   }
+  if (launchPlayback.missing) {
+    failures.push("launch upload and configuration phases are missing");
+  } else {
+    if (
+      launchPlayback.initial.uploadOpacity < 0.9 ||
+      launchPlayback.initial.configOpacity > 0.1 ||
+      launchPlayback.initial.completeOpacity > 0.1
+    ) failures.push("launch scene does not begin with the upload phase");
+    if (
+      launchPlayback.uploadCopy !== "Publikowanie" ||
+      launchPlayback.uploadedCopy !== "Opublikowano" ||
+      launchPlayback.hasConfigurationHeading ||
+      launchPlayback.markerCount !== 0
+    ) failures.push("launch scene copy or progress chrome is not simplified and localized");
+    if (
+      launchPlayback.initial.spinnerRotationSignal < 0.1 ||
+      launchPlayback.lateSpinStart.spinnerTransform === launchPlayback.lateSpinEnd.spinnerTransform
+    ) {
+      failures.push("launch spinner does not visibly rotate through the upload phase");
+    }
+    if (
+      Math.abs(launchPlayback.firstStop.progressScale - 0.24) > 0.025 ||
+      launchPlayback.firstStop.statusOpacities[0] < 0.8 ||
+      launchPlayback.firstStop.visibleStatusCount !== 1 ||
+      launchPlayback.firstStop.statusFontSizes[0] < 12 ||
+      launchPlayback.firstStop.statusBottoms[0] > launchPlayback.firstStop.progressTop
+    ) failures.push("launch configuration misses the 24 percent hold");
+    if (
+      Math.abs(launchPlayback.secondStop.progressScale - 0.67) > 0.025 ||
+      launchPlayback.secondStop.statusOpacities[1] < 0.8 ||
+      launchPlayback.secondStop.visibleStatusCount !== 1 ||
+      launchPlayback.secondStop.statusFontSizes[1] < 12 ||
+      launchPlayback.secondStop.statusBottoms[1] > launchPlayback.secondStop.progressTop
+    ) failures.push("launch configuration misses the 67 percent hold");
+    if (
+      Math.abs(launchPlayback.thirdStop.progressScale - 0.88) > 0.025 ||
+      launchPlayback.thirdStop.statusOpacities[2] < 0.8 ||
+      launchPlayback.thirdStop.visibleStatusCount !== 1 ||
+      launchPlayback.thirdStop.statusFontSizes[2] < 12 ||
+      launchPlayback.thirdStop.statusBottoms[2] > launchPlayback.thirdStop.progressTop
+    ) failures.push("launch configuration misses the 88 percent hold");
+    if (
+      Math.abs(launchPlayback.completed.progressScale - 1) > 0.01 ||
+      launchPlayback.completed.completeOpacity < 0.9 ||
+      launchPlayback.completed.overflow
+    ) failures.push("launch scene does not persist on a complete, non-overflowing final state");
+    if (
+      launchPlayback.replay.uploadOpacity < 0.8 ||
+      launchPlayback.replay.completeOpacity > 0.2 ||
+      launchPlayback.replay.running < 1
+    ) failures.push("launch scene does not replay after reverse navigation");
+  }
   if (desktopInitial.cardCount !== 4) failures.push("desktop does not render four cards");
   if (desktopInitial.stickyPosition !== "sticky") failures.push("desktop scene is not sticky");
   if (desktopInitial.overflows) failures.push("desktop page overflows horizontally");
@@ -938,6 +1123,20 @@ try {
     failures.push("mobile pencil makeup scene overflows or misses its final design state");
   }
   if (
+    launchMobileFallback.uploadOpacity > 0.1 ||
+    launchMobileFallback.configOpacity > 0.1 ||
+    launchMobileFallback.completeOpacity < 0.9 ||
+    launchMobileFallback.completionTitle !== "Gotowe." ||
+    launchMobileFallback.completionBody !== "Twoja strona pracuje." ||
+    launchMobileFallback.markerCount !== 0 ||
+    launchMobileFallback.statusFontSizes.some((size) => size < 12) ||
+    launchMobileFallback.statusBottoms.some((bottom) => bottom > launchMobileFallback.progressTop) ||
+    launchMobileFallback.horizontalOverflow ||
+    launchMobileFallback.verticalOverflow
+  ) {
+    failures.push("mobile launch card lacks a readable, non-overflowing fallback before activation");
+  }
+  if (
     !reduced.matches ||
     reduced.motionEngine !== "gsap" ||
     reduced.stickyPosition !== "sticky" ||
@@ -999,16 +1198,24 @@ try {
   if (reducedPencilMakeup.replay.pencilOpacity < 0.2) {
     failures.push("pencil makeup scene does not replay under reduced-motion preference");
   }
-  if (reduced.launchSceneAnimationCount !== 0) failures.push("reduced-motion launch scene still animates");
+  if (
+    reducedLaunch.active !== 3 ||
+    reducedLaunch.uploadOpacity < 0.8 ||
+    reducedLaunch.configOpacity > 0.2 ||
+    reducedLaunch.completeOpacity > 0.2 ||
+    reducedLaunch.animationCount < 1 ||
+    reducedLaunch.overflow ||
+    reduced.launchSceneAnimationCount < 1
+  ) failures.push("reduced-motion preference still suppresses the launch sequence");
   if (runtimeErrors.length) failures.push(`runtime errors: ${runtimeErrors.join("; ")}`);
 
   if (failures.length) {
-    console.error(JSON.stringify({ nativeReducedMotion, scenePlayback, strategyPlayback, strategyReplay, pencilMakeup, compactDesktop, mobile, mobileComplete, strategyMobile, designMobile, reducedConversation, reducedStrategy, reducedPencilMakeup, reduced }, null, 2));
+    console.error(JSON.stringify({ nativeReducedMotion, scenePlayback, strategyPlayback, strategyReplay, pencilMakeup, launchPlayback, compactDesktop, mobile, mobileComplete, strategyMobile, designMobile, launchMobileFallback, reducedConversation, reducedStrategy, reducedPencilMakeup, reducedLaunch, reduced }, null, 2));
     throw new Error(failures.join("; "));
   }
 
   console.log("Process story browser verification passed.");
-  console.log(JSON.stringify({ nativeReducedMotion, scenePlayback, strategyPlayback, strategyReplay, pencilMakeup, markerStates, continuousMotion, manual, compactDesktop, mobile, mobileComplete, strategyMobile, designMobile, reducedConversation, reducedStrategy, reducedPencilMakeup, reduced }, null, 2));
+  console.log(JSON.stringify({ nativeReducedMotion, scenePlayback, strategyPlayback, strategyReplay, pencilMakeup, launchPlayback, markerStates, continuousMotion, manual, compactDesktop, mobile, mobileComplete, strategyMobile, designMobile, launchMobileFallback, reducedConversation, reducedStrategy, reducedPencilMakeup, reducedLaunch, reduced }, null, 2));
   client.close();
 } finally {
   chrome.kill();

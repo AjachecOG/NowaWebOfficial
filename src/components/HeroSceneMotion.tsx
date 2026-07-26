@@ -39,13 +39,6 @@ const FOLLOW_STRENGTH = 0.26;
 export default function HeroSceneMotion() {
 
   useEffect(() => {
-
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reduceMotion) return;
-
-
-
     const targets = Array.from(document.querySelectorAll<HTMLElement>(HERO_TARGETS_SELECTOR));
 
     if (!targets.length) return;

@@ -1,0 +1,63 @@
+{
+  "title": "Gotowość publikacji NowaWeb — kontakt, zgody, dokumenty prawne",
+  "date": "2026-07-25",
+  "status": "approved-for-implementation",
+  "answers": {
+    "form_email": "kontakt@nowaweb.pl",
+    "phone": "+48 794 346 581",
+    "phone_raw": "794346581",
+    "company": {
+      "legal_name": "Revela Sp. z o.o.",
+      "address": "ul. Muchoborska 18, 54-424 Wrocław",
+      "nip": "8971850142",
+      "krs": "0000711172",
+      "regon": "369088470",
+      "court": "Sąd Rejonowy dla Wrocławia-Fabrycznej we Wrocławiu, VI Wydział Gospodarczy KRS"
+    },
+    "hosting": "Netlify",
+    "form_delivery": "Netlify Forms (bez własnego backendu)",
+    "contact_page": "/kontakt + formularz także w #kontakt na home",
+    "legal_docs": ["polityka-prywatnosci", "polityka-cookies", "regulamin"]
+  },
+  "legal_research_summary": {
+    "disclaimer": "To nie jest porada prawna. Szablony wymagają review przed produkcją.",
+    "rodo": {
+      "required": true,
+      "why": "Formularz kontaktowy i zwykle logi/IP to przetwarzanie danych osobowych (art. 13 RODO — obowiązek informacyjny).",
+      "documents": ["Polityka prywatności z danymi administratora, celami, podstawami, prawami, okresem przechowywania, odbiorcami"],
+      "form_consent": "Checkbox zgody / informacja o podstawie prawnej przy formularzu + link do polityki"
+    },
+    "cookies": {
+      "required_banner": "Tak dla cookies niewyłącznie niezbędnych; niezbędne mogą działać bez zgody.",
+      "actions": "Akceptuj / tylko niezbędne — równorzędna widoczność; brak pre-ticked marketing",
+      "document": "Polityka cookies (osobno lub wyraźna sekcja)",
+      "sources_note": "UODO + ePrivacy / Prawo komunikacji elektronicznej"
+    },
+    "regulamin": {
+      "required": true,
+      "basis": "Art. 8 ustawy o świadczeniu usług drogą elektroniczną (t.j. Dz.U. 2024 poz. 1513): usługodawca określa i nieodpłatnie udostępnia regulamin przed zawarciem umowy o świadczenie usług drogą elektroniczną.",
+      "must_include": [
+        "rodzaje i zakres usług",
+        "warunki techniczne",
+        "zakaz treści bezprawnych",
+        "warunki zawierania i rozwiązywania umów",
+        "tryb reklamacji"
+      ],
+      "note": "Formularz i korzystanie ze strony jako usługi elektronicznej uzasadniają /regulamin obok polityki prywatności i cookies."
+    },
+    "company_identification": {
+      "required_on_site": ["firma/nazwa", "NIP", "siedziba/adres", "kontakt"],
+      "sp_zoo_extra": ["KRS", "sąd rejestrowy", "forma prawna"],
+      "placement": "Stopka + /kontakt + dokumenty prawne"
+    }
+  },
+  "decision": {
+    "chosen": "A+B_wave_1_with_regulamin",
+    "pages": [
+      "/kontakt",
+      "/polityka-prywatnosci",
+      "/polityka-cookies",
+      "/regulamin"
+    ]
+  }
+}
