@@ -2,13 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ContactForm from "../components/ContactForm.astro";
 import { site } from "../data/site";
-
-const sent = Astro.url.searchParams.get("wyslano") === "1";
 ---
 
 <BaseLayout
   title="Kontakt"
-  description="Napisz do NowaWeb. Opisz markę i cel strony."
+  description="Kontakt z NowaWeb: napisz o stronie firmowej, landing page lub odświeżeniu witryny. Pracujemy zdalnie z firmami z całej Polski."
+  canonicalPath="/kontakt/"
 >
   <main class="legal-page contact-page">
     <div class="legal-page__inner">
@@ -18,19 +17,8 @@ const sent = Astro.url.searchParams.get("wyslano") === "1";
         Opisz krótko firmę i cel. Odpowiadamy zwykle w ciągu 1 dnia roboczego.
       </p>
 
-      {sent ? (
-        <div class="contact-success-block">
-          <p class="contact-success" role="status">
-            Dziękujemy. Wiadomość poszła. Odpiszemy na podany email.
-          </p>
-          <p>
-            <a href="/kontakt">Wyślij kolejne zapytanie</a>
-          </p>
-        </div>
-      ) : null}
-
       <div class="contact-page__grid">
-        {!sent ? <ContactForm formName="kontakt" /> : <div></div>}
+        <ContactForm formName="kontakt" />
         <aside class="contact-card">
           <h2>Dane do kontaktu i faktur</h2>
           <p>
@@ -40,15 +28,11 @@ const sent = Astro.url.searchParams.get("wyslano") === "1";
           </p>
           <p>
             NIP {site.company.nip}<br />
-            KRS {site.company.krs}<br />
-            REGON {site.company.regon}
+            KRS {site.company.krs}
           </p>
           <p>
             <a href={`mailto:${site.email}`}>{site.email}</a><br />
             <a href={site.phoneHref}>{site.phoneDisplay}</a>
-          </p>
-          <p class="contact-card__note">
-            {site.company.court}
           </p>
         </aside>
       </div>

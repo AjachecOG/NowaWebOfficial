@@ -365,7 +365,8 @@ export default function ProcessIsland() {
 
       const cards = gsap.utils.toArray<HTMLElement>(".process-story__card", story);
       const railFill = story.querySelector<HTMLElement>(".process-story__rail span");
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      // Brand decision: always use full process motion (ignore OS reduced-motion).
+      const reduced = false;
       const timeline = gsap.timeline({ defaults: { ease: "none" } });
 
       cards.forEach((card, index) => {
@@ -396,7 +397,7 @@ export default function ProcessIsland() {
         start: "top top+=80",
         end: "bottom bottom",
         animation: timeline,
-        scrub: reduced ? 0.35 : 0.7,
+        scrub: 0.7,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const nextActive = Math.round(self.progress * (steps.length - 1));
@@ -434,10 +435,7 @@ export default function ProcessIsland() {
   };
 
   const handlePointerMove = (event: PointerEvent<HTMLButtonElement>) => {
-    if (
-      event.pointerType === "touch" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) return;
+    if (event.pointerType === "touch") return;
     const bounds = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - bounds.left) / bounds.width - 0.5;
     const y = (event.clientY - bounds.top) / bounds.height - 0.5;

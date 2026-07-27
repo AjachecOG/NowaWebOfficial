@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 export default function SiteMotion() {
   useEffect(() => {
-    const root = document.documentElement;
     const timers: number[] = [];
 
     const wait = (ms: number) =>
@@ -64,22 +63,19 @@ export default function SiteMotion() {
           if (!entry?.isIntersecting) return;
           supportObserver?.unobserve(supportSection);
 
-          // 1. Wsparcie
           eyebrow?.classList.add("is-visible");
           await supportWait(420);
 
-          // 2. Po wdrożeniu nie znikamy
           supportSection.classList.add("is-title-playing");
           await supportWait(1550);
 
-          // 3. Tekst pod tytułem
           bodyCopy?.classList.add("is-visible");
           await supportWait(380);
 
-          // 4. Karty: Kontakt → Aktualizacje → Dalszy rozwój
           for (const card of cards) {
             card.classList.add("is-visible");
-            await supportWait(240);
+            // Left → center → right: keep enough gap so border current doesn't overlap.
+            await supportWait(560);
           }
         },
         { threshold: 0.22, rootMargin: "0px 0px -10% 0px" },
@@ -108,7 +104,6 @@ export default function SiteMotion() {
         trigger.addEventListener("click", (event) => {
           const href = trigger.getAttribute("href");
           if (href?.startsWith("#")) {
-            // In-page hash scroll is handled by the nav slide animation.
             openContactForm({ scroll: false });
             return;
           }
@@ -122,8 +117,6 @@ export default function SiteMotion() {
           if (!entry?.isIntersecting) return;
           kontaktObserver?.unobserve(kontaktPanel);
 
-          // Top → bottom: Kontakt → headline → copy → buttons
-          // Midway (after headline): orange stripe draws bottom → top
           for (let index = 0; index < steps.length; index += 1) {
             steps[index]?.classList.add("is-visible");
 
@@ -143,59 +136,17 @@ export default function SiteMotion() {
     }
 
     const scrollCue = document.querySelector<HTMLElement>(".scroll-cue");
-    const scrollCueRing = scrollCue?.querySelector<HTMLElement>(".scroll-cue__ring") ?? null;
     let cueObserver: IntersectionObserver | null = null;
-    let cueFrame = 0;
-    let cueVisible = false;
-    const cueStartedAt = performance.now();
-
-    const stopCueBounce = () => {
-      if (cueFrame) {
-        cancelAnimationFrame(cueFrame);
-        cueFrame = 0;
-      }
-      if (scrollCueRing) {
-        scrollCueRing.style.top = "0px";
-      }
-    };
-
-    const tickCueBounce = (now: number) => {
-      if (!scrollCueRing || !cueVisible) {
-        cueFrame = 0;
-        return;
-      }
-
-      const cycle = ((now - cueStartedAt) % 1200) / 1200;
-      const y = Math.sin(cycle * Math.PI * 2) * 14;
-      scrollCueRing.style.top = `${y.toFixed(2)}px`;
-      cueFrame = requestAnimationFrame(tickCueBounce);
-    };
-
-    const startCueBounce = () => {
-      if (!scrollCueRing || cueFrame) return;
-      cueFrame = requestAnimationFrame(tickCueBounce);
-    };
 
     if (scrollCue) {
       cueObserver = new IntersectionObserver(
         ([entry]) => {
-          cueVisible = Boolean(entry?.isIntersecting);
-          scrollCue.classList.toggle("is-hidden", !cueVisible);
-
-          if (cueVisible) startCueBounce();
-          else stopCueBounce();
+          scrollCue.classList.toggle("is-hidden", !entry?.isIntersecting);
         },
         { threshold: 0.35 },
       );
       cueObserver.observe(scrollCue);
     }
-
-    const handlePointer = (event: PointerEvent) => {
-      const x = (event.clientX / window.innerWidth - 0.5).toFixed(3);
-      const y = (event.clientY / window.innerHeight - 0.5).toFixed(3);
-      root.style.setProperty("--pointer-x", x);
-      root.style.setProperty("--pointer-y", y);
-    };
 
     let navScrollFrame = 0;
 
@@ -281,7 +232,6 @@ export default function SiteMotion() {
       }
     };
 
-    window.addEventListener("pointermove", handlePointer, { passive: true });
     document.addEventListener("click", handleNavClick);
 
     return () => {
@@ -290,10 +240,8 @@ export default function SiteMotion() {
       supportObserver?.disconnect();
       kontaktObserver?.disconnect();
       cueObserver?.disconnect();
-      stopCueBounce();
       if (navScrollFrame) cancelAnimationFrame(navScrollFrame);
       timers.forEach((timer) => window.clearTimeout(timer));
-      window.removeEventListener("pointermove", handlePointer);
       document.removeEventListener("click", handleNavClick);
     };
   }, []);

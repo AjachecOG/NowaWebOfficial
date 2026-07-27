@@ -85,7 +85,7 @@ const support = [
   <head>
     <SiteHead
       title="NowaWeb | Strony firmowe bez WordPressa"
-      description="NowaWeb projektuje lekkie strony firmowe dla marek z całej Polski, bez WordPressa i zbędnych wtyczek."
+      description="NowaWeb projektuje lekkie strony firmowe, landing page i one page dla marek z całej Polski. Bez WordPressa i zbędnych wtyczek."
       canonicalPath="/"
     />
   </head>
@@ -138,10 +138,10 @@ const support = [
             <span class="perspective-floor"></span>
             <span class="product-halo"></span>
             <figure class="paper-piece paper-logo">
-              <img src="/assets/nowaweb/hero/logo-card-cutout.webp" alt="" width="700" height="700" loading="eager" decoding="async" />
+              <img src="/assets/nowaweb/hero/logo-card-cutout.webp" alt="" width="700" height="875" loading="eager" decoding="async" />
             </figure>
             <figure class="paper-piece paper-poster">
-              <img src="/assets/nowaweb/hero/poster-cutout.webp" alt="" width="700" height="700" loading="lazy" decoding="async" />
+              <img src="/assets/nowaweb/hero/poster-cutout.webp" alt="" width="700" height="875" loading="lazy" decoding="async" />
             </figure>
             <figure class="paper-piece paper-poland">
               <span class="poland-tape"></span>
@@ -150,7 +150,7 @@ const support = [
               <span class="poland-stand"></span>
             </figure>
             <figure class="paper-piece tool-rail-piece">
-              <img src="/assets/nowaweb/hero/tool-rail-cutout.webp" alt="" width="500" height="500" loading="lazy" decoding="async" />
+              <img src="/assets/nowaweb/hero/tool-rail-cutout.webp" alt="" width="500" height="1500" loading="lazy" decoding="async" />
             </figure>
             <div class="monitor-rig" data-monitor-billboard>
               <div class="monitor-glitch-layer">
@@ -158,8 +158,8 @@ const support = [
                   class="product-monitor monitor-state is-active"
                   src="/assets/nowaweb/hero/monitor-screen-1.webp"
                   alt=""
-                  width="1200"
-                  height="780"
+                  width="1024"
+                  height="768"
                   loading="eager"
                   fetchpriority="high"
                   decoding="async"
@@ -168,8 +168,8 @@ const support = [
                   class="product-monitor monitor-state"
                   src="/assets/nowaweb/hero/monitor-screen-2.webp"
                   alt=""
-                  width="1200"
-                  height="780"
+                  width="1024"
+                  height="768"
                   loading="lazy"
                   decoding="async"
                 />
@@ -177,8 +177,8 @@ const support = [
                   class="product-monitor monitor-state"
                   src="/assets/nowaweb/hero/monitor-screen-3.webp"
                   alt=""
-                  width="1200"
-                  height="780"
+                  width="1024"
+                  height="768"
                   loading="lazy"
                   decoding="async"
                 />
@@ -189,7 +189,7 @@ const support = [
               src="/assets/nowaweb/hero/notebook-cutout.webp"
               alt=""
               width="900"
-              height="700"
+              height="785"
               loading="lazy"
               decoding="async"
             />
@@ -229,7 +229,7 @@ const support = [
             <span class="title-word title-word-meet">spotyka</span>
             <em class="title-word title-word-creative">kreatywność</em>
           </h2>
-          <BrandFlipCard client:visible />
+          <BrandFlipCard client:load />
         </div>
         <div class="manifesto-copy" data-reveal>
           <span class="manifesto-copy-shape" aria-hidden="true"></span>
@@ -237,7 +237,7 @@ const support = [
             Zaczynamy od celu i struktury, potem projekt i wdrożenie. Bez gotowego
             motywu WordPress: strona ma być szybka i prosta do rozwijania.
           </p>
-          <TypewriterStatement client:visible />
+          <TypewriterStatement client:load />
         </div>
       </section>
 
@@ -270,9 +270,9 @@ const support = [
                         <img
                           class="service-card-image"
                           src={image}
-                          alt=""
-                          width="1448"
-                          height="1086"
+                          alt={`Ilustracja usługi: ${title}`}
+                          width="900"
+                          height="675"
                           loading="lazy"
                           decoding="async"
                         />
@@ -334,7 +334,7 @@ const support = [
           <h2 id="process-title">Jak wygląda <em>współpraca</em></h2>
           <p>Cztery etapy, ustalony zakres i stały kontakt.</p>
         </div>
-        <ProcessIsland client:visible />
+        <ProcessIsland client:load />
       </section>
 
       <section class="studio-section portfolio" id="projekty" aria-labelledby="portfolio-title">
@@ -346,7 +346,7 @@ const support = [
             dla trzech różnych odbiorców.
           </p>
         </div>
-        <PortfolioCarousel client:visible />
+        <PortfolioCarousel client:load />
       </section>
 
       <section class="studio-section support" data-support-sequence aria-labelledby="support-title">
@@ -439,7 +439,7 @@ const support = [
       </div>
     </footer>
 
-    <CookieConsent client:load />
+    <CookieConsent client:idle />
 
     <script>
       import "../scripts/monitor-billboard.ts";

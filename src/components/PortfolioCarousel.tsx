@@ -20,20 +20,20 @@ const projects: PortfolioProject[] = [
   {
     name: "Cakepops.pl",
     image: "/assets/nowaweb/portfolio/cakepops.webp",
-    width: 1453,
-    height: 796,
+    width: 1400,
+    height: 767,
   },
   {
     name: "New York Rolls",
     image: "/assets/nowaweb/portfolio/new-york-rolls.webp",
-    width: 1850,
-    height: 876,
+    width: 1400,
+    height: 663,
   },
   {
     name: "Atmo - Vision",
     image: "/assets/nowaweb/portfolio/atmo-vision.webp",
-    width: 1837,
-    height: 880,
+    width: 1400,
+    height: 671,
   },
 ];
 

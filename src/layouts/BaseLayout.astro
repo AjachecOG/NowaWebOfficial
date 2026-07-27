@@ -9,12 +9,16 @@ type Props = {
   title: string;
   description?: string;
   bodyClass?: string;
+  canonicalPath?: string;
+  noindex?: boolean;
 };
 
 const {
   title,
-  description = "NowaWeb projektuje lekkie strony firmowe dla marek z całej Polski, bez WordPressa i zbędnych wtyczek.",
+  description = "NowaWeb projektuje lekkie strony firmowe, landing page i one page dla marek z całej Polski. Bez WordPressa i zbędnych wtyczek.",
   bodyClass = "",
+  canonicalPath = Astro.url.pathname,
+  noindex = false,
 } = Astro.props;
 
 const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
@@ -23,7 +27,12 @@ const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
 <!doctype html>
 <html lang="pl">
   <head>
-    <SiteHead title={fullTitle} description={description} />
+    <SiteHead
+      title={fullTitle}
+      description={description}
+      canonicalPath={canonicalPath}
+      noindex={noindex}
+    />
   </head>
   <body class={bodyClass}>
     <div class="paper-grain" aria-hidden="true"></div>
@@ -55,6 +64,6 @@ const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
       </div>
     </footer>
 
-    <CookieConsent client:load />
+    <CookieConsent client:idle />
   </body>
 </html>

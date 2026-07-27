@@ -1,0 +1,21 @@
+{
+  "name": "NowaWeb",
+  "short_name": "NowaWeb",
+  "description": "Lekkie strony firmowe bez WordPressa",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#fff7ea",
+  "theme_color": "#0557f2",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

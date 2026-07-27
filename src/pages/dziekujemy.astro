@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Dziękujemy"
+  description="Wiadomość do NowaWeb została wysłana. Odpiszemy na podany email."
+  canonicalPath="/dziekujemy/"
+  noindex={true}
+>
+  <main class="legal-page contact-page">
+    <div class="legal-page__inner">
+      <p class="eyebrow orange">Kontakt</p>
+      <h1>Dziękujemy. Wiadomość poszła</h1>
+      <p class="legal-lead contact-success" role="status">
+        Odpiszemy na podany email, zwykle w ciągu 1 dnia roboczego.
+      </p>
+      <div class="action-row">
+        <a class="button primary" href="/kontakt">Wyślij kolejne zapytanie</a>
+        <a class="button secondary" href="/">Wróć na stronę główną</a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

@@ -10,7 +10,7 @@ type Props = {
 const {
   formName = "kontakt",
   heading,
-  action = "/kontakt?wyslano=1",
+  action = "/dziekujemy/",
 } = Astro.props;
 
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
@@ -25,7 +25,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
   action={action}
 >
   <input type="hidden" name="form-name" value={formName} />
-  <p class="contact-form__honeypot">
+  <p class="contact-form__honeypot" aria-hidden="true">
     <label>
       Nie wypełniaj tego pola
       <input name="bot-field" tabindex="-1" autocomplete="off" />
@@ -46,7 +46,15 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 
   <label class="contact-form__field">
     <span>Telefon <em>(opcjonalnie)</em></span>
-    <input type="tel" name="phone" autocomplete="tel" />
+    <input
+      type="tel"
+      name="phone"
+      autocomplete="tel"
+      inputmode="tel"
+      pattern="^(?:\+?[0-9][\d\s().\-]{7,18})?$"
+      title="Podaj numer telefonu, np. +48 794 346 581"
+      data-phone-field
+    />
   </label>
 
   <label class="contact-form__field">
@@ -58,7 +66,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     <input type="checkbox" name="privacy" value="yes" required />
     <span>
       Wyrażam zgodę na przetwarzanie danych w celu odpowiedzi na zapytanie.
-      Szczegóły w
+      Szczegóły w{" "}
       <a href="/polityka-prywatnosci">polityce prywatności</a>.
     </span>
   </label>
@@ -74,6 +82,37 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     <a class="button secondary" href={`mailto:${site.email}`}>Lub napisz maila</a>
   </div>
 </form>
+
+<script>
+  function digitCount(value: string) {
+    return (value.match(/\d/g) ?? []).length;
+  }
+
+  function isValidPhone(value: string) {
+    const trimmed = value.trim();
+    if (!trimmed) return true;
+    if (!/^\+?[0-9][\d\s().\-]*$/.test(trimmed)) return false;
+    const digits = digitCount(trimmed);
+    return digits >= 9 && digits <= 15;
+  }
+
+  document.querySelectorAll<HTMLFormElement>("form.contact-form").forEach((form) => {
+    const phone = form.querySelector<HTMLInputElement>("[data-phone-field]");
+    if (!phone) return;
+
+    const validate = () => {
+      if (isValidPhone(phone.value)) {
+        phone.setCustomValidity("");
+        return;
+      }
+      phone.setCustomValidity("Podaj prawidłowy numer telefonu (9–15 cyfr).");
+    };
+
+    phone.addEventListener("input", validate);
+    phone.addEventListener("blur", validate);
+    form.addEventListener("submit", validate);
+  });
+</script>
 
 {turnstileSiteKey ? (
   <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

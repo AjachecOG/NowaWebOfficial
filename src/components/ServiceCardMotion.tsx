@@ -29,7 +29,6 @@ export default function ServiceCardMotion() {
     if (!cards.length) return;
 
     const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const cleanups: Array<() => void> = [];
     let animationFrame = 0;
     let pointerX: number | null = null;
@@ -51,12 +50,7 @@ export default function ServiceCardMotion() {
     const renderProximity = () => {
       animationFrame = 0;
 
-      if (
-        pointerX === null ||
-        pointerY === null ||
-        !hoverQuery.matches ||
-        reducedMotionQuery.matches
-      ) {
+      if (pointerX === null || pointerY === null || !hoverQuery.matches) {
         cards.forEach(resetProximity);
         return;
       }
@@ -205,7 +199,6 @@ export default function ServiceCardMotion() {
     window.addEventListener("pointermove", scheduleProximity, { passive: true });
     window.addEventListener("pointerleave", clearProximity);
     hoverQuery.addEventListener("change", handlePreferenceChange);
-    reducedMotionQuery.addEventListener("change", handlePreferenceChange);
 
     return () => {
       if (animationFrame) window.cancelAnimationFrame(animationFrame);
@@ -215,7 +208,6 @@ export default function ServiceCardMotion() {
       window.removeEventListener("pointermove", scheduleProximity);
       window.removeEventListener("pointerleave", clearProximity);
       hoverQuery.removeEventListener("change", handlePreferenceChange);
-      reducedMotionQuery.removeEventListener("change", handlePreferenceChange);
     };
   }, []);
 

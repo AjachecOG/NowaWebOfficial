@@ -84,6 +84,11 @@
     transform var(--portfolio-spring),
     box-shadow var(--portfolio-spring),
     opacity var(--portfolio-spring);
+}
+
+.portfolio-carousel__card[data-position="center"],
+.portfolio-carousel__card[data-position="left"],
+.portfolio-carousel__card[data-position="right"] {
   will-change: transform;
 }
 

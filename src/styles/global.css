@@ -16,8 +16,6 @@
   --display: "Helvetica Neue", Helvetica, "Arial Nova", Arial, sans-serif;
   --body: "Helvetica Neue", Helvetica, "Arial Nova", Arial, sans-serif;
   --max: 1360px;
-  --pointer-x: 0;
-  --pointer-y: 0;
   --hero-follow-x: 0px;
   --hero-follow-y: 0px;
   --hero-hover-y: 0px;
@@ -75,6 +73,7 @@ body::after {
   z-index: -1;
   opacity: 0.18;
   pointer-events: none;
+  contain: strict;
   background-image:
     repeating-linear-gradient(0deg, rgba(6, 21, 50, 0.04) 0 1px, transparent 1px 3px),
     repeating-linear-gradient(90deg, rgba(255, 90, 31, 0.035) 0 1px, transparent 1px 5px);
@@ -898,7 +897,9 @@ h2 em {
   bottom: -1%;
   z-index: 2;
   width: 22%;
+  height: auto;
   max-width: none;
+  object-fit: contain;
   filter: saturate(1.05) contrast(1.02);
   --layer-transform: translateZ(-8px) rotateX(67deg) rotateZ(-8deg);
   transform: var(--layer-transform);
@@ -911,7 +912,9 @@ h2 em {
   bottom: 5%;
   z-index: 5;
   width: 21%;
+  height: auto;
   max-width: none;
+  object-fit: contain;
   filter: saturate(1.04) contrast(1.04) drop-shadow(0 18px 26px rgba(6, 21, 50, 0.14));
   --layer-transform: translateZ(62px) rotateX(1deg) rotateY(-7deg) rotateZ(0.6deg);
   transform: var(--layer-transform);
@@ -1919,6 +1922,7 @@ h2 em {
   --flip-shadow-scale: 1;
   --flip-light: 50%;
   position: relative;
+  z-index: 3;
   width: min(100%, 620px);
   height: clamp(300px, 31vw, 370px);
   margin-top: clamp(24px, 3vw, 40px);
@@ -3017,6 +3021,149 @@ h2 em {
   transform: translateY(0);
 }
 
+.support-grid article[data-support-step] {
+  --support-current-duration: 2600ms;
+  position: relative;
+}
+
+.support-grid article[data-support-step].is-visible {
+  transition:
+    opacity var(--support-step-duration, 620ms) ease,
+    transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 280ms ease,
+    border-color 280ms ease;
+}
+
+.support-grid article[data-support-step].is-visible:hover {
+  z-index: 2;
+  transform: translateY(-3px) scale(1.035);
+}
+
+.support-grid article[data-support-step]::before,
+.support-grid article[data-support-step]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  padding: 1.5px;
+  opacity: 0;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Soft tube fill — lightly visible current in the frame */
+.support-grid article[data-support-step]::before {
+  background: linear-gradient(
+    90deg,
+    rgba(5, 87, 242, 0.16),
+    rgba(120, 185, 255, 0.2),
+    rgba(5, 87, 242, 0.16)
+  );
+  filter: drop-shadow(0 0 2px rgba(5, 87, 242, 0.14));
+}
+
+/* Long wave flowing through the border tube (not a point spark) */
+.support-grid article[data-support-step]::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(5, 87, 242, 0.08) 12%,
+    rgba(80, 155, 255, 0.28) 28%,
+    rgba(150, 210, 255, 0.55) 42%,
+    rgba(210, 235, 255, 0.7) 50%,
+    rgba(150, 210, 255, 0.55) 58%,
+    rgba(80, 155, 255, 0.28) 72%,
+    rgba(5, 87, 242, 0.08) 88%,
+    transparent 100%
+  );
+  background-size: 85% 100%;
+  background-repeat: no-repeat;
+  background-position: -85% 0;
+  filter: drop-shadow(0 0 4px rgba(5, 87, 242, 0.28));
+}
+
+.support-grid article[data-support-step].is-visible::before {
+  animation: support-card-frame-hum var(--support-current-duration) ease both;
+}
+
+.support-grid article[data-support-step].is-visible::after {
+  animation: support-card-current-sweep var(--support-current-duration) cubic-bezier(0.33, 0.1, 0.25, 1) both;
+}
+
+.support-grid article[data-support-step]:nth-child(1).is-visible::before,
+.support-grid article[data-support-step]:nth-child(1).is-visible::after {
+  animation-delay: 0ms;
+}
+
+.support-grid article[data-support-step]:nth-child(2).is-visible::before,
+.support-grid article[data-support-step]:nth-child(2).is-visible::after {
+  animation-delay: 80ms;
+}
+
+.support-grid article[data-support-step]:nth-child(3).is-visible::before,
+.support-grid article[data-support-step]:nth-child(3).is-visible::after {
+  animation-delay: 160ms;
+}
+
+/* Hover: replay wave in a loop + keep tube faintly alive */
+.support-grid article[data-support-step].is-visible:hover::before {
+  animation: support-card-frame-hum-loop var(--support-current-duration) ease infinite;
+  animation-delay: 0ms;
+}
+
+.support-grid article[data-support-step].is-visible:hover::after {
+  animation: support-card-current-sweep var(--support-current-duration) cubic-bezier(0.33, 0.1, 0.25, 1) infinite;
+  animation-delay: 0ms;
+}
+
+@keyframes support-card-frame-hum {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  16%,
+  82% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes support-card-frame-hum-loop {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+
+  50% {
+    opacity: 0.52;
+  }
+}
+
+@keyframes support-card-current-sweep {
+  0% {
+    opacity: 0;
+    background-position: -85% 0;
+  }
+
+  10% {
+    opacity: 0.9;
+  }
+
+  82% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    background-position: 130% 0;
+  }
+}
+
 #support-title[data-support-impact] {
   /* Accelerate into the hit near the end of the run */
   --support-run-delay: calc(40ms * var(--support-tempo, 1));
@@ -3507,6 +3654,22 @@ h2 em {
     border-color 220ms ease,
     background 220ms ease,
     box-shadow 220ms ease;
+  animation: scroll-cue-bounce 1.2s ease-in-out infinite;
+}
+
+.scroll-cue.is-hidden .scroll-cue__ring {
+  animation: none;
+}
+
+@keyframes scroll-cue-bounce {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 14px;
+  }
 }
 
 .scroll-cue__ring svg {
@@ -4837,6 +5000,13 @@ h2 em {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Soft a11y only — do NOT kill hero/billboard entrance animations.
+     Those start at opacity:0 and rely on keyframes; animation:none made
+     the homepage look broken when OS reduced-motion is on. */
+  html {
+    scroll-behavior: auto;
+  }
+
   .comparison-reveal *,
   .comparison-reveal *::before,
   .comparison-reveal *::after {

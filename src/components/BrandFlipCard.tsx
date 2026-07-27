@@ -101,6 +101,13 @@ export default function BrandFlipCard() {
       handlePointerLeave();
     };
 
+    const stopLoop = () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+        frame = 0;
+      }
+    };
+
     const render = (now: number) => {
       const deltaSeconds = clamp((now - lastFrameAt) / 1000, 0, MAX_FRAME_SECONDS);
       const frameScale = deltaSeconds * 60;
@@ -173,10 +180,13 @@ export default function BrandFlipCard() {
     stage.addEventListener("pointerdown", handlePointerDown);
     stage.addEventListener("pointerup", handlePointerUp);
     stage.addEventListener("pointercancel", handlePointerUp);
+    // Seed a gentle spin so the logo is obviously alive on first paint.
+    velocityY = 42;
+    lastFrameAt = performance.now();
     frame = window.requestAnimationFrame(render);
 
     return () => {
-      window.cancelAnimationFrame(frame);
+      stopLoop();
       stage.removeEventListener("pointerenter", setPointerOrigin);
       stage.removeEventListener("pointermove", handlePointerMove);
       stage.removeEventListener("pointerleave", handlePointerLeave);

@@ -20,18 +20,21 @@ function initMonitorBillboard() {
   let index = frames.findIndex((frame) => frame.classList.contains("is-active"));
   if (index < 0) index = 0;
 
-  let cancelled = false;
-  const timeouts: number[] = [];
-
-  const schedule = (fn: () => void, ms: number) => {
-    timeouts.push(window.setTimeout(fn, ms));
-  };
-
   const show = (nextIndex: number) => {
     frames.forEach((frame, frameIndex) => {
       frame.classList.toggle("is-active", frameIndex === nextIndex);
     });
     index = nextIndex;
+  };
+
+  show(index);
+
+  // Brand billboard glitch always runs — core homepage motion, not optional polish.
+  let cancelled = false;
+  const timeouts: number[] = [];
+
+  const schedule = (fn: () => void, ms: number) => {
+    timeouts.push(window.setTimeout(fn, ms));
   };
 
   const runGlitch = (onDone: () => void) => {
@@ -56,8 +59,6 @@ function initMonitorBillboard() {
       schedule(cycle, holdBeforeNextGlitch(index, frames.length));
     });
   };
-
-  show(index);
 
   schedule(cycle, FIRST_GLITCH_MS);
 
