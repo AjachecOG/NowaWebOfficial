@@ -12,8 +12,6 @@ const {
   heading,
   action = "/dziekujemy/",
 } = Astro.props;
-
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 
 <form
@@ -36,12 +34,12 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 
   <label class="contact-form__field">
     <span>Imię i nazwisko / firma</span>
-    <input type="text" name="name" required autocomplete="name" />
+    <input type="text" name="name" maxlength="120" required autocomplete="name" />
   </label>
 
   <label class="contact-form__field">
     <span>Email</span>
-    <input type="email" name="email" required autocomplete="email" />
+    <input type="email" name="email" maxlength="254" required autocomplete="email" />
   </label>
 
   <label class="contact-form__field">
@@ -49,6 +47,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     <input
       type="tel"
       name="phone"
+      maxlength="32"
       autocomplete="tel"
       inputmode="tel"
       pattern="^(?:\+?[0-9][\d\s().\-]{7,18})?$"
@@ -59,23 +58,14 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 
   <label class="contact-form__field">
     <span>O czym mamy porozmawiać</span>
-    <textarea name="message" rows="5" required></textarea>
+    <textarea name="message" rows="5" maxlength="4000" required></textarea>
   </label>
 
-  <label class="contact-form__consent">
-    <input type="checkbox" name="privacy" value="yes" required />
-    <span>
-      Wyrażam zgodę na przetwarzanie danych w celu odpowiedzi na zapytanie.
-      Szczegóły w{" "}
-      <a href="/polityka-prywatnosci">polityce prywatności</a>.
-    </span>
-  </label>
-
-  {turnstileSiteKey ? (
-    <div class="contact-form__turnstile">
-      <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light"></div>
-    </div>
-  ) : null}
+  <p class="contact-form__consent">
+    Dane z formularza wykorzystamy wyłącznie do odpowiedzi na Twoje zapytanie.
+    Szczegóły znajdziesz w{" "}
+    <a href="/polityka-prywatnosci">polityce prywatności</a>.
+  </p>
 
   <div class="contact-form__actions">
     <button class="button primary" type="submit">Wyślij zapytanie</button>
@@ -113,7 +103,3 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     form.addEventListener("submit", validate);
   });
 </script>
-
-{turnstileSiteKey ? (
-  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-) : null}

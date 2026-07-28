@@ -406,9 +406,18 @@ const support = [
               Umów rozmowę <ArrowRight aria-hidden="true" size={20} />
             </button>
           </div>
-          <div class="cta-form" id="cta-contact-form" data-contact-form-panel>
+          <div
+            class="cta-form"
+            id="cta-contact-form"
+            data-contact-form-panel
+            inert
+            aria-hidden="true"
+          >
             <div class="cta-form__inner">
-              <ContactForm formName="kontakt-home" heading="Umów rozmowę: krótkie zapytanie" />
+              <ContactForm
+                formName="kontakt-home"
+                heading="Umów rozmowę: krótkie zapytanie"
+              />
             </div>
           </div>
         </div>

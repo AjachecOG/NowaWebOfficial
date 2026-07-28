@@ -421,9 +421,10 @@ export default function ProcessIsland() {
     };
   }, { scope: storyRef });
 
-  const activateStep = (index: number) => {
+  const selectStep = (index: number, options?: { scroll?: boolean }) => {
+    const shouldScroll = options?.scroll !== false;
     const trigger = scrollTriggerRef.current;
-    if (!trigger || window.innerWidth <= 760) {
+    if (!shouldScroll || !trigger || window.innerWidth <= 760) {
       activeRef.current = index;
       setActive(index);
       return;
@@ -469,8 +470,8 @@ export default function ProcessIsland() {
                 aria-label={`${step.id}. ${step.title}`}
                 className={`process-story__nav-item ${isActive ? "is-active" : ""}`}
                 key={step.id}
-                onClick={() => activateStep(index)}
-                onFocus={() => activateStep(index)}
+                onClick={() => selectStep(index)}
+                onFocus={() => selectStep(index, { scroll: false })}
                 type="button"
               >
                 <span>{step.id}</span>
@@ -492,8 +493,8 @@ export default function ProcessIsland() {
                 className={`process-story__card ${isActive ? "is-active" : ""}`}
                 data-state={state}
                 key={step.id}
-                onClick={() => activateStep(index)}
-                onFocus={() => activateStep(index)}
+                onClick={() => selectStep(index)}
+                onFocus={() => selectStep(index, { scroll: false })}
                 onPointerLeave={resetPointer}
                 onPointerMove={handlePointerMove}
                 style={getInitialCardStyle(index)}

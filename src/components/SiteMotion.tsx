@@ -93,6 +93,8 @@ export default function SiteMotion() {
       const openContactForm = (options?: { scroll?: boolean }) => {
         if (!formPanel) return;
         formPanel.classList.add("is-open");
+        formPanel.removeAttribute("inert");
+        formPanel.setAttribute("aria-hidden", "false");
         kontaktPanel
           .querySelectorAll<HTMLElement>("[data-open-contact-form]")
           .forEach((trigger) => trigger.setAttribute("aria-expanded", "true"));

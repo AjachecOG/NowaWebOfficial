@@ -1,16 +1,14 @@
 NowaWeb — TODO (pozostałe przed / po launchu)
-Ostatnia aktualizacja: 2026-07-26
+Ostatnia aktualizacja: 2026-07-28
 
 ================================================================================
 A. OPS / PRODUKCJA (wymaga ręcznej konfiguracji — nie da się domknąć samym kodem)
 ================================================================================
 
-[ ] 1. Cloudflare Turnstile
-    - Utwórz widget (Managed) dla domen: nowaweb.pl, www.nowaweb.pl, localhost
-    - Site Key → Netlify env: PUBLIC_TURNSTILE_SITE_KEY
-    - Secret Key → Netlify env: TURNSTILE_SECRET_KEY
-    - Po deployu sprawdź, że widget widać w obu formularzach (home + /kontakt)
-    - Włącz weryfikację Turnstile w Netlify Forms (integracja / spam filtering)
+[x] 1. Netlify Forms — Form detection
+    - Włączone w panelu Netlify 28.07.2026 (potwierdzone przez właściciela)
+    - Ochrona: automatyczne filtry Netlify (Akismet) + honeypot w kodzie
+    - Po zmianach wykonaj redeploy, aby Netlify ponownie wykrył oba formularze
 
 [ ] 2. Netlify Forms — powiadomienia
     - Po pierwszym deployu upewnij się, że widać formularze: kontakt + kontakt-home
@@ -74,7 +72,7 @@ C. JUŻ ZROBIONE (dla kontekstu — nie odhaczać ponownie)
 [x] Konwersja hero/services/portfolio → WebP + lazy non-LCP
 [x] Mobile navigation ≤1160px
 [x] Favicon, robots.txt, sitemap, OG, canonical, JSON-LD
-[x] Slot Cloudflare Turnstile w ContactForm (aktywny po env)
+[x] Netlify Forms: dwa formularze, honeypot i limity pól
 [x] Success UX /kontakt?wyslano=1 (ukrywa formularz)
 [x] Cookie banner — uczciwy copy bez fake analytics
 [x] Security headers + branded 404

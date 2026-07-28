@@ -1,9 +1,7 @@
 # Netlify Forms: markup lives in ContactForm.astro (data-netlify, honeypot, form-name).
 # Forms detected from built HTML: "kontakt" (/kontakt/) and "kontakt-home" (/).
-# Ops (dashboard): enable form detection, set notification email, optional Turnstile.
-# Env (Site settings → Environment variables):
-#   PUBLIC_TURNSTILE_SITE_KEY  — public widget key (Astro)
-#   TURNSTILE_SECRET_KEY       — secret for Netlify↔Turnstile validation
+# Spam filtering: Netlify automatic filters (Akismet) plus the form honeypot.
+# Ops (dashboard): keep form detection enabled and configure notification email.
 
 [build]
   command = "npm run build"
@@ -20,4 +18,4 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-    Content-Security-Policy-Report-Only = "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; frame-src https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com;"
+    Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-src 'none';"
