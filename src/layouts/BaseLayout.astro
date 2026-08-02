@@ -1,9 +1,19 @@
 ---
-import { site, legalLinks } from "../data/site";
+import { site, legalLinks, exploreLinks } from "../data/site";
 import CookieConsent from "../components/CookieConsent";
 import SiteHead from "../components/SiteHead.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import "../styles/global.css";
+
+type FaqItem = {
+  question: string;
+  answer: string;
+};
+
+type BreadcrumbItem = {
+  name: string;
+  path: string;
+};
 
 type Props = {
   title: string;
@@ -11,6 +21,9 @@ type Props = {
   bodyClass?: string;
   canonicalPath?: string;
   noindex?: boolean;
+  faqs?: readonly FaqItem[];
+  breadcrumbs?: readonly BreadcrumbItem[];
+  ogType?: "website" | "article";
 };
 
 const {
@@ -19,6 +32,9 @@ const {
   bodyClass = "",
   canonicalPath = Astro.url.pathname,
   noindex = false,
+  faqs = [],
+  breadcrumbs = [],
+  ogType = "website",
 } = Astro.props;
 
 const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
@@ -32,6 +48,9 @@ const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
       description={description}
       canonicalPath={canonicalPath}
       noindex={noindex}
+      faqs={faqs}
+      breadcrumbs={breadcrumbs}
+      ogType={ogType}
     />
   </head>
   <body class={bodyClass}>
@@ -54,6 +73,9 @@ const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
         </p>
       </div>
       <nav class="site-footer__links" aria-label="Stopka">
+        {exploreLinks.map((link) => (
+          <a href={link.href}>{link.label}</a>
+        ))}
         {legalLinks.map((link) => (
           <a href={link.href}>{link.label}</a>
         ))}

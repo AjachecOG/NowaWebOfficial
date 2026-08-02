@@ -25,7 +25,9 @@ import TypewriterStatement from "../components/TypewriterStatement";
 import ContactForm from "../components/ContactForm.astro";
 import CookieConsent from "../components/CookieConsent";
 import { homeFaqs } from "../data/faqs";
-import { site, legalLinks } from "../data/site";
+import { pricingTiers } from "../data/pricing";
+import { services } from "../data/services";
+import { site, legalLinks, exploreLinks } from "../data/site";
 import "../styles/global.css";
 
 const strengths = [
@@ -33,45 +35,6 @@ const strengths = [
   { title: "Kontakt 1:1", text: "Rozmawiasz z osobą, która zna projekt.", Icon: UsersRound },
   { title: "Nowoczesny stack", text: "Astro, React islands i mało zbędnego JS.", Icon: Code2 },
   { title: "Spójny design", text: "Strona wygląda jak marka, nie jak motyw.", Icon: Palette },
-];
-
-const services = [
-  {
-    title: "Strony firmowe",
-    image: "/assets/nowaweb/services/corporate-websites.webp",
-    benefit: "Strona firmowa: oferta, referencje i jasny kontakt.",
-    points: ["Architektura informacji", "Projekt dopasowany do marki", "Szybkie wdrożenie w Astro"],
-  },
-  {
-    title: "Landing page",
-    image: "/assets/nowaweb/services/landing-page.webp",
-    benefit: "Landing pod jedną kampanię i jedno CTA.",
-    points: ["Układ pod konwersję", "Copy prowadzące do kontaktu", "Pomiar kluczowych zdarzeń"],
-  },
-  {
-    title: "One page",
-    image: "/assets/nowaweb/services/one-page.webp",
-    benefit: "Jedna strona z najważniejszymi informacjami i kontaktem.",
-    points: ["Najważniejsze informacje", "Płynna narracja", "Kontakt zawsze pod ręką"],
-  },
-  {
-    title: "Odświeżenie strony",
-    image: "/assets/nowaweb/services/website-refresh.webp",
-    benefit: "Odświeżamy wygląd i strukturę na bazie obecnej strony.",
-    points: ["Audyt obecnej strony", "Nowy rytm i hierarchia", "Lepsza czytelność na mobile"],
-  },
-  {
-    title: "UX + copywriting",
-    image: "/assets/nowaweb/services/ux-copywriting.webp",
-    benefit: "Teksty i układ pod pytania, które klient i tak zada.",
-    points: ["Jasna propozycja wartości", "Mikrocopy i CTA", "Struktura wspierająca decyzję"],
-  },
-  {
-    title: "Opieka i rozwój",
-    image: "/assets/nowaweb/services/care-growth.webp",
-    benefit: "Opieka po starcie: treści, poprawki i kolejne sekcje.",
-    points: ["Aktualizacje treści", "Rozwój kolejnych sekcji", "Wsparcie techniczne"],
-  },
 ];
 
 const support = [
@@ -255,9 +218,10 @@ const support = [
           </p>
         </div>
           <div class="service-board">
-          {services.map(({ title, image, benefit, points }, index) => {
+          {services.map(({ title, image, benefit, points, slug, priceFrom }, index) => {
             const backId = `service-card-back-${index}`;
             const serviceNumber = String(index + 1).padStart(2, "0");
+            const serviceHref = `/uslugi/${slug}/`;
 
             return (
               <article class="service-card service-card--image" data-service-card data-reveal>
@@ -297,13 +261,14 @@ const support = [
                       <div class="service-card-back-copy">
                         <h3>{title}</h3>
                         <p>{benefit}</p>
+                        <p class="service-card-price">{priceFrom}</p>
                       </div>
                       <ul>
                         {points.map((point) => <li>{point}</li>)}
                       </ul>
                       <div class="service-card-back-actions">
-                        <a href="#kontakt">
-                          Napisz o projekcie <ArrowRight aria-hidden="true" size={16} />
+                        <a href={serviceHref}>
+                          Szczegóły usługi <ArrowRight aria-hidden="true" size={16} />
                         </a>
                         <button type="button" data-service-card-close aria-label={`Pokaż przód karty: ${title}`}>
                           Wróć
@@ -315,6 +280,32 @@ const support = [
               </article>
             );
           })}
+        </div>
+        <p class="section-more" data-reveal>
+          <a href="/uslugi/">Wszystkie usługi tworzenia stron</a>
+          ·
+          <a href="/cennik/">Cennik i widełki</a>
+        </p>
+      </section>
+
+      <section class="studio-section pricing" id="cennik" aria-labelledby="pricing-title">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">Cennik</p>
+          <h2 id="pricing-title">Widełki, nie <em>zgadywanie</em></h2>
+          <p>Punkty startowe po briefie zamieniamy na konkretną wycenę zakresu.</p>
+        </div>
+        <div class="pricing-grid" data-reveal>
+          {pricingTiers.map((tier) => (
+            <article class:list={["pricing-card", tier.featured && "pricing-card--featured"]}>
+              <h3>{tier.name}</h3>
+              <p class="pricing-card__price">{tier.price}</p>
+              <p>{tier.blurb}</p>
+              <ul>
+                {tier.includes.map((item) => <li>{item}</li>)}
+              </ul>
+              <a class="button secondary" href={tier.href}>Zobacz usługę</a>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -347,8 +338,8 @@ const support = [
           <p class="eyebrow">Wybrane realizacje</p>
           <h2 id="portfolio-title">Trzy projekty. <em>Trzy różne branże i decyzje.</em></h2>
           <p>
-            Przesuń kolekcję i zobacz trzy różne projekty
-            dla trzech różnych odbiorców.
+            Przesuń kolekcję albo wejdź w <a href="/projekty/">case studies</a>
+            — trzy branże, trzy różne decyzje.
           </p>
         </div>
         <PortfolioCarousel client:load />
@@ -458,6 +449,9 @@ const support = [
         </p>
       </div>
       <nav class="site-footer__links" aria-label="Stopka">
+        {exploreLinks.map((link) => (
+          <a href={link.href}>{link.label}</a>
+        ))}
         {legalLinks.map((link) => (
           <a href={link.href}>{link.label}</a>
         ))}

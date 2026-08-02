@@ -18,6 +18,13 @@ export const site = {
   },
 } as const;
 
+export const exploreLinks = [
+  { href: "/uslugi/", label: "Usługi" },
+  { href: "/cennik/", label: "Cennik" },
+  { href: "/projekty/", label: "Projekty" },
+  { href: "/blog/", label: "Blog" },
+] as const;
+
 export const legalLinks = [
   { href: "/kontakt/", label: "Kontakt" },
   { href: "/polityka-prywatnosci/", label: "Polityka prywatności" },

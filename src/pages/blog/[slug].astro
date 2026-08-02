@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { blogPosts, getPostBySlug } from "../../data/blog";
+
+export function getStaticPaths() {
+  return blogPosts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = getPostBySlug(slug!);
+
+if (!post) {
+  throw new Error(`Unknown blog slug: ${slug}`);
+}
+
+const path = `/blog/${post.slug}/`;
+---
+
+<BaseLayout
+  title={post.title}
+  description={post.description}
+  canonicalPath={path}
+  ogType="article"
+  breadcrumbs={[
+    { name: "NowaWeb", path: "/" },
+    { name: "Blog", path: "/blog/" },
+    { name: post.title, path },
+  ]}
+>
+  <main class="legal-page service-page">
+    <article class="legal-page__inner">
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "Strona główna" },
+          { href: "/blog/", label: "Blog" },
+          { label: post.title },
+        ]}
+      />
+      <p class="eyebrow orange">Artykuł</p>
+      <h1>{post.title}</h1>
+      <p class="legal-lead">{post.description}</p>
+      <p class="blog-list__meta">
+        <time datetime={post.date}>{post.date}</time>
+        · {post.readingMinutes} min czytania
+      </p>
+
+      {post.sections.map((section) => (
+        <>
+          <h2>{section.heading}</h2>
+          {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        </>
+      ))}
+
+      <div class="action-row service-page__cta">
+        <a class="button primary" href="/kontakt/">Porozmawiaj o stronie</a>
+        <a class="button secondary" href="/cennik/">Zobacz cennik</a>
+      </div>
+    </article>
+  </main>
+</BaseLayout>

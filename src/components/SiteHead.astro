@@ -7,16 +7,30 @@ type FaqItem = {
   answer: string;
 };
 
+type BreadcrumbItem = {
+  name: string;
+  path: string;
+};
+
 type Props = {
   title: string;
   description: string;
   canonicalPath?: string;
   noindex?: boolean;
   faqs?: readonly FaqItem[];
+  breadcrumbs?: readonly BreadcrumbItem[];
+  ogType?: "website" | "article";
 };
 
-const { title, description, canonicalPath = Astro.url.pathname, noindex = false, faqs = [] } =
-  Astro.props;
+const {
+  title,
+  description,
+  canonicalPath = Astro.url.pathname,
+  noindex = false,
+  faqs = [],
+  breadcrumbs = [],
+  ogType = "website",
+} = Astro.props;
 
 const normalizePath = (path: string) => {
   if (!path || path === "/") return "/";
@@ -118,6 +132,19 @@ const jsonLdGraph: Record<string, unknown>[] = [
   },
 ];
 
+if (breadcrumbs.length > 0) {
+  jsonLdGraph.push({
+    "@type": "BreadcrumbList",
+    "@id": `${canonical}#breadcrumb`,
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      item: new URL(normalizePath(crumb.path), site.url).toString(),
+    })),
+  });
+}
+
 if (faqs.length > 0) {
   jsonLdGraph.push({
     "@type": "FAQPage",
@@ -154,7 +181,7 @@ const safeJsonLd = safeJsonForHtml(jsonLd);
 <link rel="manifest" href="/site.webmanifest" />
 <meta name="theme-color" content="#fff7ea" />
 <meta name="color-scheme" content="light" />
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:locale" content="pl_PL" />
 <meta property="og:site_name" content={site.brand} />
 <meta property="og:title" content={title} />

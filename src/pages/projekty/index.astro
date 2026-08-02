@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { projects } from "../../data/projects";
+---
+
+<BaseLayout
+  title="Projekty i realizacje"
+  description="Wybrane realizacje NowaWeb: strony firmowe i landingi dla różnych branż. Zobacz case studies Cakepops, New York Rolls i Atmo - Vision."
+  canonicalPath="/projekty/"
+  breadcrumbs={[
+    { name: "NowaWeb", path: "/" },
+    { name: "Projekty", path: "/projekty/" },
+  ]}
+>
+  <main class="legal-page content-hub">
+    <div class="legal-page__inner content-hub__intro">
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "Strona główna" },
+          { label: "Projekty" },
+        ]}
+      />
+      <p class="eyebrow orange">Portfolio</p>
+      <h1>Projekty, które prowadzą do decyzji</h1>
+      <p class="legal-lead">
+        Trzy różne branże, jeden cel: czytelna oferta i kontakt. Wejdź w case study,
+        żeby zobaczyć kontekst — nie tylko screenshot.
+      </p>
+    </div>
+
+    <div class="content-card-grid">
+      {projects.map((project) => (
+        <a class="content-card" href={`/projekty/${project.slug}/`}>
+          <img
+            src={project.image}
+            alt={`Screenshot: ${project.name}`}
+            width={project.width}
+            height={project.height}
+            loading="lazy"
+            decoding="async"
+          />
+          <div>
+            <h2>{project.name}</h2>
+            <p>{project.industry}</p>
+            <span>Zobacz case study</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </main>
+</BaseLayout>

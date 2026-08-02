@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { blogPosts } from "../../data/blog";
+
+const posts = [...blogPosts].sort((a, b) => b.date.localeCompare(a.date));
+---
+
+<BaseLayout
+  title="Blog o stronach firmowych"
+  description="Blog NowaWeb: strona firmowa bez WordPressa, koszty wdrożenia i praktyczne decyzje przy tworzeniu stron internetowych dla firm."
+  canonicalPath="/blog/"
+  breadcrumbs={[
+    { name: "NowaWeb", path: "/" },
+    { name: "Blog", path: "/blog/" },
+  ]}
+>
+  <main class="legal-page content-hub">
+    <div class="legal-page__inner content-hub__intro">
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "Strona główna" },
+          { label: "Blog" },
+        ]}
+      />
+      <p class="eyebrow orange">Blog</p>
+      <h1>Praktycznie o stronach firmowych</h1>
+      <p class="legal-lead">
+        Krótkie teksty o stacku, wycenie i decyzjach, które realnie wpływają na zapytania —
+        bez poradnikowego lania wody.
+      </p>
+    </div>
+
+    <div class="blog-list">
+      {posts.map((post) => (
+        <article class="blog-list__item">
+          <p class="blog-list__meta">
+            <time datetime={post.date}>{post.date}</time>
+            · {post.readingMinutes} min
+          </p>
+          <h2>
+            <a href={`/blog/${post.slug}/`}>{post.title}</a>
+          </h2>
+          <p>{post.description}</p>
+        </article>
+      ))}
+    </div>
+  </main>
+</BaseLayout>

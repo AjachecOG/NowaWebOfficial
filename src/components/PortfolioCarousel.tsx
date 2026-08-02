@@ -11,6 +11,7 @@ type CardPosition = "left" | "center" | "right";
 
 type PortfolioProject = {
   name: string;
+  slug: string;
   image: string;
   width: number;
   height: number;
@@ -19,18 +20,21 @@ type PortfolioProject = {
 const projects: PortfolioProject[] = [
   {
     name: "Cakepops.pl",
+    slug: "cakepops",
     image: "/assets/nowaweb/portfolio/cakepops.webp",
     width: 1400,
     height: 767,
   },
   {
     name: "New York Rolls",
+    slug: "new-york-rolls",
     image: "/assets/nowaweb/portfolio/new-york-rolls.webp",
     width: 1400,
     height: 663,
   },
   {
     name: "Atmo - Vision",
+    slug: "atmo-vision",
     image: "/assets/nowaweb/portfolio/atmo-vision.webp",
     width: 1400,
     height: 671,
@@ -212,6 +216,12 @@ export default function PortfolioCarousel() {
           </span>
         ))}
       </div>
+
+      <p className="portfolio-carousel__case-link">
+        <a href={`/projekty/${projects[active].slug}/`}>Case study: {projects[active].name}</a>
+        {" · "}
+        <a href="/projekty/">Wszystkie projekty</a>
+      </p>
     </div>
   );
 }

@@ -9,10 +9,16 @@ export default defineConfig({
     sitemap({
       filter: (page) => !page.includes("/404") && !page.includes("/dziekujemy"),
       serialize(item) {
-        const isHome = item.url === "https://nowaweb.pl/" || item.url === "https://nowaweb.pl";
-        const isKontakt = item.url.includes("/kontakt");
-        item.changefreq = isHome || isKontakt ? "weekly" : "monthly";
-        item.priority = isHome ? 1.0 : isKontakt ? 0.8 : 0.4;
+        const url = item.url;
+        const isHome = url === "https://nowaweb.pl/" || url === "https://nowaweb.pl";
+        const isKontakt = url.includes("/kontakt");
+        const isMoneyPage =
+          url.includes("/uslugi") ||
+          url.includes("/cennik") ||
+          url.includes("/projekty") ||
+          url.includes("/blog");
+        item.changefreq = isHome || isKontakt || isMoneyPage ? "weekly" : "monthly";
+        item.priority = isHome ? 1.0 : isKontakt || url.includes("/uslugi") || url.includes("/cennik") ? 0.8 : isMoneyPage ? 0.7 : 0.4;
         item.lastmod = new Date();
         return item;
       },

@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { pricingTiers } from "../data/pricing";
+import { homeFaqs } from "../data/faqs";
+---
+
+<BaseLayout
+  title="Cennik stron firmowych"
+  description="Cennik NowaWeb: widełki cen landingu, one page i strony firmowej bez WordPressa. Po briefie dostajesz konkretną wycenę — bez ukrytych godzin na wtyczki."
+  canonicalPath="/cennik/"
+  faqs={homeFaqs}
+  breadcrumbs={[
+    { name: "NowaWeb", path: "/" },
+    { name: "Cennik", path: "/cennik/" },
+  ]}
+>
+  <main class="legal-page content-hub">
+    <div class="legal-page__inner content-hub__intro">
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "Strona główna" },
+          { label: "Cennik" },
+        ]}
+      />
+      <p class="eyebrow orange">Cennik</p>
+      <h1>Transparentne widełki, wycena po briefie</h1>
+      <p class="legal-lead">
+        Podajemy punkty startowe, żebyś wiedział rząd wielkości. Finalna cena zależy od zakresu,
+        copy i tego, czy migrujemy starą stronę.
+      </p>
+    </div>
+
+    <div class="pricing-grid pricing-grid--page">
+      {pricingTiers.map((tier) => (
+        <article class:list={["pricing-card", tier.featured && "pricing-card--featured"]}>
+          <h2>{tier.name}</h2>
+          <p class="pricing-card__price">{tier.price}</p>
+          <p>{tier.blurb}</p>
+          <ul>
+            {tier.includes.map((item) => <li>{item}</li>)}
+          </ul>
+          <a class="button primary" href={tier.href}>Szczegóły usługi</a>
+        </article>
+      ))}
+    </div>
+
+    <div class="legal-page__inner">
+      <h2>Jak wyceniamy</h2>
+      <p>
+        Po krótkim briefie mówimy wprost: co zbudować najpierw, ile to zajmie i ile kosztuje.
+        Nie sprzedajemy „strony za 800 zł” na motywie — wolimy mniejszy, dopięty zakres, który
+        zbiera zapytania.
+      </p>
+      <div class="action-row service-page__cta">
+        <a class="button primary" href="/kontakt/">Poproś o wycenę</a>
+        <a class="button secondary" href="/uslugi/">Porównaj usługi</a>
+      </div>
+
+      <h2>FAQ</h2>
+      <div class="faq-list">
+        {homeFaqs.map(({ question, answer }) => (
+          <details class="faq-item">
+            <summary>{question}</summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>

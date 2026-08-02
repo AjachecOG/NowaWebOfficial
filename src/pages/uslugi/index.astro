@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { services } from "../../data/services";
+---
+
+<BaseLayout
+  title="Usługi — tworzenie stron firmowych"
+  description="Usługi NowaWeb: strony firmowe, landing page, one page, odświeżenie strony, UX i copywriting oraz opieka po wdrożeniu. Bez WordPressa, zdalnie w całej Polsce."
+  canonicalPath="/uslugi/"
+  breadcrumbs={[
+    { name: "NowaWeb", path: "/" },
+    { name: "Usługi", path: "/uslugi/" },
+  ]}
+>
+  <main class="legal-page content-hub">
+    <div class="legal-page__inner content-hub__intro">
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "Strona główna" },
+          { label: "Usługi" },
+        ]}
+      />
+      <p class="eyebrow orange">Usługi</p>
+      <h1>Tworzenie stron internetowych pod zapytania</h1>
+      <p class="legal-lead">
+        Projektujemy i wdrażamy lekkie strony firmowe, landingi i one page bez WordPressa.
+        Wybierz zakres albo napisz — dopasujemy pierwszy krok.
+      </p>
+    </div>
+
+    <div class="content-card-grid">
+      {services.map((service) => (
+        <a class="content-card" href={`/uslugi/${service.slug}/`}>
+          <img src={service.image} alt="" width="900" height="675" loading="lazy" decoding="async" />
+          <div>
+            <h2>{service.title}</h2>
+            <p>{service.benefit}</p>
+            <span>{service.priceFrom}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </main>
+</BaseLayout>

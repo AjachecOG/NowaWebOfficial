@@ -227,6 +227,26 @@
     transform 900ms cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
+.portfolio-carousel__case-link {
+  position: relative;
+  z-index: 4;
+  width: min(calc(100% - 40px), var(--max));
+  margin: 8px auto 0;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+}
+
+.portfolio-carousel__case-link a {
+  color: var(--blue-deep);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.portfolio-carousel__case-link a:hover {
+  text-decoration: underline;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .portfolio-carousel__card[data-position="left"]:hover::before,
   .portfolio-carousel__card[data-position="right"]:hover::before {

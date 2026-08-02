@@ -1,0 +1,84 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { getServiceBySlug, services } from "../../data/services";
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const service = getServiceBySlug(slug!);
+
+if (!service) {
+  throw new Error(`Unknown service slug: ${slug}`);
+}
+
+const path = `/uslugi/${service.slug}/`;
+const related = services.filter((item) => item.slug !== service.slug).slice(0, 3);
+---
+
+<BaseLayout
+  title={service.metaTitle}
+  description={service.metaDescription}
+  canonicalPath={path}
+  breadcrumbs={[
+    { name: "NowaWeb", path: "/" },
+    { name: "Usługi", path: "/uslugi/" },
+    { name: service.title, path },
+  ]}
+>
+  <main class="legal-page service-page">
+    <div class="legal-page__inner">
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "Strona główna" },
+          { href: "/uslugi/", label: "Usługi" },
+          { label: service.title },
+        ]}
+      />
+      <p class="eyebrow orange">Usługa</p>
+      <h1>{service.title}</h1>
+      <p class="legal-lead">{service.intro}</p>
+      <p class="service-page__price">{service.priceFrom} · wycena po briefie</p>
+
+      <img
+        class="service-page__hero"
+        src={service.image}
+        alt={`Ilustracja: ${service.title}`}
+        width="900"
+        height="675"
+        loading="eager"
+        decoding="async"
+      />
+
+      {service.body.map((paragraph) => <p>{paragraph}</p>)}
+
+      <h2>Co dostajesz</h2>
+      <ul>
+        {service.outcomes.map((item) => <li>{item}</li>)}
+      </ul>
+
+      <h2>Zakres w praktyce</h2>
+      <ul>
+        {service.points.map((item) => <li>{item}</li>)}
+      </ul>
+
+      <div class="action-row service-page__cta">
+        <a class="button primary" href="/kontakt/">Umów rozmowę</a>
+        <a class="button secondary" href="/cennik/">Zobacz widełki cen</a>
+      </div>
+
+      <h2>Inne usługi</h2>
+      <ul class="related-links">
+        {related.map((item) => (
+          <li>
+            <a href={`/uslugi/${item.slug}/`}>{item.title}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </main>
+</BaseLayout>
