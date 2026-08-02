@@ -19,10 +19,10 @@ export const site = {
 } as const;
 
 export const legalLinks = [
-  { href: "/kontakt", label: "Kontakt" },
-  { href: "/polityka-prywatnosci", label: "Polityka prywatności" },
-  { href: "/polityka-cookies", label: "Polityka cookies" },
-  { href: "/regulamin", label: "Regulamin" },
+  { href: "/kontakt/", label: "Kontakt" },
+  { href: "/polityka-prywatnosci/", label: "Polityka prywatności" },
+  { href: "/polityka-cookies/", label: "Polityka cookies" },
+  { href: "/regulamin/", label: "Regulamin" },
 ] as const;
 
 export type SiteConfig = typeof site;

@@ -2,14 +2,21 @@
 import { site } from "../data/site";
 import { safeJsonForHtml } from "../utils/safe-json.mjs";
 
+type FaqItem = {
+  question: string;
+  answer: string;
+};
+
 type Props = {
   title: string;
   description: string;
   canonicalPath?: string;
   noindex?: boolean;
+  faqs?: readonly FaqItem[];
 };
 
-const { title, description, canonicalPath = Astro.url.pathname, noindex = false } = Astro.props;
+const { title, description, canonicalPath = Astro.url.pathname, noindex = false, faqs = [] } =
+  Astro.props;
 
 const normalizePath = (path: string) => {
   if (!path || path === "/") return "/";
@@ -19,69 +26,116 @@ const normalizePath = (path: string) => {
 
 const canonical = new URL(normalizePath(canonicalPath), site.url).toString();
 const ogImage = new URL("/assets/nowaweb/og-default.jpg", site.url).toString();
-const ogImageAlt = `${site.brand}: lekkie strony firmowe bez WordPressa`;
+const logoUrl = new URL("/icon-512.png", site.url).toString();
+const ogImageAlt = `${site.brand}: tworzenie lekkich stron firmowych bez WordPressa`;
 const robots = noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large";
+const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": `${site.url}/#organization`,
-      name: site.brand,
-      legalName: site.company.legalName,
-      url: site.url,
-      email: site.email,
-      telephone: site.phoneDisplay,
-      logo: ogImage,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: site.company.addressLine,
-        postalCode: site.company.postalCode,
-        addressLocality: site.company.city,
-        addressCountry: "PL",
-      },
-      taxID: site.company.nip,
-      vatID: site.company.nip,
+const jsonLdGraph: Record<string, unknown>[] = [
+  {
+    "@type": "Organization",
+    "@id": `${site.url}/#organization`,
+    name: site.brand,
+    legalName: site.company.legalName,
+    url: site.url,
+    email: site.email,
+    telephone: site.phoneDisplay,
+    logo: {
+      "@type": "ImageObject",
+      url: logoUrl,
+      width: 512,
+      height: 512,
     },
-    {
-      "@type": "WebSite",
-      "@id": `${site.url}/#website`,
-      name: site.brand,
-      url: site.url,
-      inLanguage: "pl-PL",
-      publisher: { "@id": `${site.url}/#organization` },
-      description,
+    image: ogImage,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: site.company.addressLine,
+      postalCode: site.company.postalCode,
+      addressLocality: site.company.city,
+      addressCountry: "PL",
     },
-    {
-      "@type": "ProfessionalService",
-      "@id": `${site.url}/#service`,
-      name: site.brand,
-      url: site.url,
-      image: ogImage,
-      telephone: site.phoneDisplay,
-      email: site.email,
-      areaServed: {
+    taxID: site.company.nip,
+    vatID: site.company.nip,
+    areaServed: {
+      "@type": "Country",
+      name: "Poland",
+    },
+  },
+  {
+    "@type": "WebSite",
+    "@id": `${site.url}/#website`,
+    name: site.brand,
+    url: site.url,
+    inLanguage: "pl-PL",
+    publisher: { "@id": `${site.url}/#organization` },
+    description,
+  },
+  {
+    "@type": "WebPage",
+    "@id": `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    description,
+    isPartOf: { "@id": `${site.url}/#website` },
+    about: { "@id": `${site.url}/#service` },
+    inLanguage: "pl-PL",
+  },
+  {
+    "@type": "ProfessionalService",
+    "@id": `${site.url}/#service`,
+    name: site.brand,
+    url: site.url,
+    image: ogImage,
+    telephone: site.phoneDisplay,
+    email: site.email,
+    priceRange: "$$",
+    areaServed: [
+      {
         "@type": "Country",
         name: "Poland",
       },
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: site.company.addressLine,
-        postalCode: site.company.postalCode,
-        addressLocality: site.company.city,
-        addressCountry: "PL",
+      {
+        "@type": "City",
+        name: "Wrocław",
       },
-      provider: { "@id": `${site.url}/#organization` },
-      serviceType: [
-        "Strony firmowe",
-        "Landing page",
-        "One page",
-        "Odświeżenie strony",
-        "UX i copywriting",
-      ],
+    ],
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: site.company.addressLine,
+      postalCode: site.company.postalCode,
+      addressLocality: site.company.city,
+      addressCountry: "PL",
     },
-  ],
+    provider: { "@id": `${site.url}/#organization` },
+    serviceType: [
+      "Tworzenie stron internetowych",
+      "Strony firmowe",
+      "Landing page",
+      "One page",
+      "Odświeżenie strony",
+      "UX i copywriting",
+    ],
+  },
+];
+
+if (faqs.length > 0) {
+  jsonLdGraph.push({
+    "@type": "FAQPage",
+    "@id": `${canonical}#faq`,
+    mainEntity: faqs.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  });
+}
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": jsonLdGraph,
 };
 const safeJsonLd = safeJsonForHtml(jsonLd);
 ---
@@ -92,6 +146,7 @@ const safeJsonLd = safeJsonForHtml(jsonLd);
 <meta name="description" content={description} />
 <meta name="robots" content={robots} />
 <meta name="googlebot" content={robots} />
+{googleVerification && <meta name="google-site-verification" content={googleVerification} />}
 <link rel="canonical" href={canonical} />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

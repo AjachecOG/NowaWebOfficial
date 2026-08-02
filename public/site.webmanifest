@@ -1,7 +1,7 @@
 {
   "name": "NowaWeb",
   "short_name": "NowaWeb",
-  "description": "Lekkie strony firmowe bez WordPressa",
+  "description": "Tworzenie lekkich stron firmowych, landing page i one page bez WordPressa",
   "start_url": "/",
   "display": "browser",
   "background_color": "#fff7ea",

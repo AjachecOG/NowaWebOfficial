@@ -24,6 +24,7 @@ import SiteMotion from "../components/SiteMotion";
 import TypewriterStatement from "../components/TypewriterStatement";
 import ContactForm from "../components/ContactForm.astro";
 import CookieConsent from "../components/CookieConsent";
+import { homeFaqs } from "../data/faqs";
 import { site, legalLinks } from "../data/site";
 import "../styles/global.css";
 
@@ -84,12 +85,14 @@ const support = [
 <html lang="pl">
   <head>
     <SiteHead
-      title="NowaWeb | Strony firmowe bez WordPressa"
-      description="NowaWeb projektuje lekkie strony firmowe, landing page i one page dla marek z całej Polski. Bez WordPressa i zbędnych wtyczek."
+      title="NowaWeb | Tworzenie stron firmowych bez WordPressa"
+      description="Tworzenie stron internetowych dla firm: lekkie strony firmowe, landing page i one page bez WordPressa. NowaWeb — projekt, wdrożenie i opieka zdalnie w całej Polsce."
       canonicalPath="/"
+      faqs={homeFaqs}
     />
   </head>
   <body>
+    <a class="skip-link" href="#top">Przejdź do treści</a>
     <SiteMotion client:load />
     <HeroSceneMotion client:load />
     <ServiceCardMotion client:load />
@@ -117,8 +120,9 @@ const support = [
             </span>
           </h1>
           <p class="lead">
-            Projektujemy lekkie strony firmowe: czytelna oferta, szybkie ładowanie,
-            stały kontakt po starcie. Pracujemy zdalnie z firmami z całej Polski.
+            Tworzymy lekkie strony internetowe dla firm: czytelna oferta, szybkie
+            ładowanie i stały kontakt po starcie. Bez WordPressa — zdalnie z firmami
+            z całej Polski, z siedzibą we Wrocławiu.
           </p>
           <div class="action-row">
             <a class="button primary" href="#kontakt">
@@ -234,8 +238,9 @@ const support = [
         <div class="manifesto-copy" data-reveal>
           <span class="manifesto-copy-shape" aria-hidden="true"></span>
           <p>
-            Zaczynamy od celu i struktury, potem projekt i wdrożenie. Bez gotowego
-            motywu WordPress: strona ma być szybka i prosta do rozwijania.
+            Zaczynamy od celu i struktury, potem projekt i wdrożenie strony firmowej.
+            Bez gotowego motywu WordPress: strona internetowa ma być szybka i prosta
+            do rozwijania.
           </p>
           <TypewriterStatement client:load />
         </div>
@@ -386,13 +391,32 @@ const support = [
         </a>
       </section>
 
+      <section class="studio-section faq" id="faq" aria-labelledby="faq-title">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-title">Pytania o <em>tworzenie stron</em></h2>
+          <p>
+            Krótko o kosztach, czasie realizacji i tym, jak wygląda współpraca przy
+            stronie firmowej bez WordPressa.
+          </p>
+        </div>
+        <div class="faq-list" data-reveal>
+          {homeFaqs.map(({ question, answer }) => (
+            <details class="faq-item">
+              <summary>{question}</summary>
+              <p>{answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
       <section class="final-cta" id="kontakt" aria-labelledby="cta-title">
         <div class="cta-panel" data-kontakt-sequence>
           <p class="eyebrow" data-kontakt-step>Kontakt</p>
           <h2 id="cta-title" data-kontakt-step>Zróbmy stronę, która zbiera <em>zapytania</em></h2>
           <p data-kontakt-step>
-            Opowiedz nam, gdzie dziś jest Twoja marka i czego oczekujesz od strony.
-            Powiemy, co zbudować najpierw i ile to zajmie.
+            Opowiedz nam, gdzie dziś jest Twoja marka i czego oczekujesz od strony
+            internetowej. Powiemy, co zbudować najpierw i ile zajmie tworzenie strony.
           </p>
           <div class="action-row" data-kontakt-step>
             <a class="button primary" href={`mailto:${site.email}`}><Mail aria-hidden="true" size={20} />Napisz do nas</a>

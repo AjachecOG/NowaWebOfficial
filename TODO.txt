@@ -24,6 +24,14 @@ A. OPS / PRODUKCJA (wymaga ręcznej konfiguracji — nie da się domknąć samym
     - Podłącz nowaweb.pl (+ www → apex lub odwrotnie)
     - HTTPS aktywny, bez ostrzeżeń certyfikatu
 
+[ ] 4b. SEO / indeksacja (audyt 2026-08-02)
+    - Google Search Console: Domain property + DNS TXT
+    - Submit sitemap: https://nowaweb.pl/sitemap-index.xml
+    - Request indexing: / oraz /kontakt/
+    - Bing Webmaster Tools
+    - Google Business Profile (Wrocław)
+    - Raport: docs/audits/seo-audit-2026-08-02.md
+
 [ ] 5. Smoke checklist na produkcji
     - Favicon w zakładce
     - https://nowaweb.pl/robots.txt

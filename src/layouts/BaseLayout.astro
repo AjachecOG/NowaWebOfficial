@@ -15,7 +15,7 @@ type Props = {
 
 const {
   title,
-  description = "NowaWeb projektuje lekkie strony firmowe, landing page i one page dla marek z całej Polski. Bez WordPressa i zbędnych wtyczek.",
+  description = "Tworzenie stron internetowych dla firm: lekkie strony firmowe, landing page i one page bez WordPressa. NowaWeb — projekt, wdrożenie i opieka zdalnie w całej Polsce.",
   bodyClass = "",
   canonicalPath = Astro.url.pathname,
   noindex = false,
@@ -35,11 +35,14 @@ const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
     />
   </head>
   <body class={bodyClass}>
+    <a class="skip-link" href="#top">Przejdź do treści</a>
     <div class="paper-grain" aria-hidden="true"></div>
 
     <SiteHeader />
 
-    <slot />
+    <div id="top">
+      <slot />
+    </div>
 
     <footer class="site-footer site-footer--legal">
       <div class="site-footer__brand">
