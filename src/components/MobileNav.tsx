@@ -5,7 +5,7 @@ const links = [
   { href: "/#uslugi", label: "Usługi" },
   { href: "/#proces", label: "Proces" },
   { href: "/#projekty", label: "Projekty" },
-  { href: "/kontakt", label: "Kontakt" },
+  { href: "/kontakt/", label: "Kontakt" },
 ];
 
 export default function MobileNav() {

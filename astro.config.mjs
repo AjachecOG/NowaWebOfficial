@@ -13,7 +13,6 @@ export default defineConfig({
         const isKontakt = item.url.includes("/kontakt");
         item.changefreq = isHome || isKontakt ? "weekly" : "monthly";
         item.priority = isHome ? 1.0 : isKontakt ? 0.8 : 0.4;
-        item.lastmod = new Date();
         return item;
       },
     }),

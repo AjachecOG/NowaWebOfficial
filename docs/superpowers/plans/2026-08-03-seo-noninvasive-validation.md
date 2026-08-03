@@ -106,6 +106,8 @@ git commit -m "test: cover non-invasive SEO contract"
 - Modify: `src/data/site.ts`
 - Modify: `src/components/SiteHeader.astro`
 - Modify: `src/components/MobileNav.tsx`
+- Modify: `src/components/ContactForm.astro`, `src/components/CookieConsent.tsx`
+- Modify: `src/pages/404.astro`, `src/pages/dziekujemy.astro`, and the three legal pages
 - Test: `tests/seo-noninvasive-validation.test.mjs`
 
 **Interfaces:**
@@ -134,7 +136,7 @@ Use these exact path values:
 { href: "/regulamin/", label: "Regulamin" },
 ```
 
-In `SiteHeader.astro` and `MobileNav.tsx`, change each `/kontakt` navigation target to `/kontakt/`. Keep section links such as `/#proces` unchanged.
+In `SiteHeader.astro`, `MobileNav.tsx`, the form, cookie notice, thank-you and 404 pages, and legal pages, change each page-route target to its trailing-slash form. Keep section links such as `/#proces` unchanged.
 
 - [ ] **Step 3: Build and verify the first two behaviors turn green**
 

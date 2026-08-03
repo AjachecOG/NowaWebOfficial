@@ -62,8 +62,8 @@ export default function CookieConsent() {
           Używamy niezbędnych zapisów w przeglądarce, żeby zapamiętać Twój wybór.
           Nie ładujemy teraz narzędzi analitycznych. Jeśli je dodamy, włączymy je
           dopiero po zgodzie. Szczegóły:{" "}
-          <a href="/polityka-cookies">polityka cookies</a> i{" "}
-          <a href="/polityka-prywatnosci">polityka prywatności</a>.
+          <a href="/polityka-cookies/">polityka cookies</a> i{" "}
+          <a href="/polityka-prywatnosci/">polityka prywatności</a>.
         </p>
       </div>
       <div className="cookie-banner__actions">
