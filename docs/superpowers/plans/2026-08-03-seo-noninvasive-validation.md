@@ -24,7 +24,7 @@
 **Files:**
 - Create: `tests/seo-noninvasive-validation.test.mjs`
 - Modify: none
-- Test: `tests/seo-noninvasive-validation.test.mjs`
+- Test: `tests/seo-noninvasive-validation.test.mjs`, `tests/security-hardening.test.mjs`
 
 **Interfaces:**
 - Consumes: generated `dist/` from `npm run build`, source page at `src/pages/index.astro`, and five generated hero assets.

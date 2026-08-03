@@ -31,7 +31,7 @@ test("built contact forms use Netlify controls and bounded fields", () => {
     assert.match(html, /<input\b[^>]*name="phone"[^>]*maxlength="32"/i, relativePath);
     assert.match(html, /<textarea\b[^>]*name="message"[^>]*maxlength="4000"/i, relativePath);
     assert.doesNotMatch(html, /<input\b[^>]*name="privacy"/i, relativePath);
-    assert.match(html, /href="\/polityka-prywatnosci"/i, relativePath);
+    assert.match(html, /href="\/polityka-prywatnosci\/"/i, relativePath);
   }
 });
 
