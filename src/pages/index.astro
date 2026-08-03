@@ -138,10 +138,28 @@ const support = [
             <span class="perspective-floor"></span>
             <span class="product-halo"></span>
             <figure class="paper-piece paper-logo">
-              <img src="/assets/nowaweb/hero/logo-card-cutout.webp" alt="" width="700" height="875" loading="eager" decoding="async" />
+              <img
+                src="/assets/nowaweb/hero/logo-card-cutout.webp"
+                srcset="/assets/nowaweb/hero/logo-card-cutout-420.webp 420w, /assets/nowaweb/hero/logo-card-cutout.webp 700w"
+                sizes="(max-width: 760px) 27vw, 23vw"
+                alt=""
+                width="700"
+                height="875"
+                loading="eager"
+                decoding="async"
+              />
             </figure>
             <figure class="paper-piece paper-poster">
-              <img src="/assets/nowaweb/hero/poster-cutout.webp" alt="" width="700" height="875" loading="lazy" decoding="async" />
+              <img
+                src="/assets/nowaweb/hero/poster-cutout.webp"
+                srcset="/assets/nowaweb/hero/poster-cutout-420.webp 420w, /assets/nowaweb/hero/poster-cutout.webp 700w"
+                sizes="(max-width: 760px) 28vw, 22vw"
+                alt=""
+                width="700"
+                height="875"
+                loading="lazy"
+                decoding="async"
+              />
             </figure>
             <figure class="paper-piece paper-poland">
               <span class="poland-tape"></span>
@@ -150,7 +168,16 @@ const support = [
               <span class="poland-stand"></span>
             </figure>
             <figure class="paper-piece tool-rail-piece">
-              <img src="/assets/nowaweb/hero/tool-rail-cutout.webp" alt="" width="500" height="1500" loading="lazy" decoding="async" />
+              <img
+                src="/assets/nowaweb/hero/tool-rail-cutout.webp"
+                srcset="/assets/nowaweb/hero/tool-rail-cutout-240.webp 240w, /assets/nowaweb/hero/tool-rail-cutout.webp 500w"
+                sizes="(max-width: 760px) 13vw, 10vw"
+                alt=""
+                width="500"
+                height="1500"
+                loading="lazy"
+                decoding="async"
+              />
             </figure>
             <div class="monitor-rig" data-monitor-billboard>
               <div class="monitor-glitch-layer">
@@ -187,6 +214,8 @@ const support = [
             <img
               class="product-notebook"
               src="/assets/nowaweb/hero/notebook-cutout.webp"
+              srcset="/assets/nowaweb/hero/notebook-cutout-450.webp 450w, /assets/nowaweb/hero/notebook-cutout.webp 900w"
+              sizes="(max-width: 760px) 28vw, 22vw"
               alt=""
               width="900"
               height="785"
@@ -196,6 +225,8 @@ const support = [
             <img
               class="product-cup"
               src="/assets/nowaweb/hero/cup-cutout.webp"
+              srcset="/assets/nowaweb/hero/cup-cutout-360.webp 360w, /assets/nowaweb/hero/cup-cutout.webp 500w"
+              sizes="(max-width: 760px) 29vw, 21vw"
               alt=""
               width="500"
               height="500"
@@ -334,7 +365,7 @@ const support = [
           <h2 id="process-title">Jak wygląda <em>współpraca</em></h2>
           <p>Cztery etapy, ustalony zakres i stały kontakt.</p>
         </div>
-        <ProcessIsland client:load />
+        <ProcessIsland client:visible />
       </section>
 
       <section class="studio-section portfolio" id="projekty" aria-labelledby="portfolio-title">
@@ -346,7 +377,7 @@ const support = [
             dla trzech różnych odbiorców.
           </p>
         </div>
-        <PortfolioCarousel client:load />
+        <PortfolioCarousel client:visible />
       </section>
 
       <section class="studio-section support" data-support-sequence aria-labelledby="support-title">
