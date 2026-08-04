@@ -1,0 +1,98 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { services, type ServiceOffer } from "../../data/services";
+import { site } from "../../data/site";
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+type Props = { service: ServiceOffer };
+const { service } = Astro.props;
+const canonicalPath = `/uslugi/${service.slug}/`;
+const serviceSchema = {
+  "@type": "Service",
+  "@id": `${site.url}${canonicalPath}#service`,
+  name: service.title,
+  serviceType: service.title,
+  description: service.metaDescription,
+  url: `${site.url}${canonicalPath}`,
+  provider: { "@id": `${site.url}/#organization` },
+  areaServed: { "@type": "Country", name: "Polska" },
+};
+---
+
+<BaseLayout
+  title={service.metaTitle}
+  description={service.metaDescription}
+  canonicalPath={canonicalPath}
+  structuredData={serviceSchema}
+>
+  <main class="content-page">
+    <article class="content-page__wide">
+      <nav class="breadcrumbs" aria-label="Okruszki">
+        <a href="/">Strona główna</a><span aria-hidden="true">/</span>
+        <a href="/uslugi/">Usługi</a><span aria-hidden="true">/</span>
+        <span>{service.title}</span>
+      </nav>
+
+      <header class="content-page__hero content-page__hero--service">
+        <div>
+          <p class="eyebrow orange">Usługa NowaWeb</p>
+          <h1>{service.title}</h1>
+          <p class="content-lead">{service.intro}</p>
+          <div class="action-row">
+            <a class="button primary" href="/kontakt/">Zapytaj o zakres</a>
+            <a class="button secondary" href="/realizacje/">Zobacz realizacje</a>
+          </div>
+        </div>
+        <img
+          class="content-page__service-image"
+          src={service.image}
+          alt={`Ilustracja usługi: ${service.title}`}
+          width="900"
+          height="675"
+          decoding="async"
+        />
+      </header>
+
+      <div class="content-two-columns">
+        <section class="content-panel" aria-labelledby="for-whom-title">
+          <p class="eyebrow">Dla kogo</p>
+          <h2 id="for-whom-title">Kiedy ten zakres ma sens</h2>
+          <ul>
+            {service.forWhom.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+
+        <section class="content-panel" aria-labelledby="scope-title">
+          <p class="eyebrow">Zakres</p>
+          <h2 id="scope-title">Co możemy wziąć po swojej stronie</h2>
+          <ul>
+            {service.scope.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+      </div>
+
+      <section class="content-prose" aria-labelledby="workflow-title">
+        <p class="eyebrow orange">Sposób pracy</p>
+        <h2 id="workflow-title">Jak podchodzimy do projektu</h2>
+        {service.workflow.map((paragraph) => <p>{paragraph}</p>)}
+      </section>
+
+      <section class="content-callout" aria-labelledby="before-start-title">
+        <div>
+          <p class="eyebrow">Przed rozpoczęciem</p>
+          <h2 id="before-start-title">Najpierw ustalamy konkretny zakres</h2>
+          <p>{service.beforeStart}</p>
+        </div>
+        <a class="button primary" href="/kontakt/">Opisz swój projekt</a>
+      </section>
+
+      <nav class="content-sibling-nav" aria-label="Więcej usług">
+        <a href="/uslugi/">← Wszystkie usługi</a>
+        <a href="/o-nas/">Jak pracuje NowaWeb →</a>
+      </nav>
+    </article>
+  </main>
+</BaseLayout>

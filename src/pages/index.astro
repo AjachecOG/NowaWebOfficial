@@ -24,7 +24,9 @@ import SiteMotion from "../components/SiteMotion";
 import TypewriterStatement from "../components/TypewriterStatement";
 import ContactForm from "../components/ContactForm.astro";
 import CookieConsent from "../components/CookieConsent";
-import { site, legalLinks } from "../data/site";
+import { homeFaqs } from "../data/faqs";
+import { services } from "../data/services";
+import { site, footerLinks } from "../data/site";
 import "../styles/global.css";
 
 const strengths = [
@@ -32,45 +34,6 @@ const strengths = [
   { title: "Kontakt 1:1", text: "Rozmawiasz z osobą, która zna projekt.", Icon: UsersRound },
   { title: "Nowoczesny stack", text: "Astro, React islands i mało zbędnego JS.", Icon: Code2 },
   { title: "Spójny design", text: "Strona wygląda jak marka, nie jak motyw.", Icon: Palette },
-];
-
-const services = [
-  {
-    title: "Strony firmowe",
-    image: "/assets/nowaweb/services/corporate-websites.webp",
-    benefit: "Strona firmowa: oferta, referencje i jasny kontakt.",
-    points: ["Architektura informacji", "Projekt dopasowany do marki", "Szybkie wdrożenie w Astro"],
-  },
-  {
-    title: "Landing page",
-    image: "/assets/nowaweb/services/landing-page.webp",
-    benefit: "Landing pod jedną kampanię i jedno CTA.",
-    points: ["Układ pod konwersję", "Copy prowadzące do kontaktu", "Pomiar kluczowych zdarzeń"],
-  },
-  {
-    title: "One page",
-    image: "/assets/nowaweb/services/one-page.webp",
-    benefit: "Jedna strona z najważniejszymi informacjami i kontaktem.",
-    points: ["Najważniejsze informacje", "Płynna narracja", "Kontakt zawsze pod ręką"],
-  },
-  {
-    title: "Odświeżenie strony",
-    image: "/assets/nowaweb/services/website-refresh.webp",
-    benefit: "Odświeżamy wygląd i strukturę na bazie obecnej strony.",
-    points: ["Audyt obecnej strony", "Nowy rytm i hierarchia", "Lepsza czytelność na mobile"],
-  },
-  {
-    title: "UX + copywriting",
-    image: "/assets/nowaweb/services/ux-copywriting.webp",
-    benefit: "Teksty i układ pod pytania, które klient i tak zada.",
-    points: ["Jasna propozycja wartości", "Mikrocopy i CTA", "Struktura wspierająca decyzję"],
-  },
-  {
-    title: "Opieka i rozwój",
-    image: "/assets/nowaweb/services/care-growth.webp",
-    benefit: "Opieka po starcie: treści, poprawki i kolejne sekcje.",
-    points: ["Aktualizacje treści", "Rozwój kolejnych sekcji", "Wsparcie techniczne"],
-  },
 ];
 
 const support = [
@@ -84,15 +47,15 @@ const support = [
 <html lang="pl">
   <head>
     <SiteHead
-      title="NowaWeb | Strony firmowe bez WordPressa"
-      description="NowaWeb projektuje lekkie strony firmowe, landing page i one page dla marek z całej Polski. Bez WordPressa i zbędnych wtyczek."
+      title="Tworzenie stron internetowych dla firm | NowaWeb"
+      description="Projektujemy i wdrażamy szybkie strony internetowe dla firm: strony firmowe, landing page i one page. Wrocław i cała Polska, bez WordPressa."
       canonicalPath="/"
     />
   </head>
   <body>
     <SiteMotion client:load />
     <HeroSceneMotion client:load />
-    <ServiceCardMotion client:load />
+    <ServiceCardMotion client:idle />
     <div class="paper-grain" aria-hidden="true"></div>
 
     <SiteHeader />
@@ -104,21 +67,22 @@ const support = [
           <h1
             id="hero-title"
             class="hero-title"
-            aria-label="Profesjonalny design nie jest luksusem"
+            aria-label="Strony internetowe dla firm"
           >
             <span class="hero-title-line">
-              <span class="hero-title-line-inner">Profesjonalny</span>
+              <span class="hero-title-line-inner">Strony</span>
             </span>
             <span class="hero-title-line">
-              <span class="hero-title-line-inner">design <em>nie jest</em></span>
+              <span class="hero-title-line-inner"><em>internetowe</em></span>
             </span>
             <span class="hero-title-line">
-              <span class="hero-title-line-inner">luksusem</span>
+              <span class="hero-title-line-inner">dla firm</span>
             </span>
           </h1>
           <p class="lead">
-            Projektujemy lekkie strony firmowe: czytelna oferta, szybkie ładowanie,
-            stały kontakt po starcie. Pracujemy zdalnie z firmami z całej Polski.
+            Projektujemy i wdrażamy lekkie strony firmowe, landing page i one page:
+            czytelna oferta, indywidualny design oraz kontakt po starcie. Z Wrocławia,
+            zdalnie dla firm z całej Polski.
           </p>
           <div class="action-row">
             <a class="button primary" href="#kontakt">
@@ -132,7 +96,12 @@ const support = [
           </div>
         </div>
 
-        <div class="hero-studio product-showcase" data-reveal aria-label="Podgląd projektu strony NowaWeb">
+        <div
+          class="hero-studio product-showcase"
+          data-reveal
+          role="img"
+          aria-label="Podgląd projektu strony NowaWeb"
+        >
           <div class="product-stage" aria-hidden="true">
             <span class="perspective-wall"></span>
             <span class="perspective-floor"></span>
@@ -260,7 +229,7 @@ const support = [
             <span class="title-word title-word-meet">spotyka</span>
             <em class="title-word title-word-creative">kreatywność</em>
           </h2>
-          <BrandFlipCard client:load />
+          <BrandFlipCard client:visible />
         </div>
         <div class="manifesto-copy" data-reveal>
           <span class="manifesto-copy-shape" aria-hidden="true"></span>
@@ -268,7 +237,8 @@ const support = [
             Zaczynamy od celu i struktury, potem projekt i wdrożenie. Bez gotowego
             motywu WordPress: strona ma być szybka i prosta do rozwijania.
           </p>
-          <TypewriterStatement client:load />
+          <a class="content-link" href="/o-nas/">Poznaj NowaWeb <span aria-hidden="true">→</span></a>
+          <TypewriterStatement client:visible />
         </div>
       </section>
 
@@ -281,7 +251,7 @@ const support = [
           </p>
         </div>
           <div class="service-board">
-          {services.map(({ title, image, benefit, points }, index) => {
+          {services.map(({ title, image, benefit, points, slug }, index) => {
             const backId = `service-card-back-${index}`;
             const serviceNumber = String(index + 1).padStart(2, "0");
 
@@ -328,8 +298,8 @@ const support = [
                         {points.map((point) => <li>{point}</li>)}
                       </ul>
                       <div class="service-card-back-actions">
-                        <a href="#kontakt">
-                          Napisz o projekcie <ArrowRight aria-hidden="true" size={16} />
+                        <a href={`/uslugi/${slug}/`}>
+                          Pełny zakres <ArrowRight aria-hidden="true" size={16} />
                         </a>
                         <button type="button" data-service-card-close aria-label={`Pokaż przód karty: ${title}`}>
                           Wróć
@@ -341,6 +311,9 @@ const support = [
               </article>
             );
           })}
+        </div>
+        <div class="section-link-row" data-reveal>
+          <a class="button secondary" href="/uslugi/">Zobacz wszystkie usługi</a>
         </div>
       </section>
 
@@ -378,6 +351,9 @@ const support = [
           </p>
         </div>
         <PortfolioCarousel client:visible />
+        <div class="section-link-row" data-reveal>
+          <a class="button secondary" href="/realizacje/">Zobacz realizacje i opis decyzji</a>
+        </div>
       </section>
 
       <section class="studio-section support" data-support-sequence aria-labelledby="support-title">
@@ -415,6 +391,25 @@ const support = [
             <ChevronDown size={22} strokeWidth={2.15} />
           </span>
         </a>
+      </section>
+
+      <section class="studio-section faq-section" aria-labelledby="faq-title">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow orange">Najczęstsze pytania</p>
+          <h2 id="faq-title">Konkrety przed <em>rozpoczęciem projektu</em></h2>
+          <p>
+            Bez sztucznych pakietów i obietnic bez pokrycia. Najpierw ustalamy zakres,
+            materiały oraz sposób późniejszej opieki.
+          </p>
+        </div>
+        <div class="faq-list">
+          {homeFaqs.map((item) => (
+            <details data-reveal>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
       </section>
 
       <section class="final-cta" id="kontakt" aria-labelledby="cta-title">
@@ -465,7 +460,7 @@ const support = [
         </p>
       </div>
       <nav class="site-footer__links" aria-label="Stopka">
-        {legalLinks.map((link) => (
+        {footerLinks.map((link) => (
           <a href={link.href}>{link.label}</a>
         ))}
         <button type="button" class="site-footer__cookies" data-open-cookie-settings>

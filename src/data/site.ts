@@ -25,4 +25,19 @@ export const legalLinks = [
   { href: "/regulamin/", label: "Regulamin" },
 ] as const;
 
+export const mainLinks = [
+  { href: "/o-nas/", label: "O nas" },
+  { href: "/uslugi/", label: "Usługi" },
+  { href: "/#proces", label: "Proces" },
+  { href: "/realizacje/", label: "Realizacje" },
+  { href: "/kontakt/", label: "Kontakt" },
+] as const;
+
+export const footerLinks = [
+  { href: "/o-nas/", label: "O nas" },
+  { href: "/uslugi/", label: "Usługi" },
+  { href: "/realizacje/", label: "Realizacje" },
+  ...legalLinks,
+] as const;
+
 export type SiteConfig = typeof site;

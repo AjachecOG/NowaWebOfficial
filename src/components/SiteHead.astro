@@ -7,9 +7,18 @@ type Props = {
   description: string;
   canonicalPath?: string;
   noindex?: boolean;
+  pageType?: "WebPage" | "AboutPage" | "ContactPage" | "CollectionPage";
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 };
 
-const { title, description, canonicalPath = Astro.url.pathname, noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  canonicalPath = Astro.url.pathname,
+  noindex = false,
+  pageType = "WebPage",
+  structuredData,
+} = Astro.props;
 
 const normalizePath = (path: string) => {
   if (!path || path === "/") return "/";
@@ -19,21 +28,34 @@ const normalizePath = (path: string) => {
 
 const canonical = new URL(normalizePath(canonicalPath), site.url).toString();
 const ogImage = new URL("/assets/nowaweb/og-default.jpg", site.url).toString();
+const logo = new URL("/icon-512.png", site.url).toString();
 const ogImageAlt = `${site.brand}: lekkie strony firmowe bez WordPressa`;
 const robots = noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large";
+const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+const additionalNodes = structuredData
+  ? Array.isArray(structuredData)
+    ? structuredData
+    : [structuredData]
+  : [];
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization",
+      "@type": ["Organization", "ProfessionalService"],
       "@id": `${site.url}/#organization`,
       name: site.brand,
       legalName: site.company.legalName,
       url: site.url,
       email: site.email,
       telephone: site.phoneDisplay,
-      logo: ogImage,
+      logo: {
+        "@type": "ImageObject",
+        url: logo,
+        width: 512,
+        height: 512,
+      },
+      image: ogImage,
       address: {
         "@type": "PostalAddress",
         streetAddress: site.company.addressLine,
@@ -43,6 +65,17 @@ const jsonLd = {
       },
       taxID: site.company.nip,
       vatID: site.company.nip,
+      areaServed: {
+        "@type": "Country",
+        name: "Polska",
+      },
+      serviceType: [
+        "Strony firmowe",
+        "Landing page",
+        "One page",
+        "Odświeżenie strony internetowej",
+        "UX i copywriting",
+      ],
     },
     {
       "@type": "WebSite",
@@ -54,33 +87,16 @@ const jsonLd = {
       description,
     },
     {
-      "@type": "ProfessionalService",
-      "@id": `${site.url}/#service`,
-      name: site.brand,
-      url: site.url,
-      image: ogImage,
-      telephone: site.phoneDisplay,
-      email: site.email,
-      areaServed: {
-        "@type": "Country",
-        name: "Poland",
-      },
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: site.company.addressLine,
-        postalCode: site.company.postalCode,
-        addressLocality: site.company.city,
-        addressCountry: "PL",
-      },
-      provider: { "@id": `${site.url}/#organization` },
-      serviceType: [
-        "Strony firmowe",
-        "Landing page",
-        "One page",
-        "Odświeżenie strony",
-        "UX i copywriting",
-      ],
+      "@type": pageType,
+      "@id": `${canonical}#webpage`,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: "pl-PL",
+      isPartOf: { "@id": `${site.url}/#website` },
+      about: { "@id": `${site.url}/#organization` },
     },
+    ...additionalNodes,
   ],
 };
 const safeJsonLd = safeJsonForHtml(jsonLd);
@@ -92,6 +108,7 @@ const safeJsonLd = safeJsonForHtml(jsonLd);
 <meta name="description" content={description} />
 <meta name="robots" content={robots} />
 <meta name="googlebot" content={robots} />
+{googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
 <link rel="canonical" href={canonical} />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

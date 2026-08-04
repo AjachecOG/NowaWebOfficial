@@ -1,5 +1,5 @@
 ---
-import { site, legalLinks } from "../data/site";
+import { site, footerLinks } from "../data/site";
 import CookieConsent from "../components/CookieConsent";
 import SiteHead from "../components/SiteHead.astro";
 import SiteHeader from "../components/SiteHeader.astro";
@@ -11,6 +11,8 @@ type Props = {
   bodyClass?: string;
   canonicalPath?: string;
   noindex?: boolean;
+  pageType?: "WebPage" | "AboutPage" | "ContactPage" | "CollectionPage";
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 };
 
 const {
@@ -19,6 +21,8 @@ const {
   bodyClass = "",
   canonicalPath = Astro.url.pathname,
   noindex = false,
+  pageType = "WebPage",
+  structuredData,
 } = Astro.props;
 
 const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
@@ -32,6 +36,8 @@ const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
       description={description}
       canonicalPath={canonicalPath}
       noindex={noindex}
+      pageType={pageType}
+      structuredData={structuredData}
     />
   </head>
   <body class={bodyClass}>
@@ -51,7 +57,7 @@ const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
         </p>
       </div>
       <nav class="site-footer__links" aria-label="Stopka">
-        {legalLinks.map((link) => (
+        {footerLinks.map((link) => (
           <a href={link.href}>{link.label}</a>
         ))}
         <button type="button" class="site-footer__cookies" data-open-cookie-settings>

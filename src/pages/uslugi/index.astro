@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { services } from "../../data/services";
+import { site } from "../../data/site";
+
+const itemListSchema = {
+  "@type": "ItemList",
+  "@id": `${site.url}/uslugi/#lista-uslug`,
+  name: "Usługi NowaWeb",
+  itemListElement: services.map((service, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: service.title,
+    url: `${site.url}/uslugi/${service.slug}/`,
+  })),
+};
+---
+
+<BaseLayout
+  title="Tworzenie stron internetowych: usługi"
+  description="Projektujemy strony firmowe, landing page i one page, odświeżamy istniejące serwisy oraz zapewniamy UX, copywriting i opiekę po wdrożeniu."
+  canonicalPath="/uslugi/"
+  pageType="CollectionPage"
+  structuredData={itemListSchema}
+>
+  <main class="content-page">
+    <div class="content-page__wide">
+      <nav class="breadcrumbs" aria-label="Okruszki">
+        <a href="/">Strona główna</a><span aria-hidden="true">/</span><span>Usługi</span>
+      </nav>
+
+      <header class="content-page__hero">
+        <p class="eyebrow orange">Usługi</p>
+        <h1>Tworzenie stron internetowych dla firm</h1>
+        <p class="content-lead">
+          Łączymy strukturę, copy, indywidualny design i lekkie wdrożenie. Każda usługa ma
+          osobny zakres, ale wspólny cel: strona ma jasno przedstawiać ofertę i ułatwiać
+          rozpoczęcie rozmowy.
+        </p>
+      </header>
+
+      <section class="service-list" aria-label="Zakres usług NowaWeb">
+        {services.map((service) => (
+          <article class="service-list__card">
+            <img
+              src={service.image}
+              alt={`Ilustracja usługi: ${service.title}`}
+              width="900"
+              height="675"
+              loading="lazy"
+              decoding="async"
+            />
+            <div>
+              <h2>{service.title}</h2>
+              <p>{service.benefit}</p>
+              <ul>
+                {service.points.map((point) => <li>{point}</li>)}
+              </ul>
+              <a class="content-link" href={`/uslugi/${service.slug}/`}>
+                Zobacz pełny zakres <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+        ))}
+      </section>
+
+      <section class="content-callout" aria-labelledby="service-contact-title">
+        <div>
+          <p class="eyebrow">Nie wiesz, który zakres pasuje?</p>
+          <h2 id="service-contact-title">Zacznijmy od celu, nie od pakietu</h2>
+          <p>
+            Opisz firmę, obecną stronę i to, co ma się zmienić. Powiemy, czy potrzebujesz
+            landingu, one page, pełnej strony firmowej czy najpierw uporządkowania treści.
+          </p>
+        </div>
+        <a class="button primary" href="/kontakt/">Napisz o projekcie</a>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

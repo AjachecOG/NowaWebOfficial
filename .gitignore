@@ -3,6 +3,7 @@ dist/
 .astro/
 .worktrees/
 output/
+.playwright-cli/
 _archive/
 .env
 .env.*

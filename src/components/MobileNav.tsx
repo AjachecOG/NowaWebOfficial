@@ -1,12 +1,5 @@
 import { useEffect, useId, useState } from "react";
-
-const links = [
-  { href: "/#onas", label: "O nas" },
-  { href: "/#uslugi", label: "Usługi" },
-  { href: "/#proces", label: "Proces" },
-  { href: "/#projekty", label: "Projekty" },
-  { href: "/kontakt/", label: "Kontakt" },
-];
+import { mainLinks } from "../data/site";
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -46,7 +39,7 @@ export default function MobileNav() {
         data-open={open ? "true" : "false"}
       >
         <nav aria-label="Menu mobilne">
-          {links.map((link) => (
+          {mainLinks.map((link) => (
             <a key={link.href} href={link.href} onClick={() => setOpen(false)}>
               {link.label}
             </a>

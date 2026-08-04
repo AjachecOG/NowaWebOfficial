@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { projects } from "../data/projects";
+import { site } from "../data/site";
+
+const itemListSchema = {
+  "@type": "ItemList",
+  "@id": `${site.url}/realizacje/#projekty`,
+  name: "Wybrane realizacje NowaWeb",
+  itemListElement: projects.map((project, index) => ({
+    "@type": "CreativeWork",
+    position: index + 1,
+    name: project.name,
+    description: project.description,
+    image: `${site.url}${project.image}`,
+  })),
+};
+---
+
+<BaseLayout
+  title="Realizacje stron internetowych"
+  description="Wybrane projekty stron internetowych NowaWeb dla marek produktowych, gastronomii i usług B2B. Zobacz kierunki wizualne i decyzje projektowe."
+  canonicalPath="/realizacje/"
+  pageType="CollectionPage"
+  structuredData={itemListSchema}
+>
+  <main class="content-page">
+    <div class="content-page__wide">
+      <nav class="breadcrumbs" aria-label="Okruszki">
+        <a href="/">Strona główna</a><span aria-hidden="true">/</span><span>Realizacje</span>
+      </nav>
+
+      <header class="content-page__hero">
+        <p class="eyebrow orange">Realizacje</p>
+        <h1>Strony projektowane pod różne marki i odbiorców</h1>
+        <p class="content-lead">
+          Poniżej pokazujemy faktyczne kierunki wizualne obecne w portfolio. Nie dopisujemy
+          wskaźników sprzedaży ani wyników kampanii, których nie mierzyliśmy.
+        </p>
+      </header>
+
+      <section class="project-list" aria-label="Wybrane projekty NowaWeb">
+        {projects.map((project, index) => (
+          <article class="project-list__item">
+            <div class="project-list__image">
+              <img
+                src={project.image}
+                alt={`Projekt strony ${project.name}`}
+                width={project.width}
+                height={project.height}
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+              />
+            </div>
+            <div class="project-list__copy">
+              <p class="eyebrow">{project.category}</p>
+              <h2>{project.name}</h2>
+              <p>{project.description}</p>
+            </div>
+          </article>
+        ))}
+      </section>
+
+      <section class="content-callout" aria-labelledby="portfolio-contact-title">
+        <div>
+          <p class="eyebrow">Twój projekt</p>
+          <h2 id="portfolio-contact-title">Kierunek powinien wynikać z marki</h2>
+          <p>
+            Opowiedz, co sprzedajesz i do kogo mówisz. Na początku współpracy ustalimy
+            strukturę oraz język wizualny, zamiast dopasowywać firmę do gotowego motywu.
+          </p>
+        </div>
+        <a class="button primary" href="/kontakt/">Napisz do nas</a>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

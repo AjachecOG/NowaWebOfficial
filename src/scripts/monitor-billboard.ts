@@ -1,6 +1,8 @@
 const HOLD_MS = 5800;
 const HOLD_BEFORE_LAST_MS = HOLD_MS - 2000;
-const FIRST_GLITCH_MS = 2000;
+// Keep the first contentful window quiet. The billboard still cycles, but it
+// no longer forces layout and swaps the LCP image while the page is settling.
+const FIRST_GLITCH_MS = 6000;
 const GLITCH_MS = 240;
 const GLITCH_SWAP_AT = 150;
 

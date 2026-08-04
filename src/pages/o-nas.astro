@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout
+  title="O NowaWeb"
+  description="NowaWeb to marka Revela Sp. z o.o. z Wrocławia. Projektujemy i wdrażamy strony internetowe dla firm z całej Polski, bez gotowych motywów WordPress."
+  canonicalPath="/o-nas/"
+  pageType="AboutPage"
+>
+  <main class="content-page">
+    <article class="content-page__wide">
+      <nav class="breadcrumbs" aria-label="Okruszki">
+        <a href="/">Strona główna</a><span aria-hidden="true">/</span><span>O nas</span>
+      </nav>
+
+      <header class="content-page__hero">
+        <p class="eyebrow orange">O NowaWeb</p>
+        <h1>Projektujemy strony pod markę, nie pod gotowy motyw</h1>
+        <p class="content-lead">
+          NowaWeb jest marką należącą do {site.company.legalName}. Łączymy strategię treści,
+          indywidualny design i lekkie wdrożenie, aby oferta firmy była zrozumiała jeszcze
+          przed pierwszą rozmową.
+        </p>
+      </header>
+
+      <div class="content-two-columns">
+        <section class="content-panel">
+          <p class="eyebrow">Sposób pracy</p>
+          <h2>Najpierw problem, później ekran</h2>
+          <p>
+            Nie zaczynamy od wyboru szablonu. Ustalamy odbiorców, pytania pojawiające się
+            przed zakupem i informacje, które firma może wiarygodnie pokazać. Dopiero potem
+            powstają makiety, język wizualny i kod.
+          </p>
+        </section>
+        <section class="content-panel">
+          <p class="eyebrow">Technologia</p>
+          <h2>HTML najpierw, JavaScript tam, gdzie pomaga</h2>
+          <p>
+            Strony wdrażamy między innymi w Astro. Główna treść jest gotowym HTML-em, a
+            animacje i interakcje dokładamy jako osobne elementy. To upraszcza wydajność,
+            bezpieczeństwo i późniejszą opiekę.
+          </p>
+        </section>
+      </div>
+
+      <section class="content-prose" aria-labelledby="facts-title">
+        <p class="eyebrow orange">Dane firmy</p>
+        <h2 id="facts-title">Kto odpowiada za stronę i kontakt</h2>
+        <p>
+          Operatorem marki NowaWeb jest <strong>{site.company.legalName}</strong> z siedzibą
+          przy {site.company.addressLine}, {site.company.postalCode} {site.company.city}.
+          Spółka jest wpisana do Krajowego Rejestru Sądowego pod numerem {site.company.krs};
+          NIP {site.company.nip}, REGON {site.company.regon}.
+        </p>
+        <p>
+          Siedziba znajduje się we Wrocławiu, ale projekty prowadzimy zdalnie dla firm z
+          całej Polski. Kontakt roboczy, prezentacje i poprawki mogą odbywać się online.
+        </p>
+      </section>
+
+      <section class="content-callout" aria-labelledby="about-next-title">
+        <div>
+          <p class="eyebrow">Następny krok</p>
+          <h2 id="about-next-title">Zobacz zakres albo opisz swój projekt</h2>
+          <p>
+            Na stronach usług opisujemy, co dokładnie możemy wziąć po swojej stronie i
+            jakie informacje ustalamy przed wyceną.
+          </p>
+        </div>
+        <div class="content-callout__actions">
+          <a class="button secondary" href="/uslugi/">Zakres usług</a>
+          <a class="button primary" href="/kontakt/">Kontakt</a>
+        </div>
+      </section>
+    </article>
+  </main>
+</BaseLayout>

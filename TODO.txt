@@ -20,9 +20,15 @@ A. OPS / PRODUKCJA (wymaga ręcznej konfiguracji — nie da się domknąć samym
     - Wyślij test z formularza na homepage (CTA „Umów rozmowę”)
     - Potwierdź: mail przychodzi, success UX działa, spam bot nie przechodzi
 
-[ ] 4. Domena + HTTPS
-    - Podłącz nowaweb.pl (+ www → apex lub odwrotnie)
-    - HTTPS aktywny, bez ostrzeżeń certyfikatu
+[x] 4. Domena + HTTPS
+    - Potwierdzone 04.08.2026: HTTPS 200, HTTP → HTTPS 301, www → apex 301
+
+[ ] 4a. Google Search Console — discovery i indeksacja
+    - Dodaj właściwość domenową nowaweb.pl i zweryfikuj DNS TXT
+    - Zgłoś https://nowaweb.pl/sitemap-index.xml
+    - URL Inspection → Request indexing dla /, /uslugi/ i /uslugi/strony-firmowe/
+    - Po minimum 7 dniach sprawdź Page indexing, Manual actions i Security issues
+    - Instrukcja i wyniki audytu: docs/audits/seo-indexing-audit-2026-08-04.md
 
 [ ] 5. Smoke checklist na produkcji
     - Favicon w zakładce
