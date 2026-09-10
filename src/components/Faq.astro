@@ -1,0 +1,91 @@
+---
+import { projects } from '../data/projects';
+
+type Props = { items: { question: string; answer: string }[]; id?: string; heading?: string };
+const { items, id = 'faq', heading = 'Dobre pytania. Konkretne odpowiedzi.' } = Astro.props;
+---
+<section class="seo-faq" id={id} aria-labelledby={`${id}-title`} data-faq>
+  <div class="seo-faq__intro">
+    <h2 id={`${id}-title`}>{heading}</h2>
+    <p>Nie widzisz swojego pytania?</p>
+    <a class="faq-cta" href="/kontakt/">
+      <span class="faq-cta__shots" aria-hidden="true">
+        {projects.map((project, index) => (
+          <span class={`faq-cta__shot faq-cta__shot--${index}`}>
+            <img src={project.image} alt="" width={project.width} height={project.height} loading="lazy" decoding="async" />
+          </span>
+        ))}
+      </span>
+      <span class="faq-cta__copy">
+        <span class="faq-cta__kicker">Następny krok</span>
+        <strong>Porozmawiajmy o projekcie</strong>
+      </span>
+      <span class="faq-cta__stamp" aria-hidden="true">→</span>
+    </a>
+  </div>
+  <div class="seo-faq__items">
+    {items.map(({question, answer}, index) => <details style={`--i:${index}`}>
+      <summary><span class="seo-faq__question">{question}</span><span class="seo-faq__plus" aria-hidden="true"></span></summary>
+      <div class="seo-faq__answer"><p>{answer}</p></div>
+    </details>)}
+  </div>
+</section>
+
+<script>
+  // Progressive enhancement: without JS <details> works natively and every item is visible.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<HTMLElement>('[data-faq]').forEach((section) => {
+    // 1. Stagger the items in when the FAQ scrolls into view.
+    if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+      section.classList.add('is-armed');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          section.classList.add('is-in');
+          observer.disconnect();
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      observer.observe(section);
+    }
+
+    // 2. Animate the answer height instead of the native jump-cut.
+    section.querySelectorAll<HTMLDetailsElement>('details').forEach((details) => {
+      const summary = details.querySelector('summary');
+      const answer = details.querySelector<HTMLElement>('.seo-faq__answer');
+      if (!summary || !answer) return;
+      let animation: Animation | null = null;
+
+      summary.addEventListener('click', (event) => {
+        if (reduceMotion.matches || typeof answer.animate !== 'function') return;
+        event.preventDefault();
+        animation?.cancel();
+
+        const closing = details.open && !details.classList.contains('is-closing');
+        if (closing) {
+          details.classList.add('is-closing');
+          const from = answer.getBoundingClientRect().height;
+          animation = answer.animate(
+            { height: [`${from}px`, '0px'], opacity: [1, 0] },
+            { duration: 300, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+          );
+          animation.onfinish = () => {
+            details.open = false;
+            details.classList.remove('is-closing');
+            animation = null;
+          };
+          return;
+        }
+
+        details.classList.remove('is-closing');
+        details.open = true;
+        const to = answer.scrollHeight;
+        animation = answer.animate(
+          { height: ['0px', `${to}px`] },
+          { duration: 440, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+        );
+        animation.onfinish = () => { animation = null; };
+      });
+    });
+  });
+</script>

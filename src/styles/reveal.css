@@ -1,0 +1,119 @@
+/* Scroll reveal for subpages rendered through BaseLayout (the homepage keeps
+   its own observer in SiteMotion.tsx and is not affected by this file).
+
+   Armed by the inline head script that adds html.has-reveal. Without JS nothing
+   here applies and the page is fully visible from the first paint. Under
+   prefers-reduced-motion the reveal is kept as a short fade only (no rise, no
+   blur) — same "soft a11y" stance as the hero entrance in global.css.
+
+   Motion mirrors the homepage hero: fade + rise on the hero's spring-like
+   easing, the headline settles from a soft blur, and `data-reveal-group`
+   staggers its direct children the way the hero title lines stagger.
+
+   `translate` (not `transform`) carries the rise, so tilted artwork that owns a
+   `transform`/`rotate` keeps its tilt during and after the reveal. */
+/* Tempo matches the homepage: hero artwork enters over 1040ms, title lines
+   stagger by ~180ms and the whole hero holds ~540ms before the first line. */
+:root {
+  --reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --reveal-duration: 1040ms;
+  --reveal-rise: 28px;
+  --reveal-step: 180ms;
+  --reveal-lead: 0ms; /* pause before the first child of a group */
+}
+
+/* global.css hides every [data-reveal] for the homepage observer. On subpages
+   hiding is opt-in via .has-reveal, so a no-JS visitor still sees the content. */
+html:not(.has-reveal) [data-reveal] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.has-reveal [data-reveal],
+.has-reveal [data-reveal-group] > * {
+  opacity: 0;
+  translate: 0 var(--reveal-rise);
+  transition:
+    opacity var(--reveal-duration) ease var(--reveal-delay, 0ms),
+    translate var(--reveal-duration) var(--reveal-ease) var(--reveal-delay, 0ms);
+}
+
+/* Neutralise the homepage transform from global.css; the rise lives in `translate`. */
+.has-reveal [data-reveal] {
+  transform: none;
+}
+
+.has-reveal [data-reveal-group] > h1 {
+  filter: blur(7px);
+  transition:
+    opacity var(--reveal-duration) ease var(--reveal-delay, 0ms),
+    translate var(--reveal-duration) var(--reveal-ease) var(--reveal-delay, 0ms),
+    filter var(--reveal-duration) var(--reveal-ease) var(--reveal-delay, 0ms);
+}
+
+.has-reveal [data-reveal].is-visible,
+.has-reveal [data-reveal-group].is-visible > * {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.has-reveal [data-reveal-group].is-visible > h1 {
+  filter: blur(0);
+}
+
+.has-reveal [data-reveal-group] > :first-child { --reveal-delay: var(--reveal-lead); }
+.has-reveal [data-reveal-group] > :nth-child(2) { --reveal-delay: calc(var(--reveal-lead) + var(--reveal-step) * 1); }
+.has-reveal [data-reveal-group] > :nth-child(3) { --reveal-delay: calc(var(--reveal-lead) + var(--reveal-step) * 2); }
+.has-reveal [data-reveal-group] > :nth-child(4) { --reveal-delay: calc(var(--reveal-lead) + var(--reveal-step) * 3); }
+.has-reveal [data-reveal-group] > :nth-child(5) { --reveal-delay: calc(var(--reveal-lead) + var(--reveal-step) * 4); }
+.has-reveal [data-reveal-group] > :nth-child(6) { --reveal-delay: calc(var(--reveal-lead) + var(--reveal-step) * 5); }
+.has-reveal [data-reveal-group] > :nth-child(7) { --reveal-delay: calc(var(--reveal-lead) + var(--reveal-step) * 6); }
+.has-reveal [data-reveal-group] > :nth-child(n + 8) { --reveal-delay: calc(var(--reveal-lead) + var(--reveal-step) * 7); }
+
+/* A group nested inside a group only animates its own children — otherwise the
+   inner list would fade twice (as a child, then as a group). Keep this last:
+   it shares specificity with the `.is-visible > *` rule above. */
+.has-reveal [data-reveal-group] > [data-reveal-group] {
+  opacity: 1;
+  translate: none;
+  transition: none;
+}
+
+/* Sticky left columns cannot keep a `translate` box — it pins them to the
+   section instead of the viewport. They still fade in. */
+.has-reveal .ed-split[data-reveal-group] > :first-child,
+.has-reveal .ed-split[data-reveal-group].is-visible > :first-child,
+.has-reveal [data-reveal-group] > .service-section__heading,
+.has-reveal [data-reveal-group].is-visible > .service-section__heading {
+  translate: none;
+}
+
+/* Hero blocks read like the homepage hero: a short hold, then eyebrow,
+   headline, lead and actions land one after another. */
+.ed-hero,
+.service-hero,
+.service-hero__copy,
+.legal-page__inner {
+  --reveal-step: 220ms;
+  --reveal-lead: 320ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .has-reveal [data-reveal],
+  .has-reveal [data-reveal-group] > *,
+  .has-reveal [data-reveal-group] > h1 {
+    translate: none;
+    transition-duration: 640ms;
+  }
+
+  .has-reveal [data-reveal-group] {
+    --reveal-step: 110ms;
+    --reveal-lead: 0ms;
+  }
+
+  .has-reveal [data-reveal-group] > h1,
+  .has-reveal [data-reveal-group].is-visible > h1 {
+    filter: none;
+  }
+}

@@ -1,0 +1,13 @@
+---
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import { projects } from '../../data/projects';
+---
+<CaseStudyLayout project={projects[0]} description="Zobacz projekt Cakepops.pl w portfolio NowaWeb: duże zdjęcie produktu, jasna kompozycja i elegancka typografia. Poznaj charakter pierwszego ekranu."
+  intro="Produkt na pierwszym planie. Jasna, spokojna kompozycja spotyka się z kolorem i detalem słodkiego wypieku."
+  conceptTitle="Dużo miejsca na mały produkt."
+  concept="W podglądzie Cakepops.pl uwagę przyciąga duże zdjęcie pojedynczego cakepopsa. Ciepłe, jasne tło pozostawia przestrzeń wokół produktu, a granat i malinowy akcent porządkują warstwę tekstową. Szeryfowy nagłówek nadaje kompozycji elegancki charakter."
+  observations={[
+    { title: 'Produkt zamiast dekoracji', text: 'Zdjęcie zajmuje prawą część pierwszego ekranu. Faktura polewy i kolorowe posypki tworzą wyrazisty punkt skupienia wzroku.' },
+    { title: 'Spokojna hierarchia', text: 'Krótki wyróżnik, duży nagłówek i opis układają się w jedną kolumnę. Różnica skali pozwala oddzielić hasło od szczegółów oferty.' },
+    { title: 'Dwie ścieżki dalej', text: 'Przyciski „Napisz do nas” i „Zobacz ofertę” sąsiadują ze sobą. Kontakt powraca także w górnej nawigacji.' },
+  ]} serviceLabel="Poznaj strony internetowe dla firm" />

@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+<script>
 
-export default function SiteMotion() {
-  useEffect(() => {
+function initMotion() {
     const timers: number[] = [];
 
     const wait = (ms: number) =>
@@ -216,6 +215,8 @@ export default function SiteMotion() {
 
       const href = anchor.getAttribute("href");
       if (!href || href === "#") return;
+      // Preserve the browser's focus navigation for the accessibility shortcut.
+      if (anchor.classList.contains('skip-link')) return;
 
       let hash = "";
       if (href.startsWith("#")) {
@@ -246,7 +247,7 @@ export default function SiteMotion() {
       timers.forEach((timer) => window.clearTimeout(timer));
       document.removeEventListener("click", handleNavClick);
     };
-  }, []);
-
-  return null;
 }
+const cleanup = initMotion();
+document.addEventListener('astro:before-swap', () => cleanup?.(), {once: true});
+</script>

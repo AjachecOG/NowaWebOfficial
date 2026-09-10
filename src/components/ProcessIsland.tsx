@@ -467,7 +467,6 @@ export default function ProcessIsland() {
             return (
               <button
                 aria-current={isActive ? "step" : undefined}
-                aria-label={`${step.id}. ${step.title}`}
                 className={`process-story__nav-item ${isActive ? "is-active" : ""}`}
                 key={step.id}
                 onClick={() => selectStep(index)}

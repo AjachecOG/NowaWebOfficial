@@ -22,7 +22,8 @@ function readAllSource() {
     .join("\n");
 }
 
-const source = readAllSource();
+// Generated metadata can use dynamic paths (e.g. service OG cards). Include build output.
+const source = readAllSource() + '\n' + walk(path.join(root, 'dist')).filter(f => /\.(html|css|js)$/.test(f)).map(f => fs.readFileSync(f, 'utf8')).join('\n');
 const assets = walk(publicRoot);
 const unused = [];
 const used = [];

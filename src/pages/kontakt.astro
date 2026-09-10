@@ -1,7 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ContactForm from "../components/ContactForm.astro";
+import ContactArtwork from "../components/ContactArtwork.astro";
 import { site } from "../data/site";
+import "../styles/contact.css";
 ---
 
 <BaseLayout
@@ -9,33 +11,33 @@ import { site } from "../data/site";
   description="Kontakt z NowaWeb: napisz o stronie firmowej, landing page lub odświeżeniu witryny. Pracujemy zdalnie z firmami z całej Polski."
   canonicalPath="/kontakt/"
 >
-  <main class="legal-page contact-page">
-    <div class="legal-page__inner">
-      <p class="eyebrow orange">Kontakt</p>
-      <h1>Zróbmy stronę, która zbiera zapytania</h1>
-      <p class="legal-lead">
-        Opisz krótko firmę i cel. Odpowiadamy zwykle w ciągu 1 dnia roboczego.
-      </p>
-
-      <div class="contact-page__grid">
-        <ContactForm formName="kontakt" />
-        <aside class="contact-card">
-          <h2>Dane do kontaktu i faktur</h2>
-          <p>
-            <strong>{site.company.legalName}</strong><br />
-            {site.company.addressLine}<br />
-            {site.company.postalCode} {site.company.city}
-          </p>
-          <p>
-            NIP {site.company.nip}<br />
-            KRS {site.company.krs}
-          </p>
-          <p>
-            <a href={`mailto:${site.email}`}>{site.email}</a><br />
-            <a href={site.phoneHref}>{site.phoneDisplay}</a>
-          </p>
-        </aside>
+  <main id="top" class="contact-page">
+    <div class="contact-page__layout">
+      <div class="contact-page__main">
+        <header class="contact-page__intro" data-reveal-group>
+          <p class="eyebrow">Kontakt</p>
+          <h1>Porozmawiajmy<br />o <em>Twojej stronie.</em></h1>
+          <p class="contact-page__lead">Opisz krótko firmę i cel. Odpowiadamy zwykle<br class="contact-page__break" /> w ciągu 1 dnia roboczego.</p>
+        </header>
+        <div class="contact-page__form" data-reveal>
+          <ContactForm formName="kontakt" />
+        </div>
       </div>
+      <aside class="contact-page__aside" aria-label="Kontakt z NowaWeb" data-reveal-group>
+        <ContactArtwork />
+        <div class="contact-details">
+          <h2>Wolisz bezpośrednio?</h2>
+          <a class="contact-details__email" href={`mailto:${site.email}`}>{site.email}<span aria-hidden="true">↗</span></a>
+          <a class="contact-details__phone" href={site.phoneHref}>{site.phoneDisplay}</a>
+          <div class="contact-details__company">
+            <div>
+              <h3>{site.company.legalName}</h3>
+              <address>{site.company.addressLine}<br />{site.company.postalCode} {site.company.city}</address>
+            </div>
+            <p>NIP {site.company.nip}<br />KRS {site.company.krs}</p>
+          </div>
+        </div>
+      </aside>
     </div>
   </main>
 </BaseLayout>

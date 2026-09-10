@@ -128,7 +128,7 @@
 
 .portfolio-carousel__card[data-position="center"] {
   z-index: 5;
-  cursor: default;
+  cursor: pointer;
   transform: translate(-50%, -50%) scale(1) translateZ(32px);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.98),
@@ -186,9 +186,28 @@
   object-position: center;
 }
 
-.portfolio-carousel__card[role="button"]:focus-visible {
+.portfolio-carousel__card[role="button"]:focus-visible,
+.portfolio-carousel__open:focus-visible {
   outline: 3px solid rgba(5, 87, 242, 0.35);
   outline-offset: 3px;
+}
+
+.portfolio-carousel__open {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  color: transparent;
+  text-decoration: none;
+}
+
+.portfolio-carousel__open-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .portfolio-carousel__project-name {
@@ -229,12 +248,12 @@
 
 @media (hover: hover) and (pointer: fine) {
   .portfolio-carousel__card[data-position="left"]:hover::before,
-  .portfolio-carousel__card[data-position="right"]:hover::before {
+.portfolio-carousel__card[data-position="right"]:hover::before {
     opacity: 0.58;
   }
 
   .portfolio-carousel__card[data-position="left"]:hover::after,
-  .portfolio-carousel__card[data-position="right"]:hover::after {
+.portfolio-carousel__card[data-position="right"]:hover::after {
     left: 72%;
   }
 
@@ -307,8 +326,8 @@
   }
 
   .portfolio-carousel__card,
-  .portfolio-carousel__card::before,
-  .portfolio-carousel__card::after {
+.portfolio-carousel__card::before,
+.portfolio-carousel__card::after {
     transition-duration: 360ms !important;
   }
 

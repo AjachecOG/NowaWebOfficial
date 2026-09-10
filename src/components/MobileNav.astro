@@ -1,0 +1,49 @@
+---
+import { navigation, serviceLinks } from '../data/navigation';
+const links = [...serviceLinks, ...navigation.slice(1)];
+---
+<details class="mobile-nav">
+  <summary class="mobile-nav__toggle" role="button" aria-controls="mobile-navigation" aria-expanded="false">Menu</summary>
+  <div id="mobile-navigation" class="mobile-nav__panel">
+    <nav aria-label="Menu mobilne">
+      {links.map(link => <a href={link.href} aria-current={Astro.url.pathname === link.href ? 'page' : undefined}>{link.label}</a>)}
+    </nav>
+  </div>
+</details>
+
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('.mobile-nav');
+  const toggle = menu?.querySelector('summary');
+  const panel = menu?.querySelector<HTMLElement>('.mobile-nav__panel');
+  if (menu && toggle && panel) {
+    let previousOverflow = '';
+    let locked = false;
+    const sync = () => {
+      toggle.textContent = menu.open ? 'Zamknij' : 'Menu';
+      toggle.setAttribute('aria-expanded', String(menu.open));
+      if (menu.open && !locked) {
+        previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        locked = true;
+      } else if (!menu.open && locked) {
+        document.body.style.overflow = previousOverflow;
+        locked = false;
+      }
+    };
+    const close = () => { menu.open = false; sync(); };
+    menu.addEventListener('toggle', sync);
+    panel.addEventListener('click', event => {
+      if ((event.target as Element).closest('a')) close();
+    });
+    document.addEventListener('keydown', event => {
+      if (!menu.open) return;
+      if (event.key === 'Escape') { close(); toggle.focus(); }
+      if (event.key === 'Tab') {
+        const last = panel.querySelector<HTMLElement>('a:last-child');
+        if (event.shiftKey && document.activeElement === toggle) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); toggle.focus(); }
+      }
+    });
+    window.matchMedia('(min-width: 1161px)').addEventListener('change', event => { if (event.matches) close(); });
+  }
+</script>

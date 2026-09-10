@@ -1,0 +1,81 @@
+/* Sliding reading-line highlight shared by service lists and editorial rows. */
+.spotlight {
+  --spot-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --spot-bleed: 22px;
+  --spot-y: 0px;
+  --spot-h: 0px;
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--spot-bleed) * -1);
+  right: calc(var(--spot-bleed) * -1);
+  top: 0;
+  height: var(--spot-h);
+  background: var(--paper-warm);
+  border-left: 2px solid var(--orange);
+  transform: translateY(var(--spot-y));
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition:
+    transform 480ms var(--spot-ease),
+    height 480ms var(--spot-ease),
+    opacity 220ms ease;
+}
+.spotlight.is-active::before { opacity: 1; }
+.spotlight > * { position: relative; z-index: 1; }
+.spotlight:not(.is-ready) > *::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(var(--spot-bleed) * -1);
+  background: var(--paper-warm);
+  opacity: 0;
+  z-index: -1;
+}
+.spotlight:not(.is-ready) > *:hover::before { opacity: 1; }
+.spotlight h3,
+.spotlight .service-item-number,
+.spotlight .ed-row-number {
+  transition: color 300ms ease, transform 420ms var(--spot-ease);
+}
+.spotlight > *:hover h3,
+.spotlight > .is-current h3 {
+  transform: translateX(6px);
+  color: var(--blue);
+}
+.spotlight > *:hover .service-item-number,
+.spotlight > .is-current .service-item-number,
+.spotlight > *:hover .ed-row-number,
+.spotlight > .is-current .ed-row-number {
+  color: var(--orange);
+}
+@media (hover: hover) and (pointer: fine) {
+  .spotlight:has(:hover) > .is-current:not(:hover) h3 {
+    transform: none;
+    color: inherit;
+  }
+  .spotlight:has(:hover) > .is-current:not(:hover) .service-item-number {
+    color: var(--blue-deep);
+  }
+  .spotlight:has(:hover) > .is-current:not(:hover) .ed-row-number {
+    color: var(--blue);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spotlight::before { transition: opacity 220ms ease; }
+  .spotlight h3,
+  .spotlight .service-item-number,
+  .spotlight .ed-row-number {
+    transition: color 300ms ease;
+  }
+  .spotlight > *:hover h3,
+  .spotlight > .is-current h3 {
+    transform: none;
+  }
+}
+@media (max-width: 760px) {
+  .spotlight { --spot-bleed: 20px; }
+}

@@ -14,23 +14,27 @@ type PortfolioProject = {
   image: string;
   width: number;
   height: number;
+  slug: string;
 };
 
 const projects: PortfolioProject[] = [
   {
     name: "Cakepops.pl",
+    slug: 'cakepops',
     image: "/assets/nowaweb/portfolio/cakepops.webp",
     width: 1400,
     height: 767,
   },
   {
     name: "New York Rolls",
+    slug: 'new-york-rolls',
     image: "/assets/nowaweb/portfolio/new-york-rolls.webp",
     width: 1400,
     height: 663,
   },
   {
     name: "Atmo - Vision",
+    slug: 'atmo-vision',
     image: "/assets/nowaweb/portfolio/atmo-vision.webp",
     width: 1400,
     height: 671,
@@ -152,6 +156,7 @@ export default function PortfolioCarousel() {
 
       <div
         className="portfolio-carousel__stage"
+        role="group"
         aria-label="Karuzela realizacji. Użyj strzałek lub przeciągnij w bok."
         tabIndex={0}
         onKeyDown={handleKeyDown}
@@ -165,7 +170,7 @@ export default function PortfolioCarousel() {
           const isActive = position === "center";
 
           return (
-            <article
+            <div
               aria-current={isActive ? "true" : undefined}
               aria-label={!isActive ? `Pokaż projekt ${project.name}` : undefined}
               className="portfolio-carousel__card"
@@ -182,21 +187,34 @@ export default function PortfolioCarousel() {
                   activate(index);
                 }
               }}
-              role={isActive ? undefined : "button"}
+              role={isActive ? "group" : "button"}
               tabIndex={isActive ? -1 : 0}
             >
               <div className="portfolio-carousel__screen">
                 <img
                   src={project.image}
+                  srcSet={`${project.image.replace('.webp', '-480.webp')} 480w, ${project.image.replace('.webp', '-800.webp')} 800w, ${project.image} 1400w`}
+                  sizes="(max-width: 760px) 86vw, 60vw"
                   alt={`Pełny screenshot pierwszego ekranu strony ${project.name}`}
                   width={project.width}
                   height={project.height}
-                  loading={isActive ? "eager" : "lazy"}
+                  loading="lazy"
                   decoding="async"
                   draggable={false}
                 />
               </div>
-            </article>
+              {isActive ? (
+                <a
+                  className="seo-project-link portfolio-carousel__open"
+                  href={`/realizacje/${project.slug}/`}
+                  onClick={(event) => {
+                    if (performance.now() < suppressClickUntil.current) event.preventDefault();
+                  }}
+                >
+                  <span className="portfolio-carousel__open-label">Zobacz projekt {project.name}</span>
+                </a>
+              ) : null}
+            </div>
           );
         })}
       </div>

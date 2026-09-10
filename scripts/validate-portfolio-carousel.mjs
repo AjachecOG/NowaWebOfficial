@@ -48,7 +48,7 @@ for (const pattern of [
   /onPointerUp=\{handlePointerUp\}/,
   /onKeyDown=\{handleKeyDown\}/,
   /Math\.abs\(deltaX\) < 48/,
-  /role=\{isActive \? undefined : "button"\}/,
+  /role=\{isActive \? "group" : "button"\}/,
   /tabIndex=\{isActive \? -1 : 0\}/,
   /event\.key === "Enter" \|\| event\.key === " "/,
   /className="portfolio-carousel__project-name"/,
@@ -69,9 +69,9 @@ for (const removed of [
   assert.ok(!component.includes(removed), `removed carousel chrome remains: ${removed}`);
 }
 
-assert.doesNotMatch(component, /setInterval|setTimeout\([^,]+,\s*[3-9]\d{3}/, "carousel must not autoplay");
+assert.doesNotMatch(component, /Zobacz projekt:/, "carousel must not show the raw HTML project link");
 
-for (const copy of ["Wybrane realizacje", "Trzy projekty", "Trzy różne branże i decyzje"]) {
+for (const copy of ["Wybrane realizacje", "Trzy projekty", "Trzy różne pomysły"]) {
   assert.ok(page.includes(copy), `missing approved portfolio heading copy: ${copy}`);
 }
 

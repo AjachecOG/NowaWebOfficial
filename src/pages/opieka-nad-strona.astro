@@ -1,0 +1,6 @@
+---
+import ServiceLayout from "../layouts/ServiceLayout.astro";
+import { services } from "../data/services";
+const service = services.find(({ slug }) => slug === "opieka-nad-strona")!;
+---
+<ServiceLayout service={service} />

@@ -1,0 +1,9 @@
+---
+import { safeJsonForHtml } from '../utils/safe-json.mjs';
+import { site } from '../data/site';
+type Props = { items: { label: string; href?: string }[] };
+const { items } = Astro.props;
+const data = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.label, ...(item.href ? {item: new URL(item.href, site.url).href} : {}) })) };
+---
+<nav class="seo-breadcrumbs" aria-label="Ścieżka nawigacji"><ol>{items.map(item => <li>{item.href ? <a href={item.href}>{item.label}</a> : <span aria-current="page">{item.label}</span>}</li>)}</ol></nav>
+<script type="application/ld+json" set:html={safeJsonForHtml(data)} />

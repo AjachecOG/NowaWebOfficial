@@ -10,22 +10,26 @@ import {
   UsersRound,
   Zap,
 } from "lucide-react";
-import HeroSceneMotion from "../components/HeroSceneMotion";
-import HeroEyebrowTypewriter from "../components/HeroEyebrowTypewriter";
+import HeroSceneMotion from "../components/HeroSceneMotion.astro";
+import HeroEyebrowTypewriter from "../components/HeroEyebrowTypewriter.astro";
 import BrandFlipCard from "../components/BrandFlipCard";
 import ComparisonReveal from "../components/ComparisonReveal";
 import PolandMapBackdrop from "../components/PolandMapBackdrop.astro";
 import PortfolioCarousel from "../components/PortfolioCarousel";
 import ProcessIsland from "../components/ProcessIsland";
-import ServiceCardMotion from "../components/ServiceCardMotion";
+import ServiceCardMotion from "../components/ServiceCardMotion.astro";
 import SiteHead from "../components/SiteHead.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import SiteMotion from "../components/SiteMotion";
+import SiteMotion from "../components/SiteMotion.astro";
 import TypewriterStatement from "../components/TypewriterStatement";
 import ContactForm from "../components/ContactForm.astro";
-import CookieConsent from "../components/CookieConsent";
+import CookieConsent from "../components/CookieConsent.astro";
 import { site, legalLinks } from "../data/site";
 import "../styles/global.css";
+import "../styles/seo-shared.css";
+import Faq from '../components/Faq.astro';
+import { homeFaq } from '../data/home-faq';
+import { serviceLinks } from '../data/navigation';
 
 const strengths = [
   { title: "Szybka realizacja", text: "Bez wielomiesięcznej karuzeli poprawek.", Icon: Zap },
@@ -37,36 +41,42 @@ const strengths = [
 const services = [
   {
     title: "Strony firmowe",
+    href: '/strony-internetowe-dla-firm/',
     image: "/assets/nowaweb/services/corporate-websites.webp",
     benefit: "Strona firmowa: oferta, referencje i jasny kontakt.",
     points: ["Architektura informacji", "Projekt dopasowany do marki", "Szybkie wdrożenie w Astro"],
   },
   {
     title: "Landing page",
+    href: '/landing-page/',
     image: "/assets/nowaweb/services/landing-page.webp",
     benefit: "Landing pod jedną kampanię i jedno CTA.",
     points: ["Układ pod konwersję", "Copy prowadzące do kontaktu", "Pomiar kluczowych zdarzeń"],
   },
   {
     title: "One page",
+    href: '/strony-internetowe-dla-firm/',
     image: "/assets/nowaweb/services/one-page.webp",
     benefit: "Jedna strona z najważniejszymi informacjami i kontaktem.",
     points: ["Najważniejsze informacje", "Płynna narracja", "Kontakt zawsze pod ręką"],
   },
   {
     title: "Odświeżenie strony",
+    href: '/modernizacja-stron/',
     image: "/assets/nowaweb/services/website-refresh.webp",
     benefit: "Odświeżamy wygląd i strukturę na bazie obecnej strony.",
     points: ["Audyt obecnej strony", "Nowy rytm i hierarchia", "Lepsza czytelność na mobile"],
   },
   {
     title: "UX + copywriting",
+    href: '/strony-internetowe-dla-firm/',
     image: "/assets/nowaweb/services/ux-copywriting.webp",
     benefit: "Teksty i układ pod pytania, które klient i tak zada.",
     points: ["Jasna propozycja wartości", "Mikrocopy i CTA", "Struktura wspierająca decyzję"],
   },
   {
     title: "Opieka i rozwój",
+    href: '/opieka-nad-strona/',
     image: "/assets/nowaweb/services/care-growth.webp",
     benefit: "Opieka po starcie: treści, poprawki i kolejne sekcje.",
     points: ["Aktualizacje treści", "Rozwój kolejnych sekcji", "Wsparcie techniczne"],
@@ -84,15 +94,17 @@ const support = [
 <html lang="pl">
   <head>
     <SiteHead
-      title="NowaWeb | Strony firmowe bez WordPressa"
-      description="NowaWeb projektuje lekkie strony firmowe, landing page i one page dla marek z całej Polski. Bez WordPressa i zbędnych wtyczek."
+      title="NowaWeb — tworzenie stron internetowych dla firm"
+      description="Strony firmowe, landing page i modernizacja witryn. Poznaj ofertę NowaWeb, zobacz realizacje i porozmawiajmy o stronie dla Twojej firmy. Współpraca w całej Polsce."
       canonicalPath="/"
     />
+    <link rel="preload" as="image" href="/assets/nowaweb/hero/monitor-screen-1.webp" imagesrcset="/assets/nowaweb/hero/monitor-screen-1-640.webp 640w, /assets/nowaweb/hero/monitor-screen-1.webp 1024w" imagesizes="(max-width: 760px) 120vw, (max-width: 1160px) 760px, 60vw" fetchpriority="high" />
+    <noscript><style>[data-reveal], [data-support-step], [data-kontakt-step] { opacity: 1 !important; transform: none !important; } .hero-eyebrow-animated { display: none; } .hero-eyebrow-static { display: inline; }</style></noscript>
   </head>
   <body>
-    <SiteMotion client:load />
-    <HeroSceneMotion client:load />
-    <ServiceCardMotion client:load />
+    <SiteMotion />
+    <HeroSceneMotion />
+    <ServiceCardMotion />
     <div class="paper-grain" aria-hidden="true"></div>
 
     <SiteHeader />
@@ -100,20 +112,20 @@ const support = [
     <main id="top">
       <section class="hero studio-section" aria-labelledby="hero-title">
         <div class="hero-copy" data-reveal>
-          <HeroEyebrowTypewriter client:load />
+          <HeroEyebrowTypewriter />
           <h1
             id="hero-title"
             class="hero-title"
-            aria-label="Profesjonalny design nie jest luksusem"
+            aria-label="Strony internetowe dla Twojej firmy"
           >
             <span class="hero-title-line">
-              <span class="hero-title-line-inner">Profesjonalny</span>
+              <span class="hero-title-line-inner">Strony www</span>
             </span>
             <span class="hero-title-line">
-              <span class="hero-title-line-inner">design <em>nie jest</em></span>
+              <span class="hero-title-line-inner">dla <em>Twojej</em></span>
             </span>
             <span class="hero-title-line">
-              <span class="hero-title-line-inner">luksusem</span>
+              <span class="hero-title-line-inner">firmy</span>
             </span>
           </h1>
           <p class="lead">
@@ -132,7 +144,7 @@ const support = [
           </div>
         </div>
 
-        <div class="hero-studio product-showcase" data-reveal aria-label="Podgląd projektu strony NowaWeb">
+        <div class="hero-studio product-showcase" data-reveal role="img" aria-label="Podgląd projektu strony NowaWeb">
           <div class="product-stage" aria-hidden="true">
             <span class="perspective-wall"></span>
             <span class="perspective-floor"></span>
@@ -184,6 +196,8 @@ const support = [
                 <img
                   class="product-monitor monitor-state is-active"
                   src="/assets/nowaweb/hero/monitor-screen-1.webp"
+                  srcset="/assets/nowaweb/hero/monitor-screen-1-640.webp 640w, /assets/nowaweb/hero/monitor-screen-1.webp 1024w"
+                  sizes="(max-width: 760px) 120vw, (max-width: 1160px) 760px, 60vw"
                   alt=""
                   width="1024"
                   height="768"
@@ -194,6 +208,8 @@ const support = [
                 <img
                   class="product-monitor monitor-state"
                   src="/assets/nowaweb/hero/monitor-screen-2.webp"
+                  srcset="/assets/nowaweb/hero/monitor-screen-2-640.webp 640w, /assets/nowaweb/hero/monitor-screen-2.webp 1024w"
+                  sizes="(max-width: 760px) 120vw, (max-width: 1160px) 760px, 60vw"
                   alt=""
                   width="1024"
                   height="768"
@@ -203,6 +219,8 @@ const support = [
                 <img
                   class="product-monitor monitor-state"
                   src="/assets/nowaweb/hero/monitor-screen-3.webp"
+                  srcset="/assets/nowaweb/hero/monitor-screen-3-640.webp 640w, /assets/nowaweb/hero/monitor-screen-3.webp 1024w"
+                  sizes="(max-width: 760px) 120vw, (max-width: 1160px) 760px, 60vw"
                   alt=""
                   width="1024"
                   height="768"
@@ -260,7 +278,7 @@ const support = [
             <span class="title-word title-word-meet">spotyka</span>
             <em class="title-word title-word-creative">kreatywność</em>
           </h2>
-          <BrandFlipCard client:load />
+          <BrandFlipCard client:visible={{ rootMargin: "240px" }} />
         </div>
         <div class="manifesto-copy" data-reveal>
           <span class="manifesto-copy-shape" aria-hidden="true"></span>
@@ -268,7 +286,10 @@ const support = [
             Zaczynamy od celu i struktury, potem projekt i wdrożenie. Bez gotowego
             motywu WordPress: strona ma być szybka i prosta do rozwijania.
           </p>
-          <TypewriterStatement client:load />
+          <div class="manifesto-followup">
+            <TypewriterStatement client:visible={{ rootMargin: "240px" }} />
+            <a class="seo-about-link" href="/o-nas/">Poznaj NowaWeb</a>
+          </div>
         </div>
       </section>
 
@@ -277,11 +298,12 @@ const support = [
           <p class="eyebrow">Oferta</p>
           <h2 id="services-title">Strony, które <em>pracują</em> na decyzję klienta</h2>
           <p>
-            Układ prowadzący od oferty do kontaktu, bez zbędnych zakładek.
+            Od pierwszej strony po rozwój działającego serwisu. Wybierz zakres,
+            który odpowiada na potrzeby Twojej firmy.
           </p>
         </div>
           <div class="service-board">
-          {services.map(({ title, image, benefit, points }, index) => {
+          {services.map(({ title, image, benefit, points, href }, index) => {
             const backId = `service-card-back-${index}`;
             const serviceNumber = String(index + 1).padStart(2, "0");
 
@@ -301,6 +323,8 @@ const support = [
                         <img
                           class="service-card-image"
                           src={image}
+                          srcset={`${image.replace('.webp', '-480.webp')} 480w, ${image.replace('.webp', '-800.webp')} 800w, ${image} 900w`}
+                          sizes="(max-width: 760px) calc(100vw - 24px), 33vw"
                           alt={`Ilustracja usługi: ${title}`}
                           width="900"
                           height="675"
@@ -328,8 +352,8 @@ const support = [
                         {points.map((point) => <li>{point}</li>)}
                       </ul>
                       <div class="service-card-back-actions">
-                        <a href="#kontakt">
-                          Napisz o projekcie <ArrowRight aria-hidden="true" size={16} />
+                        <a href={href}>
+                          Poznaj ofertę <ArrowRight aria-hidden="true" size={16} />
                         </a>
                         <button type="button" data-service-card-close aria-label={`Pokaż przód karty: ${title}`}>
                           Wróć
@@ -338,6 +362,7 @@ const support = [
                     </div>
                   </div>
                 </div>
+                <div class="seo-service-caption"><span>{title}</span><a href={href} aria-label={`Poznaj ofertę: ${title}`}>Szczegóły</a></div>
               </article>
             );
           })}
@@ -352,8 +377,9 @@ const support = [
             <span class="comparison-title-line comparison-title-line--secondary"><em>vs</em> WordPress</span>
           </h2>
           <p class="comparison-summary">
-            WordPress ciągnie za sobą motyw, wtyczki i utrzymanie. My budujemy lekką
-            stronę pod Twoją markę: szybszą i prostszą w opiece.
+            Technologię dobieramy do sposobu korzystania ze strony. Astro sprawdza
+            się w lekkich serwisach firmowych; WordPress może być dobrym wyborem,
+            gdy potrzebujesz rozbudowanej edycji treści.
           </p>
         </div>
         <ComparisonReveal client:visible />
@@ -371,11 +397,12 @@ const support = [
       <section class="studio-section portfolio" id="projekty" aria-labelledby="portfolio-title">
         <div class="portfolio-intro" data-reveal>
           <p class="eyebrow">Wybrane realizacje</p>
-          <h2 id="portfolio-title">Trzy projekty. <em>Trzy różne branże i decyzje.</em></h2>
+          <h2 id="portfolio-title">Trzy projekty. <em>Trzy różne pomysły.</em></h2>
           <p>
             Przesuń kolekcję i zobacz trzy różne projekty
             dla trzech różnych odbiorców.
           </p>
+          <a class="seo-portfolio-link" href="/realizacje/">Wszystkie realizacje</a>
         </div>
         <PortfolioCarousel client:visible />
       </section>
@@ -416,6 +443,8 @@ const support = [
           </span>
         </a>
       </section>
+
+      <Faq items={homeFaq} />
 
       <section class="final-cta" id="kontakt" aria-labelledby="cta-title">
         <div class="cta-panel" data-kontakt-sequence>
@@ -477,9 +506,13 @@ const support = [
         <a href={site.phoneHref}>{site.phoneDisplay}</a>
         <a href="#top">Wróć na górę</a>
       </div>
+      <nav class="site-footer__offer-links" aria-label="Oferta i realizacje">
+        {serviceLinks.map(link => <a href={link.href}>{link.label}</a>)}
+        <a href="/realizacje/">Realizacje</a><a href="/o-nas/">O nas</a><a href="/cennik/">Wycena</a>
+      </nav>
     </footer>
 
-    <CookieConsent client:idle />
+    <CookieConsent />
 
     <script>
       import "../scripts/monitor-billboard.ts";

@@ -4,12 +4,12 @@ import { readFile } from "node:fs/promises";
 const page = await readFile(new URL("../src/pages/index.astro", import.meta.url), "utf8");
 const styles = await readFile(new URL("../src/styles/global.css", import.meta.url), "utf8");
 const controller = await readFile(
-  new URL("../src/components/ServiceCardMotion.tsx", import.meta.url),
+  new URL("../src/components/ServiceCardMotion.astro", import.meta.url),
   "utf8",
 ).catch(() => "");
 
 assert.match(page, /import ServiceCardMotion/, "service flip controller is not imported");
-assert.match(page, /<ServiceCardMotion client:load\s*\/>/, "service flip controller is not hydrated");
+assert.match(page, /<ServiceCardMotion\s*\/>/, "service flip controller is missing");
 assert.equal(
   (page.match(/benefit:\s*"/g) ?? []).length,
   6,
@@ -47,9 +47,9 @@ assert.match(
   "proximity and pointer hover must be limited to a fine hover-capable pointer",
 );
 assert.match(
-  controller,
+  styles,
   /prefers-reduced-motion:\s*reduce/,
-  "controller must respect reduced motion",
+  "service styles must retain the reduced-motion treatment",
 );
 assert.match(controller, /pointerenter/, "fine-pointer hover must reveal a card");
 assert.match(controller, /pointerleave/, "pointer leave must restore the front");

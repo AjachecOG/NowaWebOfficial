@@ -1,0 +1,45 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { projects, type Project } from '../data/projects';
+import '../styles/editorial.css';
+type Props = {
+  project: Project;
+  description: string;
+  intro: string;
+  conceptTitle: string;
+  concept: string;
+  observations: { title: string; text: string }[];
+  serviceLabel: string;
+};
+const { project, description, intro, conceptTitle, concept, observations, serviceLabel } = Astro.props;
+const next = projects[(projects.findIndex(item => item.slug === project.slug) + 1) % projects.length];
+---
+<BaseLayout title={`${project.name} — prezentacja projektu | NowaWeb`} description={description} canonicalPath={`/realizacje/${project.slug}/`} ogImagePath={`/assets/nowaweb/seo/${project.slug}.jpg`}>
+  <main class="editorial" id="top">
+    <Breadcrumbs items={[{ label: 'Strona główna', href: '/' }, { label: 'Realizacje', href: '/realizacje/' }, { label: project.name }]} />
+    <header class="ed-hero" data-reveal-group>
+      <h1>{project.name}</h1>
+      <p class="ed-lead">{intro}</p>
+      <div class="ed-meta"><span>Prezentacja projektu</span><span>{project.category}</span></div>
+    </header>
+    <figure class="ed-preview" data-reveal>
+      <div class="ed-preview-frame"><img src={project.image} srcset={`${project.image.replace('.webp', '-480.webp')} 480w, ${project.image.replace('.webp', '-800.webp')} 800w, ${project.image} 1400w`} sizes="(max-width: 760px) calc(100vw - 60px), (max-width: 1300px) 90vw, 1180px" alt={project.alt} width={project.width} height={project.height} loading="eager" decoding="async" /></div>
+      <figcaption><span>{project.name} — widok pierwszego ekranu</span><a class="ed-text-link" href={project.image}>Otwórz pełny podgląd</a></figcaption>
+    </figure>
+    <section class="ed-section ed-split" aria-labelledby="concept-title" data-reveal-group>
+      <div><h2 id="concept-title">{conceptTitle}</h2></div>
+      <div class="ed-copy"><p>{concept}</p><p>Przyjrzyj się kompozycji, hierarchii tekstu i miejscu przycisków. To one porządkują pierwszy kontakt odbiorcy ze stroną.</p></div>
+    </section>
+    <section class="ed-section" aria-labelledby="details-title" data-reveal-group>
+      <h2 id="details-title">Trzy elementy pierwszego wrażenia</h2>
+      <div class="ed-observations" data-reveal-group>{observations.map((item) => <article><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
+    </section>
+    <section class="ed-section ed-split" aria-labelledby="service-title" data-reveal-group>
+      <div><h2 id="service-title">Podobny kierunek dla Twojej marki?</h2></div>
+      <div class="ed-copy"><p>Punktem wyjścia jest Twoja oferta, odbiorcy i to, co ma wydarzyć się po wejściu na stronę. Projekt z portfolio może pomóc nazwać preferencje: oszczędny układ, duży obraz albo mocną typografię.</p><a class="ed-text-link" href={project.serviceHref}>{serviceLabel}</a></div>
+    </section>
+    <section class="ed-cta" aria-labelledby="contact-title" data-reveal><div><h2 id="contact-title">Pokażmy charakter Twojej firmy.</h2><p>Opisz, co oferujesz i jakiej strony potrzebujesz. Do rozmowy możesz dołączyć ten projekt jako punkt odniesienia.</p></div><a class="button" href="/kontakt/">Porozmawiajmy o stronie</a></section>
+    <nav class="ed-next" aria-label="Pozostałe projekty" data-reveal><a class="ed-text-link" href="/realizacje/">Wszystkie realizacje</a><a class="ed-text-link" href={`/realizacje/${next.slug}/`}>Następny projekt: {next.name}</a></nav>
+  </main>
+</BaseLayout>

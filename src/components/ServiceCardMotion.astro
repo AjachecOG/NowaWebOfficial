@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+<script>
 
 const CARD_SELECTOR = "[data-service-card]";
 const PROXIMITY_RADIUS = 96;
@@ -22,8 +22,7 @@ function resetProximity(card: HTMLElement) {
   card.style.setProperty("--service-near-rotate-y", "0deg");
 }
 
-export default function ServiceCardMotion() {
-  useEffect(() => {
+function initMotion() {
     const cards = Array.from(document.querySelectorAll<HTMLElement>(CARD_SELECTOR));
 
     if (!cards.length) return;
@@ -209,7 +208,7 @@ export default function ServiceCardMotion() {
       window.removeEventListener("pointerleave", clearProximity);
       hoverQuery.removeEventListener("change", handlePreferenceChange);
     };
-  }, []);
-
-  return null;
 }
+const cleanup = initMotion();
+document.addEventListener('astro:before-swap', () => cleanup?.(), {once: true});
+</script>

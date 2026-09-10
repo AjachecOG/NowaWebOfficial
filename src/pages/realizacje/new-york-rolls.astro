@@ -1,0 +1,13 @@
+---
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import { projects } from '../../data/projects';
+---
+<CaseStudyLayout project={projects[1]} description="Projekt New York Rolls w portfolio NowaWeb. Zobacz miejski klimat, kontrastową typografię i sposób prezentacji oferty na pierwszym ekranie strony."
+  intro="Miejska energia w szerokim kadrze. Fotografia nowojorskiej ulicy tworzy tło dla nazwy produktu i wyraźnego zaproszenia do poznania oferty."
+  conceptTitle="Klimat zapisany w obrazie i literach."
+  concept="Pierwszy ekran New York Rolls łączy fotografię ulicy z dużą, jasną typografią. Prosty krój napisu „New York” zestawiono z odręcznym charakterem słowa „Rolls”. Ciepłe odcienie obrazu, kremowe przyciski i krótki pasek haseł nadają stronie rozpoznawalny rytm."
+  observations={[
+    { title: 'Obraz na całą szerokość', text: 'Ulica jest tłem całej kompozycji. Przyciemnienie fotografii oddziela jasny nagłówek i opis od detali architektury.' },
+    { title: 'Dwa charaktery typografii', text: 'Mocne, zwarte litery kontrastują ze swobodnym napisem „Rolls”. Nazwa pełni jednocześnie funkcję głównego elementu graficznego.' },
+    { title: 'Oferta i smaki', text: 'Pod opisem widoczne są dwa przyciski: zapytanie o ofertę i przejście do smaków. Nawigacja zapowiada także galerię, współpracę i FAQ.' },
+  ]} serviceLabel="Zobacz, jak planujemy landing page" />

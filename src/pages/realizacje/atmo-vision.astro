@@ -1,0 +1,13 @@
+---
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import { projects } from '../../data/projects';
+---
+<CaseStudyLayout project={projects[2]} description="Zobacz Atmo - Vision w portfolio NowaWeb: techniczna ilustracja, żółte akcenty i przejrzysta prezentacja usług związanych z obrazem z powietrza."
+  intro="Technologia pokazana obrazem. Dron, architektura i rysunek techniczny budują kontekst dla czytelnej prezentacji usług."
+  conceptTitle="Od obrazu z powietrza do konkretnej oferty."
+  concept="Podgląd Atmo - Vision zestawia tekstową część oferty z ilustracją budynku i drona. Granatowe nagłówki na bardzo jasnym tle uzupełnia żółty akcent, obecny w przycisku, wyróżnieniu tekstu i linii prowadzącej przez obraz. Cztery kategorie usług są widoczne już pod głównym opisem."
+  observations={[
+    { title: 'Branża widoczna od razu', text: 'Budynek, dron i linie wymiarowe tworzą wspólny obraz technologii oraz architektury. Ilustracja zajmuje prawą część ekranu.' },
+    { title: 'Oferta w czterech punktach', text: 'Monitoring inwestycji, filmy 4K, ortofotomapy i modele 3D / BIM są przedstawione jako podpisane ikony. Lista konkretyzuje główny komunikat.' },
+    { title: 'Jeden kolor prowadzący', text: 'Żółty wyróżnia przycisk „Poznaj ofertę” i fragment nagłówka. Obok znajduje się osobny przycisk kontaktu oraz informacja o regionie.' },
+  ]} serviceLabel="Poznaj strony internetowe dla firm" />

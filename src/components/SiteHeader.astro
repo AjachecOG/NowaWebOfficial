@@ -1,16 +1,23 @@
 ---
-import MobileNav from "./MobileNav";
+import MobileNav from "./MobileNav.astro";
+import { navigation, serviceLinks } from '../data/navigation';
 ---
 
+<a class="skip-link" href="#top">Przejdź do treści</a>
 <header class="site-header">
   <a class="brand" href="/" aria-label="NowaWeb">NowaWeb<span>.</span></a>
   <nav class="site-header__desktop-nav" aria-label="Główna nawigacja">
-    <a href="/#onas">O nas</a>
-    <a href="/#uslugi">Usługi</a>
-    <a href="/#proces">Proces</a>
-    <a href="/#projekty">Projekty</a>
-    <a href="/kontakt/">Kontakt</a>
+    <details class="site-header__services">
+      <summary>Usługi</summary>
+      <div class="site-header__service-links">{serviceLinks.map(link => <a href={link.href} aria-current={Astro.url.pathname === link.href ? 'page' : undefined}>{link.label}</a>)}</div>
+    </details>
+    {navigation.slice(1).map(link => <a href={link.href} aria-current={Astro.url.pathname === link.href ? 'page' : undefined}>{link.label}</a>)}
   </nav>
   <a class="header-cta" href="/kontakt/">Umów rozmowę</a>
-  <MobileNav client:load />
+  <MobileNav />
 </header>
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('.site-header__services');
+  document.addEventListener('click', event => { if (menu && !menu.contains(event.target as Node)) menu.open = false; });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && menu?.open) { menu.open = false; menu.querySelector('summary')?.focus(); } });
+</script>

@@ -1,0 +1,25 @@
+<p class="eyebrow hero-eyebrow" data-typing-complete="false">
+  <span class="hero-eyebrow-accessible">NowaWeb - strony internetowe</span>
+  <span class="hero-eyebrow-animated" aria-hidden="true">
+    <span data-hero-eyebrow-text></span>
+    <span class="hero-eyebrow-cursor" data-hero-eyebrow-cursor></span>
+  </span>
+  <span class="hero-eyebrow-static" aria-hidden="true">NowaWeb - strony internetowe</span>
+</p>
+<script>
+  const fullText = 'NowaWeb - strony internetowe';
+  const delays = [44, 52, 48, 58, 46, 50];
+  const text = document.querySelector('[data-hero-eyebrow-text]');
+  const root = text?.closest('.hero-eyebrow');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let index = 0;
+  let timer = 0;
+  const type = () => {
+    if (!text || !root) return;
+    text.textContent = fullText.slice(0, ++index);
+    if (index < fullText.length) timer = window.setTimeout(type, reduce ? 32 : delays[(index - 1) % delays.length]);
+    else timer = window.setTimeout(() => root.setAttribute('data-typing-complete', 'true'), reduce ? 122 : 202);
+  };
+  timer = window.setTimeout(type, reduce ? 80 : 140);
+  document.addEventListener('astro:before-swap', () => clearTimeout(timer), { once: true });
+</script>

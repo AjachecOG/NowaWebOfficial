@@ -205,6 +205,10 @@ export default function BrandFlipCard() {
           <figure className="brand-flip-face brand-flip-front" data-brand-flip-face="front">
             <img
               src="/assets/nowaweb/hero/logo-card-cutout.webp"
+              srcSet="/assets/nowaweb/hero/logo-card-cutout-420.webp 420w, /assets/nowaweb/hero/logo-card-cutout.webp 700w"
+              sizes="200px"
+              width={700}
+              height={875}
               alt=""
               loading="lazy"
               decoding="async"
@@ -214,6 +218,10 @@ export default function BrandFlipCard() {
           <figure className="brand-flip-face brand-flip-back" data-brand-flip-face="back">
             <img
               src="/assets/nowaweb/hero/poster-cutout.webp"
+              srcSet="/assets/nowaweb/hero/poster-cutout-420.webp 420w, /assets/nowaweb/hero/poster-cutout.webp 700w"
+              sizes="200px"
+              width={700}
+              height={875}
               alt=""
               loading="lazy"
               decoding="async"

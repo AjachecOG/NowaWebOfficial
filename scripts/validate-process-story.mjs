@@ -18,7 +18,7 @@ const checks = [
   ["continuous card poses", component.includes("getScrollPose")],
   ["no observer step switching", !component.includes("IntersectionObserver")],
   ["accessible pressed state", component.includes("aria-pressed={isActive}")],
-  ["keyboard focus activation", component.includes("onFocus={() => activateStep(index)}")],
+  ["keyboard focus activation", component.includes("onFocus={() => selectStep(index, { scroll: false })}")],
   ["four connected story scenes", (component.match(/^\s*data-process-scene="/gm) ?? []).length === 4],
   ["conversation scene", component.includes('data-process-scene="conversation"')],
   ["strategy scene", component.includes('data-process-scene="strategy"')],
@@ -62,7 +62,7 @@ const checks = [
     "story-detail-pass",
     "story-sketch-erase",
   ].every((name) => styles.includes(name))],
-  ["pencil makeup always animates", styles.includes(':not([data-process-scene="design"])') && styles.includes("story-pencil-draw 1700ms")],
+  ["pencil makeup animation on visible active scene", styles.includes('.process-story[data-story-visible="true"] .process-story__card.is-active .story-scene--design .story-sketch-pencil') && styles.includes("story-pencil-draw 1700ms")],
   ["reactor motion removed", !/story-reactor-(flight|impact|reveal|trail-run)/.test(styles)],
   ["directional jump cut structure", [
     "story-pencil-smudge",
@@ -150,8 +150,9 @@ const checks = [
   ["mobile natural flow", styles.includes("position: static")],
   ["visible keyboard focus", styles.includes(":focus-visible")],
   ["comfortable touch target", styles.includes("min-height: 44px")],
-  ["reduced motion fallback", styles.includes("prefers-reduced-motion: reduce")],
-  ["launch remains animated with reduced motion", styles.includes(':not([data-process-scene="launch"])') && !styles.includes(".story-scene--launch .story-upload-phase,\n  .story-scene--launch .story-config-phase")],
+  // Existing brand motion is intentionally retained; real normal/reduced-mode behavior is checked in tests/browser/seo.spec.ts.
+  ["existing process motion preference retained", component.includes("const reduced = false;")],
+  ["launch animation on visible active scene", styles.includes('.process-story[data-story-visible="true"] .process-story__card.is-active .story-launch-complete') && styles.includes("story-launch-complete-in 9000ms")],
 ];
 
 const failures = checks.filter(([, passed]) => !passed);

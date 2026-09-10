@@ -7,9 +7,10 @@ type Props = {
   description: string;
   canonicalPath?: string;
   noindex?: boolean;
+  ogImagePath?: string;
 };
 
-const { title, description, canonicalPath = Astro.url.pathname, noindex = false } = Astro.props;
+const { title, description, canonicalPath = Astro.url.pathname, noindex = false, ogImagePath = '/assets/nowaweb/og-default.jpg' } = Astro.props;
 
 const normalizePath = (path: string) => {
   if (!path || path === "/") return "/";
@@ -18,8 +19,8 @@ const normalizePath = (path: string) => {
 };
 
 const canonical = new URL(normalizePath(canonicalPath), site.url).toString();
-const ogImage = new URL("/assets/nowaweb/og-default.jpg", site.url).toString();
-const ogImageAlt = `${site.brand}: lekkie strony firmowe bez WordPressa`;
+const ogImage = new URL(ogImagePath, site.url).toString();
+const ogImageAlt = title;
 const robots = noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large";
 
 const jsonLd = {
@@ -33,7 +34,7 @@ const jsonLd = {
       url: site.url,
       email: site.email,
       telephone: site.phoneDisplay,
-      logo: ogImage,
+      logo: new URL('/assets/nowaweb/seo/logo.svg', site.url).toString(),
       address: {
         "@type": "PostalAddress",
         streetAddress: site.company.addressLine,
@@ -51,7 +52,7 @@ const jsonLd = {
       url: site.url,
       inLanguage: "pl-PL",
       publisher: { "@id": `${site.url}/#organization` },
-      description,
+      description: 'NowaWeb tworzy strony internetowe dla firm: projekt, wdrożenie, modernizacja i opieka. Współpraca zdalna w całej Polsce.',
     },
     {
       "@type": "ProfessionalService",

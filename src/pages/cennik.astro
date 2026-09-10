@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import '../styles/editorial.css';
+const questions = [
+  { question: 'Ile kosztuje strona internetowa w NowaWeb?', answer: 'Wycena jest indywidualna. Do rozmowy o cenie potrzebny jest zakres: rodzaj strony, liczba i różnorodność podstron, stan treści oraz oczekiwane funkcje. Prześlij opis projektu przez kontakt.' },
+  { question: 'Czy jedna długa strona zawsze kosztuje mniej niż serwis z podstronami?', answer: 'Sama liczba adresów nie opisuje całej pracy. Rozbudowany one page z indywidualnymi animacjami i integracjami może wymagać więcej pracy niż kilka prostych podstron korzystających ze wspólnego układu.' },
+  { question: 'Co przygotować, żeby otrzymać konkretną wycenę?', answer: 'Opisz działalność, odbiorców, cel strony i potrzebne sekcje. Dodaj adres obecnej witryny, jeśli ją masz, listę dostępnych materiałów oraz oczekiwaną datę uruchomienia. Warto podać też orientacyjny budżet.' },
+  { question: 'Jak uwzględnić domenę, hosting i utrzymanie?', answer: 'Oddziel koszt wykonania od kosztów cyklicznych. Domena, hosting, zewnętrzne narzędzia i opieka mogą mieć osobne opłaty. Przed decyzją ustal, które pozycje obejmuje oferta, kto je opłaca i w jakim okresie.' },
+  { question: 'Czy można zacząć od mniejszego zakresu?', answer: 'Warto wskazać elementy konieczne na start i te, które mogą pojawić się później. Możliwość podziału projektu zależy od jego struktury i funkcji; porusz ten temat w opisie potrzeb.' },
+];
+---
+<BaseLayout title="Cennik stron internetowych — zasady wyceny | NowaWeb" description="Od czego zależy cena strony internetowej? Poznaj zasady indywidualnej wyceny NowaWeb, przygotuj zakres i sprawdź, jakie koszty utrzymania uwzględnić." canonicalPath="/cennik/" ogImagePath="/assets/nowaweb/seo/cennik.jpg">
+  <main class="editorial" id="top">
+    <Breadcrumbs items={[{ label: 'Strona główna', href: '/' }, { label: 'Cennik' }]} />
+    <header class="ed-hero" data-reveal-group><h1>Cena zaczyna się<br />od <em>zakresu.</em></h1><p class="ed-lead">Strona firmowa, landing page czy przebudowa istniejącego serwisu — każdy projekt ma inny punkt wyjścia. Konkretna wycena wymaga określenia treści, funkcji i sposobu wykonania.</p><div class="action-row"><a class="button primary" href="/kontakt/">Opisz projekt do wyceny</a><a class="ed-text-link" href="#przygotowanie">Co przygotować?</a></div></header>
+    <section class="ed-section ed-split" aria-labelledby="scope-title" data-reveal-group>
+      <div>
+        <h2 id="scope-title">Nie tylko liczba podstron.</h2>
+        <p class="ed-copy">Dwa serwisy o podobnej wielkości mogą wymagać zupełnie innej pracy. Przy porównywaniu ofert sprawdzaj, co faktycznie obejmują.</p>
+      </div>
+      <ol class="ed-rows spotlight" data-spotlight data-reveal-group>
+        <li>
+          <span class="ed-row-number" aria-hidden="true"></span>
+          <div>
+            <h3>Struktura i ilość treści</h3>
+            <p>Liczba odrębnych układów, długość oferty, galerie i potrzebne wersje językowe określają rozmiar projektu.</p>
+          </div>
+        </li>
+        <li>
+          <span class="ed-row-number" aria-hidden="true"></span>
+          <div>
+            <h3>Gotowość materiałów</h3>
+            <p>Gotowe teksty, zdjęcia i identyfikacja to inny punkt wyjścia niż tworzenie lub porządkowanie materiałów od podstaw.</p>
+          </div>
+        </li>
+        <li>
+          <span class="ed-row-number" aria-hidden="true"></span>
+          <div>
+            <h3>Projekt i zachowanie strony</h3>
+            <p>Indywidualne kompozycje, animacje i interakcje wpływają na czas projektowania, wdrożenia oraz sprawdzenia różnych ekranów.</p>
+          </div>
+        </li>
+        <li>
+          <span class="ed-row-number" aria-hidden="true"></span>
+          <div>
+            <h3>Funkcje i połączenia</h3>
+            <p>Formularze, zewnętrzne systemy, analityka i sposób edycji treści wymagają określenia konkretnych narzędzi i zasad działania.</p>
+          </div>
+        </li>
+        <li>
+          <span class="ed-row-number" aria-hidden="true"></span>
+          <div>
+            <h3>Przeniesienie istniejącej strony</h3>
+            <p>Obecne treści, adresy i integracje trzeba uwzględnić w planie modernizacji. Sam nowy wygląd nie opisuje całego zakresu.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+    <section class="ed-section ed-split ed-split--flip" id="przygotowanie" aria-labelledby="brief-title" data-reveal-group>
+      <div>
+        <h2 id="brief-title">Krótki opis.<br /><em>Więcej</em> konkretów.</h2>
+        <p class="ed-copy">Nie potrzebujesz gotowej specyfikacji technicznej. Zbierz informacje, które opisują firmę i oczekiwania wobec strony.</p>
+      </div>
+      <div class="ed-note-sheet">
+        <h3>Dołącz do zapytania</h3>
+        <ul>
+          <li>Czym zajmuje się firma i do kogo kieruje ofertę.</li>
+          <li>Główny cel: kontakt, prezentacja usług czy konkretna kampania.</li>
+          <li>Potrzebne sekcje, podstrony i funkcje.</li>
+          <li>Adres obecnej strony oraz przykłady kierunku wizualnego.</li>
+          <li>Informację, czy masz teksty, logo i zdjęcia.</li>
+          <li>Oczekiwany termin i orientacyjny budżet.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="ed-section" aria-labelledby="cost-title" data-reveal-group><h2 id="cost-title">Wykonanie to jedna część budżetu.</h2><div class="ed-observations" data-reveal-group><article><h3>Przygotowanie i wdrożenie</h3><p>Porównaj zakres projektu graficznego, treści, funkcji i uruchomienia. Ustal również liczbę rund poprawek oraz sposób odbioru.</p></article><article><h3>Domena i narzędzia</h3><p>Sprawdź koszty odnowienia domeny, hostingu i potrzebnych usług zewnętrznych. Istotne są także właściciel kont oraz dostęp do nich.</p></article><article><h3>Opieka i zmiany</h3><p>Ustal, kto aktualizuje treść i jak rozliczane są kolejne zmiany. Zakres wsparcia powinien być dopasowany do tego, jak często rozwijasz stronę.</p><a class="ed-text-link" href="/opieka-nad-strona/">Poznaj opiekę nad stroną</a></article></div></section>
+    <section class="ed-section ed-split ed-split--flip" aria-labelledby="format-title" data-reveal-group>
+      <div>
+        <h2 id="format-title">Co chcesz <em>zbudować?</em></h2>
+      </div>
+      <div class="ed-copy">
+        <p>Przejdź do opisu usługi, żeby uporządkować potrzeby przed wysłaniem zapytania.</p>
+        <div class="ed-next">
+          <a class="ed-text-link" href="/strony-internetowe-dla-firm/">Strona firmowa</a>
+          <a class="ed-text-link" href="/landing-page/">Landing page</a>
+          <a class="ed-text-link" href="/modernizacja-stron/">Modernizacja strony</a>
+        </div>
+      </div>
+    </section>
+    <Faq items={questions} heading="Pytania o cenę i zakres" id="pytania-o-wycene" />
+    <section class="ed-cta" aria-labelledby="cta-title" data-reveal><div><h2 id="cta-title">Ustalmy, czego potrzebujesz na start.</h2><p>Prześlij krótki opis projektu. To punkt wyjścia do rozmowy o zakresie i indywidualnej wycenie.</p></div><a class="button" href="/kontakt/">Zapytaj o wycenę</a></section>
+  </main>
+</BaseLayout>

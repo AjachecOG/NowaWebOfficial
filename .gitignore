@@ -9,6 +9,11 @@ _archive/
 !.env.example
 npm-debug.log*
 .DS_Store
+__pycache__/
+*.py[cod]
 
 # Local Netlify folder
 .netlify
+
+# Osobny projekt (wlasne repo git)
+dla-lenki/

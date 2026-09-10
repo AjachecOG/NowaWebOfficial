@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { projects } from '../../data/projects';
+import '../../styles/editorial.css';
+---
+<BaseLayout title="Realizacje — projekty stron internetowych | NowaWeb" description="Zobacz portfolio NowaWeb: Cakepops.pl, New York Rolls i Atmo - Vision. Trzy różne kierunki wizualne, rzeczywiste podglądy i opisy kompozycji stron." canonicalPath="/realizacje/" ogImagePath="/assets/nowaweb/seo/realizacje.jpg">
+  <main class="editorial" id="top">
+    <Breadcrumbs items={[{ label: 'Strona główna', href: '/' }, { label: 'Realizacje' }]} />
+    <header class="ed-hero" data-reveal-group><h1>Różne marki.<br /><em>Własny charakter.</em></h1><p class="ed-lead">Zobacz trzy projekty stron internetowych. Od spokojnej prezentacji produktu, przez miejski klimat, po techniczną opowieść o usługach.</p></header>
+    <div class="ed-projects">
+      {projects.map((project, index) => <article class="ed-project" aria-labelledby={`project-${project.slug}`} data-reveal>
+        <div class="ed-project-copy"><h2 id={`project-${project.slug}`}>{project.name}</h2><p class="ed-copy">{project.summary}</p><a class="ed-text-link" href={`/realizacje/${project.slug}/`}>Zobacz projekt</a></div>
+        <a class="ed-project-image" href={`/realizacje/${project.slug}/`} aria-label={`Zobacz projekt ${project.name}`}><img src={project.image} srcset={`${project.image.replace('.webp', '-480.webp')} 480w, ${project.image.replace('.webp', '-800.webp')} 800w, ${project.image} 1400w`} sizes="(max-width: 760px) calc(100vw - 60px), 50vw" alt={project.alt} width={project.width} height={project.height} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" /></a>
+      </article>)}
+    </div>
+    <section class="ed-section ed-split" aria-labelledby="look-title" data-reveal-group><div><h2 id="look-title">Szukaj kierunku<br /><em>dla swojej marki.</em></h2></div><div class="ed-copy ed-copy--voice"><p>Nie każda firma potrzebuje tego samego układu. Przy porównywaniu projektów szukaj <em>proporcji</em>, rytmu oferty i miejsca na kontakt.</p><p>Zapisz, co jest Ci bliskie: <strong>kolor</strong>, <em>typografia</em>, spokój albo energia. To dobry punkt wyjścia do własnej strony.</p><a class="ed-text-link" href="/strony-internetowe-dla-firm/">Sprawdź ofertę stron firmowych</a></div></section>
+    <section class="ed-cta" aria-labelledby="cta-title" data-reveal><div><h2 id="cta-title">Teraz miejsce na Twoją stronę.</h2><p>Opowiedz o firmie, odbiorcach i tym, co chcesz pokazać. Zacznijmy od konkretów.</p></div><a class="button" href="/kontakt/">Napisz o projekcie</a></section>
+  </main>
+</BaseLayout>

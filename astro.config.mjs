@@ -18,6 +18,7 @@ export default defineConfig({
     }),
   ],
   output: "static",
+  build: { inlineStylesheets: "always" },
   vite: {
     optimizeDeps: {
       include: ["@gsap/react", "gsap", "gsap/ScrollTrigger"],

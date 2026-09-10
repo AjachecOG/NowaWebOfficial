@@ -34,12 +34,14 @@ const {
 
   <label class="contact-form__field">
     <span>Imię i nazwisko / firma</span>
-    <input type="text" name="name" maxlength="120" required autocomplete="name" />
+    <input type="text" name="name" maxlength="120" required autocomplete="name" placeholder="Jak się do Ciebie zwracać?" aria-describedby={`${formName}-name-error`} />
+    <small id={`${formName}-name-error`} class="contact-form__field-error" hidden></small>
   </label>
 
   <label class="contact-form__field">
     <span>Email</span>
-    <input type="email" name="email" maxlength="254" required autocomplete="email" />
+    <input type="email" name="email" maxlength="254" required autocomplete="email" placeholder="ty@firma.pl" aria-describedby={`${formName}-email-error`} />
+    <small id={`${formName}-email-error`} class="contact-form__field-error" hidden></small>
   </label>
 
   <label class="contact-form__field">
@@ -50,15 +52,19 @@ const {
       maxlength="32"
       autocomplete="tel"
       inputmode="tel"
-      pattern="^(?:\+?[0-9][\d\s().\-]{7,18})?$"
+      pattern="\+?[0-9][0-9\s.\(\)\-]*"
       title="Podaj numer telefonu, np. +48 794 346 581"
       data-phone-field
+      placeholder="+48"
+      aria-describedby={`${formName}-phone-error`}
     />
+    <small id={`${formName}-phone-error`} class="contact-form__field-error" hidden></small>
   </label>
 
   <label class="contact-form__field">
     <span>O czym mamy porozmawiać</span>
-    <textarea name="message" rows="5" maxlength="4000" required></textarea>
+    <textarea name="message" rows="5" maxlength="4000" required placeholder="Czym zajmuje się firma i czego potrzebujesz od nowej strony?" aria-describedby={`${formName}-message-error`}></textarea>
+    <small id={`${formName}-message-error`} class="contact-form__field-error" hidden></small>
   </label>
 
   <p class="contact-form__consent">
@@ -87,19 +93,28 @@ const {
   }
 
   document.querySelectorAll<HTMLFormElement>("form.contact-form").forEach((form) => {
-    const phone = form.querySelector<HTMLInputElement>("[data-phone-field]");
-    if (!phone) return;
-
-    const validate = () => {
-      if (isValidPhone(phone.value)) {
-        phone.setCustomValidity("");
-        return;
-      }
-      phone.setCustomValidity("Podaj prawidłowy numer telefonu (9–15 cyfr).");
-    };
-
-    phone.addEventListener("input", validate);
-    phone.addEventListener("blur", validate);
-    form.addEventListener("submit", validate);
+    const fields = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.contact-form__field input, .contact-form__field textarea');
+    fields.forEach(field => {
+      const error = document.getElementById(field.getAttribute('aria-describedby') || '');
+      const validate = () => {
+        let message = '';
+        if (field.required && !field.value.trim()) message = field.name === 'message' ? 'Napisz krótko, czego potrzebujesz.' : field.name === 'email' ? 'Podaj adres email do odpowiedzi.' : 'Podaj imię lub nazwę firmy.';
+        else if (field.name === 'phone' && !isValidPhone(field.value)) message = 'Podaj prawidłowy numer telefonu (9-15 cyfr).';
+        else if (field.validity.typeMismatch) message = 'Podaj prawidłowy adres email, np. ty@firma.pl.';
+        field.setCustomValidity(message);
+        return message;
+      };
+      const showError = () => {
+        const message = validate();
+        field.setAttribute('aria-invalid', String(Boolean(message)));
+        if (error) { error.textContent = message; error.hidden = !message; }
+      };
+      field.addEventListener('invalid', showError);
+      field.addEventListener('blur', () => { if (field.value || field.hasAttribute('aria-invalid')) showError(); });
+      field.addEventListener('input', () => {
+        validate();
+        if (field.hasAttribute('aria-invalid')) showError();
+      });
+    });
   });
 </script>

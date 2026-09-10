@@ -1,9 +1,13 @@
 ---
 import { site, legalLinks } from "../data/site";
-import CookieConsent from "../components/CookieConsent";
+import CookieConsent from "../components/CookieConsent.astro";
 import SiteHead from "../components/SiteHead.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import "../styles/global.css";
+import "../styles/base.css";
+import "../styles/seo-shared.css";
+import "../styles/reveal.css";
+import "../styles/spotlight.css";
+import { serviceLinks } from '../data/navigation';
 
 type Props = {
   title: string;
@@ -11,6 +15,7 @@ type Props = {
   bodyClass?: string;
   canonicalPath?: string;
   noindex?: boolean;
+  ogImagePath?: string;
 };
 
 const {
@@ -19,6 +24,7 @@ const {
   bodyClass = "",
   canonicalPath = Astro.url.pathname,
   noindex = false,
+  ogImagePath,
 } = Astro.props;
 
 const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
@@ -32,7 +38,17 @@ const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
       description={description}
       canonicalPath={canonicalPath}
       noindex={noindex}
+      ogImagePath={ogImagePath}
     />
+    <!-- Arms the scroll reveal (reveal.css) before first paint so sections
+         never flash visible and then hide. Skipped without IntersectionObserver,
+         leaving the page fully visible. Reduced motion is handled in CSS
+         (fade only), matching the homepage's "soft a11y" stance. -->
+    <script is:inline>
+      if ("IntersectionObserver" in window) {
+        document.documentElement.classList.add("has-reveal");
+      }
+    </script>
   </head>
   <body class={bodyClass}>
     <div class="paper-grain" aria-hidden="true"></div>
@@ -62,8 +78,109 @@ const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
         <a href={`mailto:${site.email}`}>{site.email}</a>
         <a href={site.phoneHref}>{site.phoneDisplay}</a>
       </div>
+      <nav class="site-footer__offer-links" aria-label="Oferta i realizacje">
+        {serviceLinks.map(link => <a href={link.href}>{link.label}</a>)}
+        <a href="/realizacje/">Realizacje</a><a href="/o-nas/">O nas</a><a href="/cennik/">Wycena</a>
+      </nav>
     </footer>
 
-    <CookieConsent client:idle />
+    <CookieConsent />
   </body>
 </html>
+
+<script>
+  // Scroll reveal for [data-reveal] / [data-reveal-group] (see reveal.css).
+  // Mirrors the homepage observer in SiteMotion.astro, so the
+  // subpages don't hydrate React just to fade sections in. A target reveals as
+  // soon as its top edge crosses the lower 10% of the viewport, so the hero and
+  // anything above the fold play immediately on load.
+  if (document.documentElement.classList.contains("has-reveal")) {
+    const targets = document.querySelectorAll<HTMLElement>("[data-reveal], [data-reveal-group]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" },
+    );
+    targets.forEach((target) => observer.observe(target));
+  }
+
+  // One sliding marker per list, aligned to the row on the reading line.
+  // Shared by service pages and editorial lists via [data-spotlight].
+  const lists = Array.from(document.querySelectorAll<HTMLElement>("[data-spotlight]"));
+  if (lists.length) {
+    const LINE = 0.46;
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const place = (list: HTMLElement, item: HTMLElement | null) => {
+      if (!item) {
+        list.classList.remove("is-active");
+        return;
+      }
+      list.classList.add("is-active");
+      list.style.setProperty("--spot-y", `${item.offsetTop}px`);
+      list.style.setProperty("--spot-h", `${item.offsetHeight}px`);
+    };
+
+    const trackers = lists.map((list) => {
+      const items = Array.from(list.children) as HTMLElement[];
+      let current: HTMLElement | null = null;
+      let hovered: HTMLElement | null = null;
+      const paint = () => {
+        for (const item of items) item.classList.toggle("is-current", item === current);
+        place(list, hovered ?? current);
+      };
+      list.classList.add("is-ready");
+      if (finePointer.matches) {
+        list.addEventListener("pointermove", (event) => {
+          const item = items.find((row) => row.contains(event.target as Node)) ?? null;
+          if (item === hovered) return;
+          hovered = item;
+          paint();
+        });
+        list.addEventListener("pointerleave", () => {
+          hovered = null;
+          paint();
+        });
+      }
+      return { list, items, setCurrent: (item: HTMLElement | null) => { current = item; paint(); } };
+    });
+
+    const sync = () => {
+      const y = window.innerHeight * LINE;
+      for (const tracker of trackers) {
+        const bounds = tracker.list.getBoundingClientRect();
+        let next: HTMLElement | null = null;
+        if (bounds.top <= y && bounds.bottom >= y) {
+          let closest = Infinity;
+          for (const item of tracker.items) {
+            const row = item.getBoundingClientRect();
+            if (row.top > y || row.bottom < y) continue;
+            const distance = Math.abs((row.top + row.bottom) / 2 - y);
+            if (distance < closest) {
+              closest = distance;
+              next = item;
+            }
+          }
+        }
+        tracker.setCurrent(next);
+      }
+    };
+
+    let frame = 0;
+    const requestSync = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        sync();
+      });
+    };
+
+    sync();
+    window.addEventListener("scroll", requestSync, { passive: true });
+    window.addEventListener("resize", requestSync);
+  }
+</script>

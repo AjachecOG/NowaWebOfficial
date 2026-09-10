@@ -2,8 +2,8 @@ import { readFile } from "node:fs/promises";
 
 const [page, component, css] = await Promise.all([
   readFile("src/pages/index.astro", "utf8"),
-  readFile("src/components/HeroEyebrowTypewriter.tsx", "utf8").catch(() => ""),
-  readFile("src/styles/global.css", "utf8"),
+  readFile("src/components/HeroEyebrowTypewriter.astro", "utf8").catch(() => ""),
+  Promise.all([readFile("src/styles/global.css", "utf8"), readFile("src/styles/base.css", "utf8")]).then(parts => parts.join('\n').replaceAll('\r\n', '\n')),
 ]);
 
 const failures = [];
@@ -14,16 +14,16 @@ function expect(source, token, message) {
 
 expect(
   page,
-  'import HeroEyebrowTypewriter from "../components/HeroEyebrowTypewriter";',
+  'import HeroEyebrowTypewriter from "../components/HeroEyebrowTypewriter.astro";',
   "hero eyebrow component is not imported",
 );
-expect(page, "<HeroEyebrowTypewriter client:load />", "hero eyebrow is not hydrated on load");
+expect(page, "<HeroEyebrowTypewriter />", "hero eyebrow script is missing");
 expect(page, 'class="hero-title"', "hero title sequence class is missing");
 expect(page, 'class="hero-title-line"', "hero title lines are missing");
 expect(page, 'class="hero-title-line-inner"', "hero title line inner masks are missing");
 expect(
   component,
-  'const FULL_TEXT = "NowaWeb - strony internetowe";',
+  "const fullText = 'NowaWeb - strony internetowe';",
   "full eyebrow copy is not fixed",
 );
 expect(component, "prefers-reduced-motion: reduce", "component has no reduced-motion fallback");

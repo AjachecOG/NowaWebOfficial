@@ -1,0 +1,85 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import { services, type Service } from "../data/services";
+import "../styles/services.css";
+
+type Props = { service: Service };
+const { service } = Astro.props;
+const flipPricing = service.slug === 'strony-internetowe-dla-firm' || service.slug === 'modernizacja-stron' || service.slug === 'opieka-nad-strona';
+---
+
+<BaseLayout title={service.title} description={service.description} canonicalPath={`/${service.slug}/`} ogImagePath={`/assets/nowaweb/seo/${service.slug}.jpg`} bodyClass="service-page">
+  <main id="top" class="service-shell">
+    <Breadcrumbs items={[{ label: "Strona główna", href: "/" }, { label: service.title }]} />
+
+    <section class="service-hero" aria-labelledby="service-title" data-reveal-group>
+      <div class="service-hero__copy" data-reveal-group>
+        <h1 id="service-title">{service.title}<span aria-hidden="true">.</span></h1>
+        <p class="service-hero__accent">{service.accent}</p>
+        <p class="service-lead">{service.intro}</p>
+        <div class="action-row">
+          <a class="button primary" href="/kontakt/">Porozmawiajmy o projekcie</a>
+          <a class="service-text-link" href="#zakres">Zobacz zakres</a>
+        </div>
+      </div>
+      <figure class="service-hero__visual">
+        <img src={service.image} srcset={`${service.image.replace('.webp', '-480.webp')} 480w, ${service.image.replace('.webp', '-800.webp')} 800w, ${service.image} 900w`} sizes="(max-width: 760px) calc(100vw - 48px), 44vw" alt="" width="900" height="675" loading="eager" decoding="async" />
+        <figcaption><span>Dla kogo</span>{service.audience}</figcaption>
+      </figure>
+    </section>
+
+    <section class="service-section" id="zakres" aria-labelledby="scope-title" data-reveal-group>
+      <div class="service-section__heading"><h2 id="scope-title">Co możemy<br /><em>zrobić dla Ciebie</em></h2></div>
+      <div class="service-scope spotlight" data-spotlight data-reveal-group>
+        {service.scope.map((item, index) => <article><span class="service-item-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}
+      </div>
+    </section>
+
+    <section class="service-portfolio" aria-labelledby="service-portfolio-title" data-reveal>
+      <div><h2 id="service-portfolio-title">Zobacz projekty<br /><em>NowaWeb</em></h2></div>
+      <div><p>{service.projectNote}</p><a class="service-text-link" href="/realizacje/">Przejdź do realizacji</a></div>
+    </section>
+
+    <section class="service-flow" aria-labelledby="service-process-title" data-reveal-group>
+      <header class="service-flow__intro" data-reveal-group>
+        <h2 id="service-process-title">Od rozmowy<br /><em>do konkretów</em></h2>
+        <p class="service-flow__lead">Trzy jasne etapy. Od briefu, przez projekt, po wdrożenie — bez zgadywania, co dzieje się dalej.</p>
+      </header>
+      <ol class="service-flow__steps spotlight" data-spotlight data-reveal-group>
+        {service.process.map((step, index) => (
+          <li>
+            <span class="service-item-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <aside class="service-flow__prep" data-reveal>
+        <div>
+          <p class="service-flow__prep-kicker">Zanim napiszesz</p>
+          <h3>Co przygotować do rozmowy?</h3>
+        </div>
+        <p>{service.preparation}</p>
+      </aside>
+    </section>
+
+    <section class:list={['service-section', 'service-pricing', { 'service-section--flip': flipPricing }]} aria-labelledby="service-pricing-title" data-reveal-group>
+      <div class="service-section__heading"><h2 id="service-pricing-title">Najpierw zakres.<br /><em>Potem koszt.</em></h2></div>
+      <div><p class="service-lead">{service.pricing}</p><ul>{service.pricingFactors.map((factor) => <li>{factor}</li>)}</ul><p>Termin, zasady poprawek i ewentualne koszty cykliczne wymagają uzgodnienia w ofercie.</p><a class="service-text-link" href="/cennik/">Jak przygotowujemy wycenę</a></div>
+    </section>
+
+    <div class="service-faq"><Faq items={service.faq} id="service-faq" heading="Pytania przed rozpoczęciem" /></div>
+
+    <section class="service-contact" aria-labelledby="service-contact-title" data-reveal>
+      <h2 id="service-contact-title">{service.cta}<span aria-hidden="true">.</span></h2>
+      <p>Krótki opis celu i dostępnych materiałów pomoże nam określić następny krok.</p>
+      <a class="button primary" href="/kontakt/">Przejdź do kontaktu</a>
+    </section>
+
+    <nav class="service-related" aria-label="Pozostałe usługi" data-reveal><div>{services.filter(({ slug }) => slug !== service.slug).map((related) => <a href={`/${related.slug}/`}>{related.title}</a>)}</div></nav>
+  </main>
+</BaseLayout>

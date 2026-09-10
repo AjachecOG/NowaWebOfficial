@@ -1,0 +1,38 @@
+<div class="cookie-banner" role="dialog" aria-labelledby="cookie-banner-title" aria-modal="false" hidden>
+  <div class="cookie-banner__copy">
+    <p id="cookie-banner-title" class="cookie-banner__title">Pliki cookies</p>
+    <p>Zapamiętujemy Twój wybór w przeglądarce. Nie korzystamy teraz z analityki; jej uruchomienie będzie wymagało zgody. Szczegóły: <a href="/polityka-cookies/">polityka cookies</a> i <a href="/polityka-prywatnosci/">polityka prywatności</a>.</p>
+  </div>
+  <div class="cookie-banner__actions">
+    <button type="button" class="button secondary cookie-banner__btn" data-consent="essential">Tylko niezbędne</button>
+    <button type="button" class="button primary cookie-banner__btn" data-consent="all">Akceptuję</button>
+  </div>
+</div>
+
+<script>
+  const banner = document.querySelector<HTMLElement>('.cookie-banner');
+  const storageKey = 'nowaweb-cookie-consent';
+  if (banner) {
+    let opener: HTMLElement | null = null;
+    try { banner.hidden = JSON.parse(localStorage.getItem(storageKey) || 'null')?.version === 1; }
+    catch { banner.hidden = false; }
+    banner.addEventListener('click', event => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-consent]');
+      if (!button) return;
+      const value = { version: 1, essential: true, analytics: button.dataset.consent === 'all', updatedAt: new Date().toISOString() };
+      // Consent still works for this visit when browser storage is unavailable.
+      try { localStorage.setItem(storageKey, JSON.stringify(value)); } catch { /* Storage blocked. */ }
+      window.dispatchEvent(new CustomEvent('nowaweb:cookie-consent', { detail: value }));
+      banner.hidden = true;
+      opener?.focus();
+    });
+    document.addEventListener('click', event => {
+      const trigger = (event.target as HTMLElement).closest<HTMLElement>('[data-open-cookie-settings]');
+      if (!trigger) return;
+      event.preventDefault();
+      opener = trigger;
+      banner.hidden = false;
+      banner.querySelector<HTMLButtonElement>('[data-consent]')?.focus();
+    });
+  }
+</script>
