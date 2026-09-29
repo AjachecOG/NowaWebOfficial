@@ -60,11 +60,6 @@ const fullTitle = title.includes("NowaWeb") ? title : `${title} | NowaWeb`;
     <footer class="site-footer site-footer--legal">
       <div class="site-footer__brand">
         <span>NowaWeb<span>.</span></span>
-        <p>
-          {site.company.legalName}<br />
-          {site.company.addressLine}, {site.company.postalCode} {site.company.city}<br />
-          NIP {site.company.nip} · KRS {site.company.krs}
-        </p>
       </div>
       <nav class="site-footer__links" aria-label="Stopka">
         {legalLinks.map((link) => (

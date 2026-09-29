@@ -91,6 +91,7 @@ function initMotion() {
     };
 
     const schedule = (event: PointerEvent) => {
+      if (!hoverQuery.matches || event.pointerType === "touch") return;
       pointerX = event.clientX;
       pointerY = event.clientY;
       hasPointer = true;

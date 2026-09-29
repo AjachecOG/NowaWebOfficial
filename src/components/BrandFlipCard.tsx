@@ -37,6 +37,7 @@ export default function BrandFlipCard() {
     let lastPointerSampleAt = lastPointerAt;
     let lastFrameAt = lastPointerAt;
     let snapTargetY: number | null = null;
+    let inViewport = false;
 
     const setPointerOrigin = (event: PointerEvent) => {
       const now = performance.now();
@@ -170,6 +171,22 @@ export default function BrandFlipCard() {
       frame = window.requestAnimationFrame(render);
     };
 
+    const startLoop = () => {
+      if (frame || !inViewport || document.hidden) return;
+      lastFrameAt = performance.now();
+      frame = window.requestAnimationFrame(render);
+    };
+
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      inViewport = Boolean(entry?.isIntersecting);
+      if (inViewport) startLoop();
+      else stopLoop();
+    }, { rootMargin: "80px" });
+    const handleVisibilityChange = () => {
+      if (document.hidden) stopLoop();
+      else startLoop();
+    };
+
     stage.dataset.flipDirection = "idle";
     stage.dataset.dragging = "false";
     stage.dataset.rotationY = "0";
@@ -180,13 +197,15 @@ export default function BrandFlipCard() {
     stage.addEventListener("pointerdown", handlePointerDown);
     stage.addEventListener("pointerup", handlePointerUp);
     stage.addEventListener("pointercancel", handlePointerUp);
+    visibilityObserver.observe(stage);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     // Seed a gentle spin so the logo is obviously alive on first paint.
     velocityY = 42;
-    lastFrameAt = performance.now();
-    frame = window.requestAnimationFrame(render);
 
     return () => {
       stopLoop();
+      visibilityObserver.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       stage.removeEventListener("pointerenter", setPointerOrigin);
       stage.removeEventListener("pointermove", handlePointerMove);
       stage.removeEventListener("pointerleave", handlePointerLeave);

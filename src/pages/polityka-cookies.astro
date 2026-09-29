@@ -23,11 +23,10 @@ import { site } from "../data/site";
         stronie działać, zapamiętywać wybory i (po zgodzie) prowadzić analitykę.
       </p>
 
-      <h2>2. Administrator</h2>
+      <h2>2. Kontakt</h2>
       <p>
-        {site.company.legalName}, {site.company.addressLine}, {site.company.postalCode}
-        {" "}{site.company.city}, NIP {site.company.nip}. Kontakt:
-        <a href={`mailto:${site.email}`}>{site.email}</a>.
+        <a href={`mailto:${site.email}`}>{site.email}</a>,
+        tel. <a href={site.phoneHref}>{site.phoneDisplay}</a>.
       </p>
 
       <h2>3. Rodzaje cookies na tej stronie</h2>

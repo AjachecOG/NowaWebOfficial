@@ -207,25 +207,25 @@ const support = [
                 />
                 <img
                   class="product-monitor monitor-state"
-                  src="/assets/nowaweb/hero/monitor-screen-2.webp"
-                  srcset="/assets/nowaweb/hero/monitor-screen-2-640.webp 640w, /assets/nowaweb/hero/monitor-screen-2.webp 1024w"
+                  data-src="/assets/nowaweb/hero/monitor-screen-2.webp"
+                  data-srcset="/assets/nowaweb/hero/monitor-screen-2-640.webp 640w, /assets/nowaweb/hero/monitor-screen-2.webp 1024w"
                   sizes="(max-width: 760px) 120vw, (max-width: 1160px) 760px, 60vw"
                   alt=""
                   width="1024"
                   height="768"
-                  loading="lazy"
                   decoding="async"
+                  hidden
                 />
                 <img
                   class="product-monitor monitor-state"
-                  src="/assets/nowaweb/hero/monitor-screen-3.webp"
-                  srcset="/assets/nowaweb/hero/monitor-screen-3-640.webp 640w, /assets/nowaweb/hero/monitor-screen-3.webp 1024w"
+                  data-src="/assets/nowaweb/hero/monitor-screen-3.webp"
+                  data-srcset="/assets/nowaweb/hero/monitor-screen-3-640.webp 640w, /assets/nowaweb/hero/monitor-screen-3.webp 1024w"
                   sizes="(max-width: 760px) 120vw, (max-width: 1160px) 760px, 60vw"
                   alt=""
                   width="1024"
                   height="768"
-                  loading="lazy"
                   decoding="async"
+                  hidden
                 />
               </div>
             </div>
@@ -487,11 +487,6 @@ const support = [
     <footer class="site-footer site-footer--legal">
       <div class="site-footer__brand">
         <span>NowaWeb<span>.</span></span>
-        <p>
-          {site.company.legalName}<br />
-          {site.company.addressLine}, {site.company.postalCode} {site.company.city}<br />
-          NIP {site.company.nip} · KRS {site.company.krs}
-        </p>
       </div>
       <nav class="site-footer__links" aria-label="Stopka">
         {legalLinks.map((link) => (

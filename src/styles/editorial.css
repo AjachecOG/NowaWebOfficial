@@ -62,7 +62,7 @@
 .ed-row-number::before { content: '0' counter(ed-row); }
 .ed-rows h3 { margin: 0 0 8px; }
 .ed-rows p { margin: 0; color: var(--ink-soft); }
-.ed-company { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.ed-company { display: grid; grid-template-columns: 1fr; }
 .ed-company dl { margin: 0; }
 .ed-company dt { color: var(--ink-soft); font-size: .85rem; margin-top: 20px; }
 .ed-company dd { margin: 6px 0 0; font-weight: 650; }

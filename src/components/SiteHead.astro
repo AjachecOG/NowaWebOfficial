@@ -30,20 +30,10 @@ const jsonLd = {
       "@type": "Organization",
       "@id": `${site.url}/#organization`,
       name: site.brand,
-      legalName: site.company.legalName,
       url: site.url,
       email: site.email,
       telephone: site.phoneDisplay,
       logo: new URL('/assets/nowaweb/seo/logo.svg', site.url).toString(),
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: site.company.addressLine,
-        postalCode: site.company.postalCode,
-        addressLocality: site.company.city,
-        addressCountry: "PL",
-      },
-      taxID: site.company.nip,
-      vatID: site.company.nip,
     },
     {
       "@type": "WebSite",
@@ -65,13 +55,6 @@ const jsonLd = {
       areaServed: {
         "@type": "Country",
         name: "Poland",
-      },
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: site.company.addressLine,
-        postalCode: site.company.postalCode,
-        addressLocality: site.company.city,
-        addressCountry: "PL",
       },
       provider: { "@id": `${site.url}/#organization` },
       serviceType: [

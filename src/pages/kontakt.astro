@@ -29,13 +29,6 @@ import "../styles/contact.css";
           <h2>Wolisz bezpośrednio?</h2>
           <a class="contact-details__email" href={`mailto:${site.email}`}>{site.email}<span aria-hidden="true">↗</span></a>
           <a class="contact-details__phone" href={site.phoneHref}>{site.phoneDisplay}</a>
-          <div class="contact-details__company">
-            <div>
-              <h3>{site.company.legalName}</h3>
-              <address>{site.company.addressLine}<br />{site.company.postalCode} {site.company.city}</address>
-            </div>
-            <p>NIP {site.company.nip}<br />KRS {site.company.krs}</p>
-          </div>
         </div>
       </aside>
     </div>

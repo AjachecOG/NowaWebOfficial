@@ -22,9 +22,24 @@ function initMonitorBillboard() {
 
   const show = (nextIndex: number) => {
     frames.forEach((frame, frameIndex) => {
-      frame.classList.toggle("is-active", frameIndex === nextIndex);
+      const active = frameIndex === nextIndex;
+      frame.classList.toggle("is-active", active);
+      frame.hidden = !active;
     });
     index = nextIndex;
+  };
+
+  const loadFrame = async (frame: HTMLImageElement) => {
+    if (!frame.getAttribute("src") && frame.dataset.src) {
+      if (frame.dataset.srcset) frame.srcset = frame.dataset.srcset;
+      frame.src = frame.dataset.src;
+    }
+    try {
+      await frame.decode();
+      return frame.naturalWidth > 0;
+    } catch {
+      return false;
+    }
   };
 
   show(index);
@@ -54,9 +69,16 @@ function initMonitorBillboard() {
 
   const cycle = () => {
     if (cancelled) return;
-    runGlitch(() => {
+    void loadFrame(frames[(index + 1) % frames.length]).then((ready) => {
       if (cancelled) return;
-      schedule(cycle, holdBeforeNextGlitch(index, frames.length));
+      if (!ready) {
+        schedule(cycle, HOLD_MS);
+        return;
+      }
+      runGlitch(() => {
+        if (cancelled) return;
+        schedule(cycle, holdBeforeNextGlitch(index, frames.length));
+      });
     });
   };
 

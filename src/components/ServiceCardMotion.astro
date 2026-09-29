@@ -85,6 +85,7 @@ function initMotion() {
     };
 
     const scheduleProximity = (event: PointerEvent) => {
+      if (!hoverQuery.matches || event.pointerType === "touch") return;
       pointerX = event.clientX;
       pointerY = event.clientY;
 

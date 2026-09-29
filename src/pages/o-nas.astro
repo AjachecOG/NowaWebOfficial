@@ -4,7 +4,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { site } from '../data/site';
 import '../styles/editorial.css';
 ---
-<BaseLayout title="O nas — poznaj NowaWeb i sposób pracy" description="NowaWeb projektuje lekkie strony firmowe i landing page. Poznaj podejście do struktury, projektu i wdrożenia oraz dane firmy i bezpośredni kontakt." canonicalPath="/o-nas/" ogImagePath="/assets/nowaweb/seo/o-nas.jpg">
+<BaseLayout title="O nas — poznaj NowaWeb i sposób pracy" description="NowaWeb projektuje lekkie strony firmowe i landing page. Poznaj podejście do struktury, projektu i wdrożenia oraz bezpośredni kontakt." canonicalPath="/o-nas/" ogImagePath="/assets/nowaweb/seo/o-nas.jpg">
   <main class="editorial" id="top">
     <Breadcrumbs items={[{ label: 'Strona główna', href: '/' }, { label: 'O nas' }]} />
     <header class="ed-hero" data-reveal-group><h1>Najpierw sens.<br />Potem <em>dobry projekt.</em></h1><p class="ed-lead">Projektujemy lekkie strony firmowe, landing page i one page. Pracujemy zdalnie z firmami z całej Polski, łącząc strukturę treści z indywidualnym projektem i wdrożeniem.</p><div class="ed-meta"><span>Struktura</span><span>Projekt</span><span>Wdrożenie</span></div></header>
@@ -59,7 +59,7 @@ import '../styles/editorial.css';
         </div>
       </div>
     </section>
-    <section class="ed-section ed-split" aria-labelledby="company-title" data-reveal-group><div><h2 id="company-title">Pozostańmy w kontakcie.</h2><p class="ed-copy">NowaWeb — projektowanie stron internetowych. Dane firmy oraz bezpośrednie kanały kontaktu:</p></div><div class="ed-note-sheet ed-company"><dl><dt>Firma</dt><dd>{site.company.legalName}</dd><dt>Adres</dt><dd>{site.company.addressLine}<br />{site.company.postalCode} {site.company.city}</dd><dt>NIP / KRS</dt><dd>{site.company.nip}<br />{site.company.krs}</dd></dl><dl><dt>E-mail</dt><dd><a class="ed-text-link ed-text-link--quiet" href={`mailto:${site.email}`}>{site.email}</a></dd><dt>Telefon</dt><dd><a class="ed-text-link ed-text-link--quiet" href={site.phoneHref}>{site.phoneDisplay}</a></dd><dt>Współpraca</dt><dd>Zdalnie, cała Polska</dd></dl></div></section>
+    <section class="ed-section ed-split" aria-labelledby="company-title" data-reveal-group><div><h2 id="company-title">Pozostańmy w kontakcie.</h2><p class="ed-copy">Napisz do nas lub zadzwoń.</p></div><div class="ed-note-sheet ed-company"><dl><dt>E-mail</dt><dd><a class="ed-text-link ed-text-link--quiet" href={`mailto:${site.email}`}>{site.email}</a></dd><dt>Telefon</dt><dd><a class="ed-text-link ed-text-link--quiet" href={site.phoneHref}>{site.phoneDisplay}</a></dd></dl></div></section>
     <section class="ed-cta" aria-labelledby="cta-title" data-reveal><div><h2 id="cta-title">Opowiedz, czego potrzebuje Twoja firma.</h2><p>Nowa strona, przebudowa czy jeden landing? Opis potrzeb wystarczy, żeby zacząć rozmowę.</p></div><a class="button" href="/kontakt/">Przejdź do kontaktu</a></section>
   </main>
 </BaseLayout>

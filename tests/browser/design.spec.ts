@@ -74,3 +74,31 @@ test('homepage typing, billboard and card interactions survive native initializa
   await page.keyboard.press('Escape');
   await expect(trigger).toHaveAttribute('aria-expanded','false');
 });
+
+test('brand card pauses outside the viewport and resumes when visible', async ({page}) => {
+  await page.goto('/');
+  const stage = page.locator('[data-brand-flip]');
+  await stage.scrollIntoViewIfNeeded();
+  await expect(stage).toHaveAttribute('data-rotation-y', /-?\d/);
+
+  await page.locator('footer').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(150);
+  const card = stage.locator('[data-brand-flip-card]');
+  const offscreenTransform = await card.evaluate((element: HTMLElement) => element.style.transform);
+  await page.waitForTimeout(350);
+  expect(await card.evaluate((element: HTMLElement) => element.style.transform)).toBe(offscreenTransform);
+
+  await stage.scrollIntoViewIfNeeded();
+  await expect.poll(() => card.evaluate((element: HTMLElement) => element.style.transform)).not.toBe(offscreenTransform);
+});
+
+test('billboard loads each later screen when it is needed', async ({page}) => {
+  await page.goto('/');
+  const frames = page.locator('[data-monitor-billboard] .monitor-state');
+  await expect(frames).toHaveCount(3);
+  await expect(frames.nth(0)).toHaveAttribute('src', /monitor-screen-1/);
+  await expect(frames.nth(1)).not.toHaveAttribute('src', /monitor-screen-2/);
+  await expect(frames.nth(2)).not.toHaveAttribute('src', /monitor-screen-3/);
+  await expect(frames.nth(1)).toHaveClass(/is-active/, {timeout: 8000});
+  expect(await frames.nth(1).evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThan(0);
+});
